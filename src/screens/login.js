@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   View,
   Text,
@@ -27,7 +27,7 @@ const LOGIN = gql`
 
 export default function Login(props) {
   const [login] = useMutation(LOGIN);
-  console.log("props --->", Object.keys(props));
+
   return (
     <View style={signinStyles.container}>
       <Formik
@@ -42,11 +42,12 @@ export default function Login(props) {
             },
           })
             .then(async (res) => {
+              await AsyncStorage.clear();
               await AsyncStorage.setItem("TOKEN", res.data.logIn.token);
-              resetForm();
+
               props.navigation.reset({
                 index: 0,
-                routes: [{ name: "Nav" }],
+                routes: [{ name: "Home" }],
               });
             })
             .catch((err) => {

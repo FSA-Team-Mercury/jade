@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { AsyncStorage, AppRegistry } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
 import {
   ApolloClient,
   InMemoryCache,
@@ -11,8 +13,8 @@ import {
 import Login from "./src/screens/login";
 import Home from "./src/screens/home";
 import Plaid from "./src/screens/Plaid";
-import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
+import TabNav from "./src/routes/tabNavigator";
+
 const Stack = createStackNavigator();
 
 const httpLink = createHttpLink({
@@ -23,7 +25,6 @@ const httpLink = createHttpLink({
 const authLink = new ApolloLink(async (operation, forward) => {
   // Retrieve the authorization token from local storage.
   const token = await AsyncStorage.getItem("TOKEN");
-
   // Use the setContext method to set the HTTP headers.
   operation.setContext({
     headers: {
@@ -54,7 +55,6 @@ export default function App() {
     const res = client.readQuery({
       query: READ_USER,
     });
-    console.log(res);
     if (res) {
       setUser(res.user);
     }
@@ -73,10 +73,10 @@ export default function App() {
             {(props) => <Login {...props} setUser={setUser} />}
           </Stack.Screen>
           <Stack.Screen name="Plaid">
-            {(props) => <Plaid {...props} client={client} />}
+            {(props) => <Plaid {...props} />}
           </Stack.Screen>
           <Stack.Screen name="Nav">
-            {(props) => <Home {...props} client={client} />}
+            {(props) => <TabNav {...props} client={client} />}
           </Stack.Screen>
           <Stack.Screen name="Home">
             {(props) => <Home {...props} client={client} />}
