@@ -7,6 +7,7 @@ import Friends from "../screens/Friends";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import AccountStack from "./accountStack";
+import DashboardStack from "./dashBoardStack"
 import { gql, useQuery } from "@apollo/client";
 import { client } from "../../App";
 
@@ -29,16 +30,18 @@ const FETCH_PLAID = gql`
 `;
 
 export default function TabNav() {
-  const { data } = useQuery(FETCH_PLAID);
+  const { data, loading } = useQuery(FETCH_PLAID);
 
-  if (!data) {
+  console.log('tabNavigator', data)
+  if (loading) {
+    console.log('in loading')
     return (
       <View style={styles.container}>
         <ActivityIndicator size="large" color="#00A86B" />
       </View>
     );
   }
-
+  console.log('data-->', data)
   return (
     <Tab.Navigator
       tabBarOptions={{
@@ -48,7 +51,7 @@ export default function TabNav() {
     >
       <Tab.Screen
         name="Dashboard"
-        component={Dashboard}
+        component={DashboardStack}
         options={{
           tabBarLabel: "Home",
           tabBarIcon: ({ color, size }) => (

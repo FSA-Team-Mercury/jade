@@ -90,7 +90,7 @@ export default function Plaid(props) {
 
         props.navigation.reset({
           index: 0,
-          routes: [{ name: "Nav" }],
+          routes: [{ name: "Home" }],
         });
       }}
       onExit={(exit) => {

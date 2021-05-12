@@ -1,18 +1,7 @@
-import React from "react";
-import { View, Text,StyleSheet,SafeAreaView, ScrollView,Dimensions } from "react-native";
+import React,{useState} from "react";
+import { View, Text,StyleSheet,SafeAreaView, ScrollView, TextInput} from "react-native";
+import Icon from 'react-native-vector-icons/AntDesign';
 import { useNavigation } from '@react-navigation/native';
-import { VictoryBar, VictoryChart,VictoryPie, VictoryTheme, VictoryLabel,VictoryAxis, svg } from "victory-native";
-import Icon from 'react-native-vector-icons/FontAwesome';
-
-const iconNames = {
-  'shopping': <Icon name="shopping-cart" size={30} color="black" />,
-  'gas': <Icon name="car" size={30} color="black" />,
-  'car': <Icon name="car" size={30} color="black" />,
-  'home': <Icon name="home" size={30} color="black" />,
-  'entertainment':<Icon name="film" size={30} color="black" />,
-  'other':<Icon name="money" size={30} color="black" />,
-}
-
 const seedData = [
   {
     companyName: "mcDonald's",
@@ -46,63 +35,32 @@ const seedData = [
   }
 ]
 
-const chartData = [
-  { x: "Groceries", y: 315 },
-  { x: "Entmt", y: 40 },
-  { x: "Utilities", y: 55 },
-  {x:'Other', y:10}
-];
-
-
-
 export default function Dashboard() {
-  const navigation = useNavigation();
-  function seeAllTransaction(){
-    navigation.navigate('All Transactions')
+  const [search,setSearch] = useState('')
+  function onChangeText(value){
+    setSearch(value)
   }
+
   return (
     <SafeAreaView>
-      <ScrollView style={styles.dashBoard}>
-        {/* <Text style={styles.welcomeTitle}>Dashboard Summary</Text> */}
-        <View style={styles.graphContainer}>
-          <View styles={styles.pieChart}>
-              <VictoryPie
-                data={chartData}
-                innerRadius={80}
-                padAngle={({ datum }) => 1}
-                theme={VictoryTheme.material}
-                width={390}
-                // height={500}
-                style={{
-                  labels: {
-                    fill: "black",
-                    },
-                  parent:{
-                    marginTop: '8%',
-                    marginLeft: '7%'
-                  }
-                }}
-                >
-              </VictoryPie>
-          </View>
+      <ScrollView style={styles.dashBoard} onScroll={(event)=>alert(event.target.scrollTo)}>
+        <View style={styles.header}>
+          <TextInput
+            style={styles.search}
+            onChangeText={onChangeText}
+            value={search}
+            placeholder=" Search..."
+          />
+          <Icon name="search1" size={30} color="white" />
         </View>
         <View style={styles.transactions}>
-          <View style={styles.transactionsHeader}>
-            <Text style={styles.recentTransactions}>Recent Transactions</Text>
-            <Text style={styles.seeAll} onPress={seeAllTransaction}>See All</Text>
-          </View>
           {
             seedData.map((item, index)=>{
               return (
                 <View key={index} >
                   <View style={styles.singleTransaction}>
                     {/* catigory picture (entertainment, food, shoping...) */}
-                    <View style={styles.catagoryPic}>
-                    {/* <Icon name="shopping-cart" size={30} color="#900" /> */}
-                    {
-                      iconNames.other
-                    }
-                    </View>
+                    <View style={styles.catagoryPic}></View>
                     {/* componay name and catagory on the bottom */}
                     <View style={styles.nameAndCategory}>
                       <Text style={styles.companyName} ellipsizeMode='tail' numberOfLines={2}>{item.companyName} </Text>
@@ -134,13 +92,15 @@ const colors = {
   primary: 'black'
 }
 
-const shadow = {
-  shadowOffset:{
-      width: 2,
-      height: 2
+const shadow = (size)=>{
+  return {
+    shadowOffset:{
+      width: size,
+      height: size
     },
     shadowOpacity: .2,
     shadowRadius: 5
+  }
 }
 
 const styles = StyleSheet.create({
@@ -151,52 +111,39 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     overflow:'scroll',
   },
-  transactionContainer:{
-    marginBottom:10,
-  },
-  welcomeTitle:{
-    fontSize: 20,
-    textAlign:'center',
-    marginTop: 20,
-    fontWeight: 'bold'
-  },
-  graphContainer:{
-    height: 350,
+  header:{
+    height: 55,
     width: '95%',
-    backgroundColor: 'white',
+    backgroundColor: 'lightgrey',
     ... center,
     marginTop: 20,
     marginBottom: 20,
     borderRadius: 10,
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    ...shadow
+    display:'flex',
+    flexDirection:'row',
+    alignItems:'center',
+    paddingLeft: 10,
+    paddingRight: 10,
+    ...shadow(1)
   },
-  pieChart:{
-    height: 500,
-    width: '100%',
-    backgroundColor: 'yellow'
+  search:{
+    height: '80%',
+    width: '90%',
+    backgroundColor: 'white',
+    marginRight: 'auto',
+    borderRadius: 10
+
+  },
+  filterContainer:{
+    height: '90%',
+    width: '20%',
+    backgroundColor:'white'
   },
   transactions:{
     width: '95%',
     ...center,
     backgroundColor: 'lightgrey',
     marginBottom: 10,
-    ...shadow
-  },
-  transactionsHeader:{
-    height: 50,
-    width: '100%',
-    display: 'flex',
-    alignItems: 'center',
-    flexDirection:'row',
-    alignItems: 'center',
-    justifyContent: 'space-around',
-    backgroundColor: '#00A86B'
-  },
-  recentTransactions:{
-    fontSize: 18
   },
   seeAll:{
     fontSize:18,
