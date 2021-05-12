@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { AsyncStorage, AppRegistry } from "react-native";
+import { AsyncStorage, AppRegistry,SafeAreaView } from "react-native";
 import {
   ApolloClient,
   InMemoryCache,
@@ -64,7 +64,7 @@ export default function App() {
     <ApolloProvider client={client}>
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName={user ? "Nav" : "Login"}
+          initialRouteName={user ? "Nav" : "Home"}
           screenOptions={{
             headerShown: false,
           }}

@@ -6,6 +6,7 @@ import Friends from "../screens/Friends";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import AccountStack from "./accountStack";
+import DashboardStack from "./dashBoardStack"
 
 const Tab = createBottomTabNavigator();
 
@@ -19,7 +20,7 @@ export default function TabNav() {
     >
       <Tab.Screen
         name="Dashboard"
-        component={Dashboard}
+        component={DashboardStack}
         options={{
           tabBarLabel: "Home",
           tabBarIcon: ({ color, size }) => (
