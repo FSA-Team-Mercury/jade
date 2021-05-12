@@ -1,5 +1,6 @@
 /* eslint-disable react/display-name */
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { View, ActivityIndicator, StyleSheet } from "react-native";
 import Dashboard from "../screens/Dashboard";
 import Budget from "../screens/Budget";
 import Friends from "../screens/Friends";
@@ -7,10 +8,40 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import AccountStack from "./accountStack";
 import DashboardStack from "./dashBoardStack"
+import { gql, useQuery } from "@apollo/client";
+import { client } from "../../App";
 
 const Tab = createBottomTabNavigator();
 
+const FETCH_PLAID = gql`
+  query FetchPlaid {
+    plaid {
+      total_transactions
+      accounts {
+        name
+        type
+      }
+      transactions {
+        account_id
+        amount
+      }
+    }
+  }
+`;
+
 export default function TabNav() {
+  const { data, loading } = useQuery(FETCH_PLAID);
+
+  console.log('tabNavigator', data)
+  if (loading) {
+    console.log('in loading')
+    return (
+      <View style={styles.container}>
+        <ActivityIndicator size="large" color="#00A86B" />
+      </View>
+    );
+  }
+  console.log('data-->', data)
   return (
     <Tab.Navigator
       tabBarOptions={{
@@ -74,3 +105,10 @@ export default function TabNav() {
     </Tab.Navigator>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+  },
+});
