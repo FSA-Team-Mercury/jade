@@ -1,19 +1,20 @@
 /* eslint-disable react/display-name */
 import React, { useState, useEffect } from "react";
-import { View, ActivityIndicator, AsyncStorage } from "react-native";
+import { View, ActivityIndicator, StyleSheet } from "react-native";
 import Dashboard from "../screens/Dashboard";
 import Budget from "../screens/Budget";
 import Friends from "../screens/Friends";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import AccountStack from "./accountStack";
-import { useQuery, gql } from "@apollo/client";
+import { gql, useQuery } from "@apollo/client";
+import { client } from "../../App";
 
 const Tab = createBottomTabNavigator();
 
 const FETCH_PLAID = gql`
-  mutation FetchPlaid($access_token: String!) {
-    plaid(access_token: $access_token) {
+  query FetchPlaid {
+    plaid {
       total_transactions
       accounts {
         name
@@ -28,13 +29,16 @@ const FETCH_PLAID = gql`
 `;
 
 export default function TabNav() {
-  // if (loading) {
-  //   return (
-  //     <View style={styles.loader}>
-  //       <ActivityIndicator size="large" color="#00A86B" />
-  //     </View>
-  //   );
-  // }
+  const { data } = useQuery(FETCH_PLAID);
+
+  if (!data) {
+    return (
+      <View style={styles.container}>
+        <ActivityIndicator size="large" color="#00A86B" />
+      </View>
+    );
+  }
+
   return (
     <Tab.Navigator
       tabBarOptions={{
@@ -98,3 +102,10 @@ export default function TabNav() {
     </Tab.Navigator>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+  },
+});
