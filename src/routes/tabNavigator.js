@@ -1,15 +1,13 @@
 /* eslint-disable react/display-name */
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { View, ActivityIndicator, StyleSheet } from "react-native";
-import Dashboard from "../screens/Dashboard";
 import Budget from "../screens/Budget";
 import Friends from "../screens/Friends";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import AccountStack from "./accountStack";
-import DashboardStack from "./dashBoardStack"
+import DashboardStack from "./dashBoardStack";
 import { gql, useQuery } from "@apollo/client";
-import { client } from "../../App";
 
 const Tab = createBottomTabNavigator();
 
@@ -25,6 +23,12 @@ const FETCH_PLAID = gql`
         account_id
         amount
       }
+      institution {
+        logo
+        name
+        url
+        primary_color
+      }
     }
   }
 `;
@@ -32,16 +36,13 @@ const FETCH_PLAID = gql`
 export default function TabNav() {
   const { data, loading } = useQuery(FETCH_PLAID);
 
-  console.log('tabNavigator', data)
   if (loading) {
-    console.log('in loading')
     return (
       <View style={styles.container}>
         <ActivityIndicator size="large" color="#00A86B" />
       </View>
     );
   }
-  console.log('data-->', data)
   return (
     <Tab.Navigator
       tabBarOptions={{

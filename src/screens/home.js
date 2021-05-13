@@ -26,7 +26,7 @@ export default function Home(props) {
       </View>
     );
   }
-  console.log("rendering");
+  console.log("accounts: ", data.user.accounts.length);
   if (data.user.accounts.length) {
     props.navigation.reset({
       index: 0,
