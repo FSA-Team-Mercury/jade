@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import {
   View,
@@ -48,37 +49,7 @@ export default function Budget(props) {
    }
 
   return (
-    <View>
-      <Text>Budget Screen</Text>
-      <View>
-        <TouchableOpacity
-          onPress={() => props.navigation.navigate('Single Budget')}
-        >
-          <View>
-            <Text>Single Budget</Text>
-            <MaterialCommunityIcons
-              name='chevron-right'
-              color={'#00A86B'}
-              size={30}
-            />
-          </View>
-        </TouchableOpacity>
-      </View>
-      <View>
-        <TouchableOpacity
-          onPress={() => props.navigation.navigate('Add Budget')}
-        >
-          <View>
-            <Text>Add Budget</Text>
-            <MaterialCommunityIcons
-              name='chevron-right'
-              color={'#00A86B'}
-              size={30}
-            />
-          </View>
-        </TouchableOpacity>
-      </View>
-
+    <View style={styles.container}>
       {/* displaying all budgets */}
       <SafeAreaView>
         <ScrollView>
@@ -130,11 +101,40 @@ export default function Budget(props) {
               );
             })}
           </View>
+        <View>
+          <TouchableOpacity
+            onPress={() => props.navigation.navigate("Single Budget")}
+          >
+            <View>
+              <Text>Single Budget</Text>
+              <MaterialCommunityIcons
+                name="chevron-right"
+                color={"#00A86B"}
+                size={30}
+              />
+            </View>
+          </TouchableOpacity>
+        </View>
+        <View>
+          <TouchableOpacity
+            onPress={() => props.navigation.navigate("Add Budget")}
+          >
+            <View>
+              <Text>Add Budget</Text>
+              <MaterialCommunityIcons
+                name="chevron-right"
+                color={"#00A86B"}
+                size={30}
+              />
+            </View>
+          </TouchableOpacity>
+        </View>
         </ScrollView>
       </SafeAreaView>
     </View>
   );
 }
+
 
 
 const style = StyleSheet.create({
@@ -168,4 +168,5 @@ const style = StyleSheet.create({
     alignItems: 'center',
     ...center,
   },
+
 });
