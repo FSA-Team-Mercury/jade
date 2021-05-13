@@ -12,6 +12,11 @@ const GET_USER = gql`
         auth_token
         type
       }
+      budgets {
+        category
+        goalAmount
+        isCompleted
+      }
     }
   }
 `;
