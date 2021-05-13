@@ -43,7 +43,7 @@ export default function DashboardStack() {
     );
   }
 
-  console.log(data.plaid.transactions[0]);
+  // console.log(data.plaid.transactions[0]);
   return (
     <Stack.Navigator>
       <Stack.Screen
