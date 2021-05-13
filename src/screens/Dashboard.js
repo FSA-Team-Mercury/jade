@@ -1,30 +1,12 @@
-import React,{useState, useEffect} from "react";
-import { useNavigation } from '@react-navigation/native';
-import {
-  View,
-  Text,
-  StyleSheet,
-  SafeAreaView,
-  ScrollView,
-  Dimensions,
-  ActivityIndicator,
-  FlatList
-} from "react-native";
-import {
-  VictoryBar,
-  VictoryChart,
-  VictoryPie,
-  VictoryTheme,
-  VictoryLabel,
-  VictoryAxis,
-  svg,
-} from "victory-native";
+
+import React from "react";
+import { View, Text, StyleSheet, SafeAreaView, ScrollView } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { VictoryPie, VictoryTheme } from "victory-native";
+import Icon from "react-native-vector-icons/FontAwesome";
 import { client } from "../../App";
 import { gql } from "@apollo/client";
 import SingleTransaction from './SingleTransaction'
-
-
-
 
 const FETCH_PLAID = gql`
   query FetchPlaid {
@@ -217,7 +199,6 @@ const styles = StyleSheet.create({
     display: "flex",
     alignItems: "center",
     flexDirection: "row",
-    alignItems: "center",
     justifyContent: "space-around",
     backgroundColor: "#00A86B",
   },
