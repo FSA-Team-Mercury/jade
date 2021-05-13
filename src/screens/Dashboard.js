@@ -1,6 +1,5 @@
-
-import React from "react";
-import { View, Text, StyleSheet, SafeAreaView, ScrollView } from "react-native";
+import React, {useState,useEffect} from "react";
+import { View, Text, StyleSheet, SafeAreaView, ScrollView,ActivityIndicator, FlatList } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { VictoryPie, VictoryTheme } from "victory-native";
 import Icon from "react-native-vector-icons/FontAwesome";
@@ -137,10 +136,6 @@ export default function Dashboard() {
 const center = {
   marginRight: "auto",
   marginLeft: "auto",
-};
-
-const colors = {
-  primary: "black",
 };
 
 const shadow = {
