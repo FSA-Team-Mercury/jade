@@ -44,7 +44,6 @@ export default function DashboardStack() {
     );
   }
 
-  console.log('dash stack-->', data);
   return (
       <Stack.Navigator
       initialRouteName={"Dashboard"}
