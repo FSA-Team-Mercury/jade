@@ -1,7 +1,7 @@
 /* eslint-disable react/display-name */
 import React from "react";
 import { View, ActivityIndicator, StyleSheet } from "react-native";
-import Budget from "../screens/Budget";
+import BudgetStack from "./budgetStack";
 import Friends from "../screens/Friends";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
@@ -66,7 +66,7 @@ export default function TabNav() {
       />
       <Tab.Screen
         name="Budget"
-        component={Budget}
+        component={BudgetStack}
         options={{
           tabBarLabel: "Budget",
           tabBarIcon: ({ color, size }) => (
