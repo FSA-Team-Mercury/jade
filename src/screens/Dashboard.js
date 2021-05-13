@@ -1,4 +1,5 @@
-import React from "react";
+import React,{useState, useEffect} from "react";
+import { useNavigation } from '@react-navigation/native';
 import {
   View,
   Text,
@@ -6,8 +7,9 @@ import {
   SafeAreaView,
   ScrollView,
   Dimensions,
+  ActivityIndicator,
+  FlatList
 } from "react-native";
-import { useNavigation } from "@react-navigation/native";
 import {
   VictoryBar,
   VictoryChart,
@@ -17,82 +19,107 @@ import {
   VictoryAxis,
   svg,
 } from "victory-native";
-import Icon from "react-native-vector-icons/FontAwesome";
+import { client } from "../../App";
+import { gql } from "@apollo/client";
+import SingleTransaction from './SingleTransaction'
 
-const iconNames = {
-  shopping: <Icon name="shopping-cart" size={30} color="black" />,
-  gas: <Icon name="car" size={30} color="black" />,
-  car: <Icon name="car" size={30} color="black" />,
-  home: <Icon name="home" size={30} color="black" />,
-  entertainment: <Icon name="film" size={30} color="black" />,
-  other: <Icon name="money" size={30} color="black" />,
-};
 
-const seedData = [
-  {
-    companyName: "mcDonald's",
-    catagory: "food",
-    datePurchased: "May 09, 2021",
-    price: "$10.99",
-  },
-  {
-    companyName: "mcDonald's",
-    catagory: "Entertainment",
-    datePurchased: "May 09, 2021",
-    price: "$10.99",
-  },
-  {
-    companyName: "mcDonald's",
-    catagory: "food",
-    datePurchased: "May 09, 2021",
-    price: "$10.99",
-  },
-  {
-    companyName: "mcDonald's",
-    catagory: "food",
-    datePurchased: "May 09, 2021",
-    price: "$10.99",
-  },
-  {
-    companyName: "mcDonald's",
-    catagory: "food",
-    datePurchased: "May 09, 2021",
-    price: "$10.99",
-  },
-];
 
-const chartData = [
-  { x: "Groceries", y: 315 },
-  { x: "Entmt", y: 40 },
-  { x: "Utilities", y: 55 },
-  { x: "Other", y: 10 },
-];
+
+const FETCH_PLAID = gql`
+  query FetchPlaid {
+    plaid {
+      total_transactions
+      accounts {
+        name
+        type
+      }
+      transactions {
+        account_id
+        amount
+        date
+        category
+        pending
+        merchant_name
+      }
+    }
+  }
+`;
+
+const getGraphData = (data)=>{
+   const init={
+    Travel: 0,
+    Payment: 0,
+    Shops: 0,
+    Transfer: 0, // there are both negative and pos
+    Other: 0
+  }
+
+  const categories = Object.keys(init)
+  const graphData = data.reduce((accum, transaction)=>{
+      const curCategory = transaction.category[0]
+      if (categories.includes(curCategory)){
+          accum[curCategory] += transaction.amount
+      }else{
+      accum.Other += transaction.amount
+      }
+      return accum
+  },init)
+  return graphData
+}
 
 export default function Dashboard() {
   const navigation = useNavigation();
-  function seeAllTransaction() {
-    navigation.navigate("All Transactions");
+  function seeAllTransaction(){
+    navigation.navigate('All Transactions',{
+      transactions
+    })
+  }
+
+  const [transactions, setTransactions] = useState(null);
+  const [graphData, setGraphData] = useState({})
+
+  useEffect(() => {
+    const account = client.readQuery({
+      query: FETCH_PLAID,
+    });
+
+    let transactions = account.plaid.transactions
+    setTransactions(transactions || [{}]);
+    const data = getGraphData(transactions)
+    const reordered = Object.keys(data).map(key=>{
+      return {
+        x: key,
+        y: data[key]
+      }
+    })
+    setGraphData(reordered)
+  }, []);
+  if (!transactions) {
+    return (
+      <View style={styles.container}>
+        <ActivityIndicator size="large" color="#00A86B" />
+      </View>
+    );
   }
   return (
     <SafeAreaView>
       <ScrollView style={styles.dashBoard}>
-        {/* <Text style={styles.welcomeTitle}>Dashboard Summary</Text> */}
         <View style={styles.graphContainer}>
           <View styles={styles.pieChart}>
             <VictoryPie
-              data={chartData}
+              data={graphData}
               innerRadius={80}
               padAngle={({ datum }) => 1}
               theme={VictoryTheme.material}
-              width={390}
-              // height={500}
+              width={340}
               style={{
                 labels: {
                   fill: "black",
                 },
                 parent: {
                   marginTop: "8%",
-                  marginLeft: "7%",
+                  marginLeft: "-10%",
                 },
               }}
             ></VictoryPie>
@@ -105,54 +132,20 @@ export default function Dashboard() {
               See All
             </Text>
           </View>
-          {seedData.map((item, index) => {
-            return (
-              <View key={index}>
-                <View style={styles.singleTransaction}>
-                  {/* catigory picture (entertainment, food, shoping...) */}
-                  <View style={styles.catagoryPic}>
-                    {/* <Icon name="shopping-cart" size={30} color="#900" /> */}
-                    {iconNames.other}
-                  </View>
-                  {/* componay name and catagory on the bottom */}
-                  <View style={styles.nameAndCategory}>
-                    <Text
-                      style={styles.companyName}
-                      ellipsizeMode="tail"
-                      numberOfLines={2}
-                    >
-                      {item.companyName}{" "}
-                    </Text>
-                    <Text
-                      style={styles.purchaseCategory}
-                      ellipsizeMode="tail"
-                      numberOfLines={2}
-                    >
-                      {item.catagory}
-                    </Text>
-                  </View>
-                  {/* price and when it was bought on the bottom */}
-                  <View style={styles.priceAndDate}>
-                    <Text
-                      style={styles.price}
-                      ellipsizeMode="tail"
-                      numberOfLines={2}
-                    >
-                      {item.price}{" "}
-                    </Text>
-                    <Text
-                      style={styles.date}
-                      ellipsizeMode="tail"
-                      numberOfLines={2}
-                    >
-                      {item.datePurchased}
-                    </Text>
-                  </View>
+          <FlatList
+            data={transactions.slice(0,5)}
+            keyExtractor={(item) => item.account_id}
+            renderItem={
+              (props)=>{
+                return (
+                  <View>
+                    <SingleTransaction {...props}/>
                 </View>
-                <View style={styles.borderBottom}></View>
-              </View>
-            );
-          })}
+                )
+              }
+            }
+          >
+          </FlatList>
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -210,12 +203,11 @@ const styles = StyleSheet.create({
   pieChart: {
     height: 500,
     width: "100%",
-    backgroundColor: "yellow",
   },
-  transactions: {
+    transactions: {
     width: "95%",
     ...center,
-    backgroundColor: "lightgrey",
+    // backgroundColor: "lightgrey",
     marginBottom: 10,
     ...shadow,
   },
@@ -234,62 +226,5 @@ const styles = StyleSheet.create({
   },
   seeAll: {
     fontSize: 18,
-  },
-  singleTransaction: {
-    height: 100,
-    width: "98%",
-    backgroundColor: "lightgrey",
-    borderRadius: 10,
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    ...center,
-  },
-  catagoryPic: {
-    height: 60,
-    width: 60,
-    borderRadius: 100,
-    backgroundColor: "#00A86B",
-    marginLeft: 10,
-    marginRight: 10,
-  },
-  nameAndCategory: {
-    height: "42%",
-    width: "50%",
-    display: "flex",
-    justifyContent: "space-between",
-  },
-  companyName: {
-    fontSize: 16,
-    height: 16,
-    color: colors.primary,
-  },
-  purchaseCategory: {
-    fontSize: 14,
-    height: 14,
-    color: "#585252",
-  },
-  priceAndDate: {
-    height: "42%",
-    flex: 1,
-    marginRight: 10,
-    display: "flex",
-    justifyContent: "space-between",
-    // backgroundColor:'red',
-    marginLeft: "auto",
-  },
-  price: {
-    fontSize: 16,
-    marginLeft: "auto",
-  },
-  date: {
-    marginLeft: "auto",
-    color: "#585252",
-  },
-  borderBottom: {
-    height: 2,
-    width: "90%",
-    backgroundColor: "lightgrey",
-    ...center,
   },
 });
