@@ -1,49 +1,33 @@
 import React,{useState} from "react";
-import { View, Text,StyleSheet,SafeAreaView, ScrollView, TextInput} from "react-native";
+// import moment from 'moment';
+// moment().format();
+import {
+  View,
+  Text,
+  StyleSheet,
+  SafeAreaView,
+  ScrollView,
+  Dimensions,
+  ActivityIndicator,
+  FlatList,
+  TextInput
+} from "react-native";
 import Icon from 'react-native-vector-icons/AntDesign';
+import SingleTransaction from './SingleTransaction'
 import { useNavigation } from '@react-navigation/native';
-const seedData = [
-  {
-    companyName: "mcDonald's",
-    catagory: 'food',
-    datePurchased: 'May 09, 2021',
-    price: '$10.99'
-  },
-  {
-    companyName: "mcDonald's",
-    catagory: 'Entertainment',
-    datePurchased: 'May 09, 2021',
-    price: '$10.99'
-  },
-  {
-    companyName: "mcDonald's",
-    catagory: 'food',
-    datePurchased: 'May 09, 2021',
-    price: '$10.99'
-  },
-  {
-    companyName: "mcDonald's",
-    catagory: 'food',
-    datePurchased: 'May 09, 2021',
-    price: '$10.99'
-  },
-  {
-    companyName: "mcDonald's",
-    catagory: 'food',
-    datePurchased: 'May 09, 2021',
-    price: '$10.99'
-  }
-]
 
-export default function Dashboard() {
+
+
+export default function Dashboard({route, navigation}) {
   const [search,setSearch] = useState('')
   function onChangeText(value){
     setSearch(value)
   }
+  let {transactions} = route.params
 
   return (
     <SafeAreaView>
-      <ScrollView style={styles.dashBoard} onScroll={(event)=>alert(event.target.scrollTo)}>
+      <ScrollView style={styles.dashBoard}>
         <View style={styles.header}>
           <TextInput
             style={styles.search}
@@ -54,29 +38,21 @@ export default function Dashboard() {
           <Icon name="search1" size={30} color="white" />
         </View>
         <View style={styles.transactions}>
-          {
-            seedData.map((item, index)=>{
-              return (
-                <View key={index} >
-                  <View style={styles.singleTransaction}>
-                    {/* catigory picture (entertainment, food, shoping...) */}
-                    <View style={styles.catagoryPic}></View>
-                    {/* componay name and catagory on the bottom */}
-                    <View style={styles.nameAndCategory}>
-                      <Text style={styles.companyName} ellipsizeMode='tail' numberOfLines={2}>{item.companyName} </Text>
-                      <Text style={styles.purchaseCategory} ellipsizeMode='tail' numberOfLines={2}>{item.catagory}</Text>
-                    </View>
-                    {/* price and when it was bought on the bottom */}
-                    <View style={styles.priceAndDate}>
-                      <Text style={styles.price} ellipsizeMode='tail' numberOfLines={2}>{item.price} </Text>
-                      <Text style={styles.date} ellipsizeMode='tail' numberOfLines={2}>{item.datePurchased}</Text>
-                    </View>
-                  </View>
-                  <View style={styles.borderBottom}></View>
+          <FlatList
+            data={transactions}
+            keyExtractor={(item) => item.account_id}
+            renderItem={
+              (props)=>{
+                console.log('here in alll transactions')
+                return (
+                  <View>
+                    <SingleTransaction {...props}/>
                 </View>
-              )
-            })
-          }
+                )
+              }
+            }
+          >
+          </FlatList>
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -142,7 +118,7 @@ const styles = StyleSheet.create({
   transactions:{
     width: '95%',
     ...center,
-    backgroundColor: 'lightgrey',
+    // backgroundColor: 'lightgrey',
     marginBottom: 10,
   },
   seeAll:{
@@ -151,7 +127,7 @@ const styles = StyleSheet.create({
   singleTransaction:{
     height: 100,
     width: '98%',
-    backgroundColor: 'lightgrey',
+    // backgroundColor: 'lightgrey',
     borderRadius: 10,
     display: 'flex',
     flexDirection:'row',
