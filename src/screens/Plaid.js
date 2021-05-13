@@ -22,7 +22,7 @@ const GET_USER = gql`
       }
     }
   }
-`;
+`; 
 
 const FETCH_TOKEN = gql`
   mutation FetchToken($public_token: String!) {

@@ -11,6 +11,11 @@ const GET_USER = gql`
       accounts {
         auth_token
       }
+      budgets {
+        category
+        goalAmount
+        isCompleted
+      }
     }
   }
 `;
