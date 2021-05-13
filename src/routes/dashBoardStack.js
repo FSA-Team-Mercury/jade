@@ -2,6 +2,7 @@
 import React from "react";
 import { View, ActivityIndicator, StyleSheet } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
+import { NavigationContainer } from "@react-navigation/native";
 import { gql, useQuery } from "@apollo/client";
 import AllTransactions from "../screens/AllTransactions";
 import Dashboard from "../screens/Dashboard";
@@ -19,9 +20,9 @@ const FETCH_PLAID = gql`
         account_id
         amount
         date
-        merchant_name
         category
         pending
+        merchant_name
       }
       institution {
         logo
@@ -43,27 +44,38 @@ export default function DashboardStack() {
     );
   }
 
-  console.log(data.plaid.transactions[0]);
+  console.log('dash stack-->', data);
   return (
-    <Stack.Navigator>
-      <Stack.Screen
-        name="Dashboard"
-        component={Dashboard}
-        options={({ navigation }) => ({
-          title: "",
-          headerTintColor: "#00A86B",
-        })}
-      />
+      <Stack.Navigator
+      initialRouteName={"Dashboard"}
+      >
 
-      <Stack.Screen
-        name="All Transactions"
-        component={AllTransactions}
-        options={({ navigation }) => ({
-          title: "",
-          headerTintColor: "#00A86B",
-        })}
-      />
-    </Stack.Navigator>
+        <Stack.Screen name="Dashboard">
+            {(props) => <Dashboard {...props}/>}
+        </Stack.Screen>
+
+        <Stack.Screen name="All Transactions">
+            {(props) => <AllTransactions {...props}/>}
+        </Stack.Screen>
+
+      </Stack.Navigator>
+    // <Stack.Navigator>
+    //   <Stack.Screen
+    //     name="Dashboard"
+    //     component={Dashboard}
+    //     options={{
+    //       headerShown: false,
+    //     }}
+    //   />
+    //   <Stack.Screen
+    //     name="All Transactions"
+    //     component={AllTransactions}
+    //     options={({ navigation }) => ({
+    //       title: "",
+    //       headerTintColor: "#00A86B",
+    //     })}
+    //   />
+    // </Stack.Navigator>
   );
 }
 
