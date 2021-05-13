@@ -1,12 +1,49 @@
 /* eslint-disable react/display-name */
 import React from "react";
+import { View, ActivityIndicator, StyleSheet } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
+import { gql, useQuery } from "@apollo/client";
 import AllTransactions from "../screens/AllTransactions";
 import Dashboard from "../screens/Dashboard";
 
 const Stack = createStackNavigator();
-
+const FETCH_PLAID = gql`
+  query FetchPlaid {
+    plaid {
+      total_transactions
+      accounts {
+        name
+        type
+      }
+      transactions {
+        account_id
+        amount
+        date
+        merchant_name
+        category
+        pending
+      }
+      institution {
+        logo
+        name
+        url
+        primary_color
+      }
+    }
+  }
+`;
 export default function DashboardStack() {
+  const { data, loading } = useQuery(FETCH_PLAID);
+
+  if (loading) {
+    return (
+      <View style={styles.container}>
+        <ActivityIndicator size="large" color="#00A86B" />
+      </View>
+    );
+  }
+
+  console.log(data.plaid.transactions[0]);
   return (
     <Stack.Navigator>
       <Stack.Screen
@@ -29,3 +66,10 @@ export default function DashboardStack() {
     </Stack.Navigator>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+  },
+});
