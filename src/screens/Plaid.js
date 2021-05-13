@@ -83,15 +83,14 @@ export default function Plaid(props) {
               "PLAID_TOKEN",
               res.data.fetchPlaidToken.auth_token
             );
+            props.navigation.reset({
+              index: 0,
+              routes: [{ name: "Nav" }],
+            });
           })
           .catch((err) => {
             console.log(err);
           });
-
-        props.navigation.reset({
-          index: 0,
-          routes: [{ name: "Home" }],
-        });
       }}
       onExit={(exit) => {
         console.log(exit);
