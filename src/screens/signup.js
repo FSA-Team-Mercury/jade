@@ -1,24 +1,17 @@
 import React from "react";
-import {
-  View,
-  Text,
-  TextInput,
-  AsyncStorage,
-  TouchableOpacity,
-} from "react-native";
+import { View, Text, TextInput, AsyncStorage } from "react-native";
 import { signinStyles } from "../styles/signin";
 import { gql, useMutation } from "@apollo/client";
 import FlatButton from "../shared/button";
 import { Formik } from "formik";
 import * as yup from "yup";
 
-const reviewSchema = yup.object({
+const signupSchema = yup.object({
   username: yup.string().required().min(4),
   password: yup.string().required().min(5),
-  email: yup.string().email(),
 });
 
-const LOGIN = gql`
+const SIGNUP = gql`
   mutation Signup($username: String!, $password: String!) {
     signUp(username: $username, password: $password) {
       token
@@ -27,16 +20,16 @@ const LOGIN = gql`
 `;
 
 export default function Signup(props) {
-  const [login] = useMutation(LOGIN);
+  const [signup] = useMutation(SIGNUP);
 
   return (
     <View style={signinStyles.container}>
       <Formik
         initialValues={{ username: "", password: "" }}
-        validationSchema={reviewSchema}
-        onSubmit={async (text, { resetForm }) => {
+        validationSchema={signupSchema}
+        onSubmit={(text) => {
           //logic to handle login
-          login({
+          signup({
             variables: {
               username: text.username,
               password: text.password,
@@ -44,7 +37,7 @@ export default function Signup(props) {
           })
             .then(async (res) => {
               await AsyncStorage.clear();
-              await AsyncStorage.setItem("TOKEN", res.data.logIn.token);
+              await AsyncStorage.setItem("TOKEN", res.data.signUp.token);
 
               props.navigation.reset({
                 index: 0,
@@ -52,12 +45,15 @@ export default function Signup(props) {
               });
             })
             .catch((err) => {
-              console.log("error loggin in!!!", err);
+              console.log("error signing up!!!", err);
             });
         }}
       >
         {(formikProps) => (
           <View>
+            <Text style={signinStyles.errorText}>
+              {formikProps.touched.email && formikProps.errors.email}
+            </Text>
             <TextInput
               autoCapitalize="none"
               style={signinStyles.input}
@@ -83,16 +79,10 @@ export default function Signup(props) {
               {formikProps.touched.password && formikProps.errors.password}
             </Text>
 
-            <FlatButton text="Sign In" onPress={formikProps.handleSubmit} />
+            <FlatButton text="Sign up" onPress={formikProps.handleSubmit} />
           </View>
         )}
       </Formik>
-      <View style={signinStyles.signupContainer}>
-        <Text>new to Jade? </Text>
-        <TouchableOpacity>
-          <Text style={signinStyles.signupButton}>Sign up</Text>
-        </TouchableOpacity>
-      </View>
     </View>
   );
 }

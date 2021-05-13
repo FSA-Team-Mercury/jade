@@ -28,12 +28,18 @@ const LOGIN = gql`
 export default function Login(props) {
   const [login] = useMutation(LOGIN);
 
+  const goToSignup = () => {
+    props.navigation.reset({
+      index: 0,
+      routes: [{ name: "Signup" }],
+    });
+  };
   return (
     <View style={signinStyles.container}>
       <Formik
         initialValues={{ username: "", password: "" }}
         validationSchema={reviewSchema}
-        onSubmit={async (text, { resetForm }) => {
+        onSubmit={(text) => {
           //logic to handle login
           login({
             variables: {
@@ -88,7 +94,7 @@ export default function Login(props) {
       </Formik>
       <View style={signinStyles.signupContainer}>
         <Text>new to Jade? </Text>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={goToSignup}>
           <Text style={signinStyles.signupButton}>Sign up</Text>
         </TouchableOpacity>
       </View>

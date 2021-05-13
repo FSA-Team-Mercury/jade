@@ -1,22 +1,7 @@
 import React from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  SafeAreaView,
-  ScrollView,
-  Dimensions,
-} from "react-native";
+import { View, Text, StyleSheet, SafeAreaView, ScrollView } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import {
-  VictoryBar,
-  VictoryChart,
-  VictoryPie,
-  VictoryTheme,
-  VictoryLabel,
-  VictoryAxis,
-  svg,
-} from "victory-native";
+import { VictoryPie, VictoryTheme } from "victory-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 
 const iconNames = {
