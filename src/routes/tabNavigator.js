@@ -11,38 +11,7 @@ import { gql, useQuery } from "@apollo/client";
 
 const Tab = createBottomTabNavigator();
 
-const FETCH_PLAID = gql`
-  query FetchPlaid {
-    plaid {
-      total_transactions
-      accounts {
-        name
-        type
-      }
-      transactions {
-        account_id
-        amount
-      }
-      institution {
-        logo
-        name
-        url
-        primary_color
-      }
-    }
-  }
-`;
-
 export default function TabNav() {
-  const { data, loading } = useQuery(FETCH_PLAID);
-
-  if (loading) {
-    return (
-      <View style={styles.container}>
-        <ActivityIndicator size="large" color="#00A86B" />
-      </View>
-    );
-  }
   return (
     <Tab.Navigator
       tabBarOptions={{

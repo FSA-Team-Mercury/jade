@@ -19,9 +19,11 @@ const reviewSchema = yup.object({
   amount: yup.number().required(),
 });
 
-//add gql query
+//add gql mutation?
 
 export default function AddBudget() {
+    const [budget, setBudget] = useState();
+    
   return (
     <View style={styles.container}>
       <Text style={styles.titleText}>Add Budget</Text>
