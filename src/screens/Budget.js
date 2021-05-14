@@ -7,15 +7,19 @@ import {
   StyleSheet,
   SafeAreaView,
   ScrollView,
+  FlatList,
 } from "react-native";
 import { client } from "../../App";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { gql } from "@apollo/client";
 import BudgetChart from "./BudgetChart";
+import BudgetCard from "./BudgetCard";
+
 const GET_USER = gql`
   query GetUser {
     user {
       budgets {
+        id
         category
         goalAmount
         isCompleted
@@ -32,10 +36,7 @@ export default function Budget(props) {
       query: GET_USER,
     });
     setAllBudgets(user.budgets);
-    console.log("In BUDGET", user.budgets);
   }, []);
-
-  console.log(allBudgets);
 
   if (!allBudgets) {
     return (
@@ -51,7 +52,7 @@ export default function Budget(props) {
         {/* BUDGET CHART */}
         <BudgetChart />
       </View>
-
+      {/* Budgets List */}
       <View>
         <SafeAreaView>
           <ScrollView>
@@ -59,74 +60,34 @@ export default function Budget(props) {
               <View style={style.budgetsHeader}>
                 <Text style={style.budgetHeaderText}>Budgets</Text>
               </View>
-              {allBudgets.map((budget, idx) => {
-                return (
-                  <View key={idx}>
-                    <View style={style.singleBudget}>
-                      {/* budget name */}
-                      <View style={style.budgetCategory}>
-                        <Text
-                          style={style.companyName}
-                          ellipsizeMode="tail"
-                          numberOfLines={2}
-                        >
-                          {item.companyName}{" "}
-                        </Text>
-                        <Text
-                          style={style.purchaseCategory}
-                          ellipsizeMode="tail"
-                          numberOfLines={2}
-                        >
-                          {item.catagory}
-                        </Text>
-                      </View>
-                      {/* price and when it was bought on the bottom */}
-                      <View style={style.priceAndDate}>
-                        <Text
-                          style={style.price}
-                          ellipsizeMode="tail"
-                          numberOfLines={2}
-                        >
-                          {item.price}{" "}
-                        </Text>
-                        <Text
-                          style={style.date}
-                          ellipsizeMode="tail"
-                          numberOfLines={2}
-                        >
-                          {item.datePurchased}
-                        </Text>
-                      </View>
-                    </View>
-                    <View style={style.borderBottom}></View>
-                  </View>
-                );
-              })}
-            </View>
-            <View>
-              <TouchableOpacity
-                onPress={() => props.navigation.navigate("Single Budget")}
-              >
-                <View>
-                  <Text>Single Budget</Text>
-                  <MaterialCommunityIcons
-                    name="chevron-right"
-                    color={"#00A86B"}
-                    size={30}
-                  />
-                </View>
-              </TouchableOpacity>
-            </View>
-            <View>
+              <FlatList
+                data={allBudgets}
+                keyExtractor={(item) => item.id}
+                renderItem={({ item }) => (
+                  <TouchableOpacity
+                    onPress={() => props.navigation.navigate("Single Budget")}
+                  >
+                    <BudgetCard>
+                      <Text style={style.categoryName}>{item.category}</Text>
+                      <Text style={style.goalText}>
+                        ${item.goalAmount / 100}
+                      </Text>
+                    </BudgetCard>
+                  </TouchableOpacity>
+                )}
+              />
+
+              {/* buttons */}
+
               <TouchableOpacity
                 onPress={() => props.navigation.navigate("Add Budget")}
               >
-                <View>
+                <View style={style.addBudget}>
                   <Text>Add Budget</Text>
                   <MaterialCommunityIcons
-                    name="chevron-right"
+                    name="plus-circle"
                     color={"#00A86B"}
-                    size={30}
+                    size={27}
                   />
                 </View>
               </TouchableOpacity>
@@ -168,7 +129,6 @@ const style = StyleSheet.create({
     width: "95%",
     ...center,
     backgroundColor: "lightgrey",
-    marginBottom: 10,
     ...shadow,
   },
   budgetsHeader: {
@@ -182,7 +142,7 @@ const style = StyleSheet.create({
     backgroundColor: "#00A86B",
   },
   budgetHeaderText: {
-    fontSize: 18,
+    fontSize: 22,
   },
   singleBudget: {
     height: 100,
@@ -193,6 +153,17 @@ const style = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     ...center,
+  },
+  categoryName: {
+    fontSize: 20,
+  },
+
+  goalText: {
+    fontSize: 20,
+  },
+  addBudget: {
+    display: "flex",
+    flexDirection: "row-reverse",
   },
   chartContainer: {
     height: 320,
