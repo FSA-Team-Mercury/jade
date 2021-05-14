@@ -34,6 +34,19 @@ const ADD_BUGDET = gql`
   }
 `;
 
+const GET_USER = gql`
+  query GetUser {
+    user {
+      budgets {
+        id
+        category
+        goalAmount
+        isCompleted
+      }
+    }
+  }
+`;
+
 export default function AddBudget({ navigation }) {
   const [addBudget] = useMutation(ADD_BUGDET);
   const [budget, setBudget] = useState();
@@ -54,6 +67,14 @@ export default function AddBudget({ navigation }) {
               goalAmount: +values.amount,
               currentAmount: 5,
             },
+            update: (cache, {data:{addBudget}}) => {
+              const data = cache.readQuery({ query: GET_USER });
+              console.log("IN THE UPDATE/CACHE", data.user.budgets)
+              console.log("ADDED BUDGET", addBudget)
+              data.user.budgets = [...data.user.budgets, addBudget]
+              console.log("LOGGING", data.user.budgets)
+              cache.writeQuery({ query: GET_USER }, data);
+            }
           })
             .then((res) => {
               // navigation.reset({index:1,routes:[{name:"Budget"}]})
