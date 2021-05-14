@@ -138,6 +138,24 @@ export default function Budget(props) {
   );
 }
 
+const center = {
+  marginRight: "auto",
+  marginLeft: "auto",
+};
+
+const colors = {
+  primary: "black",
+};
+
+const shadow = {
+  shadowOffset: {
+    width: 2,
+    height: 2,
+  },
+  shadowOpacity: 0.2,
+  shadowRadius: 5,
+};
+
 const style = StyleSheet.create({
   container: {
     flex: 1,
@@ -164,7 +182,7 @@ const style = StyleSheet.create({
     backgroundColor: "#00A86B",
   },
   budgetHeaderText: {
-    fontsize: 18,
+    fontSize: 18,
   },
   singleBudget: {
     height: 100,
