@@ -27,6 +27,7 @@
     "react-native-currency-input": "^1.0.0",
     "react-native-elements": "^3.4.1",
     "react-native-gesture-handler": "~1.10.2",
+    "react-native-paper": "^4.8.1",
     "react-native-plaid-link-sdk": "^7.0.5",
     "react-native-reanimated": "~2.1.0",
     "react-native-safe-area-context": "^3.2.0",

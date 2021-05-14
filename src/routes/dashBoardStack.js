@@ -2,7 +2,6 @@
 import React from "react";
 import { View, ActivityIndicator, StyleSheet } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
-import { NavigationContainer } from "@react-navigation/native";
 import { gql, useQuery } from "@apollo/client";
 import AllTransactions from "../screens/AllTransactions";
 import Dashboard from "../screens/Dashboard";
@@ -45,36 +44,15 @@ export default function DashboardStack() {
   }
 
   return (
-      <Stack.Navigator
-      initialRouteName={"Dashboard"}
-      >
+    <Stack.Navigator initialRouteName={"Dashboard"}>
+      <Stack.Screen name="Dashboard">
+        {(props) => <Dashboard {...props} />}
+      </Stack.Screen>
 
-        <Stack.Screen name="Dashboard">
-            {(props) => <Dashboard {...props}/>}
-        </Stack.Screen>
-
-        <Stack.Screen name="All Transactions">
-            {(props) => <AllTransactions {...props}/>}
-        </Stack.Screen>
-
-      </Stack.Navigator>
-    // <Stack.Navigator>
-    //   <Stack.Screen
-    //     name="Dashboard"
-    //     component={Dashboard}
-    //     options={{
-    //       headerShown: false,
-    //     }}
-    //   />
-    //   <Stack.Screen
-    //     name="All Transactions"
-    //     component={AllTransactions}
-    //     options={({ navigation }) => ({
-    //       title: "",
-    //       headerTintColor: "#00A86B",
-    //     })}
-    //   />
-    // </Stack.Navigator>
+      <Stack.Screen name="All Transactions">
+        {(props) => <AllTransactions {...props} />}
+      </Stack.Screen>
+    </Stack.Navigator>
   );
 }
 

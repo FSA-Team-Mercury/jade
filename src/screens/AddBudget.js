@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { gql, useMutation } from '@apollo/client';
-import { Formik } from 'formik';
-import CurrencyInput from 'react-native-currency-input'; //this won't allow text to be entered
+import React, { useState } from "react";
+import { gql, useMutation } from "@apollo/client";
+import { Formik } from "formik";
+import CurrencyInput from "react-native-currency-input"; //this won't allow text to be entered
 // import Picker from "@react-native-picker/picker"; //Picker is depracated from react-native, this one works but throws a warning
 import {
   View,
@@ -12,8 +12,8 @@ import {
   TextInput,
   Picker, //depracated, but works better than the alternative
   Image as Img,
-} from 'react-native';
-import * as yup from 'yup';
+} from "react-native";
+import * as yup from "yup";
 
 const reviewSchema = yup.object({
   amount: yup.number().required(),
@@ -57,7 +57,7 @@ export default function AddBudget({ navigation }) {
       <Text style={styles.titleText}>Add Budget</Text>
 
       <Formik
-        initialValues={{ category: '', amount: '' }}
+        initialValues={{ category: "", amount: "" }}
         validationSchema={reviewSchema}
         onSubmit={(values) => {
           //add budget to database and cahce, navigate back to budget
@@ -78,7 +78,7 @@ export default function AddBudget({ navigation }) {
           })
             .then((res) => {
               // navigation.reset({index:1,routes:[{name:"Budget"}]})
-              navigation.navigate('Budget');
+              navigation.navigate("Budget");
               console.log(res);
             })
             .catch((error) => {
@@ -90,45 +90,45 @@ export default function AddBudget({ navigation }) {
         {(formikProps) => (
           <View>
             <Picker
-              autoCapitalize='none'
-              name='category'
+              autoCapitalize="none"
+              name="category"
               style={styles.picker}
               //   placeholder="Budget Category"
-              onValueChange={formikProps.handleChange('category')}
+              onValueChange={formikProps.handleChange("category")}
               selectedValue={formikProps.values.category}
             >
-              <Picker.Item label='Food and Drink' value='Food and Drink' />
-              <Picker.Item label='Shops' value='Shops' />
-              <Picker.Item label='Entertainment' value='Entertainment' />
-              <Picker.Item label='Recreation' value='Recreation' />
-              <Picker.Item label='Transfer' value='Transfer' />
-              <Picker.Item label='Payment' value='Payment' />
-              <Picker.Item label='Travel' value='Travel' />
-              <Picker.Item label='Other' value='Other' />
+              <Picker.Item label="Food and Drink" value="Food and Drink" />
+              <Picker.Item label="Shops" value="Shops" />
+              <Picker.Item label="Entertainment" value="Entertainment" />
+              <Picker.Item label="Recreation" value="Recreation" />
+              <Picker.Item label="Transfer" value="Transfer" />
+              <Picker.Item label="Payment" value="Payment" />
+              <Picker.Item label="Travel" value="Travel" />
+              <Picker.Item label="Other" value="Other" />
             </Picker>
 
             <TextInput
-              autoCapitalize='none'
-              name='amount'
-              unit='$'
-              delimiter=','
-              separator='.'
+              keyboardType="numeric"
+              name="amount"
+              unit="$"
+              delimiter=","
+              separator="."
               precision={2}
               style={styles.input}
-              placeholder='Budget Amount'
-              onChangeText={formikProps.handleChange('amount')}
+              placeholder="Budget Amount"
+              onChangeText={formikProps.handleChange("amount")}
               value={formikProps.values.amount}
-              onBlur={formikProps.handleBlur('amount')}
+              onBlur={formikProps.handleBlur("amount")}
             />
             <Text>
               {formikProps.touched.amount && formikProps.errors.amount}
             </Text>
-            <Text>{'You already have a budget for this' && error}</Text>
+            <Text>{"You already have a budget for this" && error}</Text>
 
             <Button
-              text='Submit Budget'
+              text="Submit Budget"
               onPress={formikProps.handleSubmit}
-              title='Submit'
+              title="Submit"
             />
           </View>
         )}
@@ -140,35 +140,35 @@ export default function AddBudget({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     //   paddingTop: 200,
     //   padding: 40,
   },
   input: {
     borderWidth: 1,
-    borderColor: '#ddd',
+    borderColor: "#ddd",
     padding: 10,
     fontSize: 18,
     borderRadius: 6,
     margin: 5,
     width: 300,
-    backgroundColor: 'white',
+    backgroundColor: "white",
   },
   picker: {
     borderWidth: 1,
-    borderColor: '#ddd',
+    borderColor: "#ddd",
     padding: 5,
     fontSize: 18,
     borderRadius: 6,
     margin: 5,
     width: 300,
-    backgroundColor: 'white',
+    backgroundColor: "white",
   },
   titleText: {
     // fontFamily: "",
     fontSize: 30,
-    color: '#333',
+    color: "#333",
     padding: 30,
   },
 });

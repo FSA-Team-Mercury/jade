@@ -66,7 +66,7 @@ export default function Budget(props) {
               keyExtractor={(item) => item.id}
               renderItem={({ item }) => (
                 <TouchableOpacity
-                  onPress={() => props.navigation.navigate('Single Budget')}
+                  onPress={() => props.navigation.navigate('Single Budget', item)}
                 >
                   <BudgetCard>
                     <Text style={style.categoryName}>{item.category}</Text>
