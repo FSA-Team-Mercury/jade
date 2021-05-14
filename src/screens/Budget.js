@@ -65,7 +65,9 @@ export default function Budget(props) {
                 keyExtractor={(item) => item.id}
                 renderItem={({ item }) => (
                   <TouchableOpacity
-                    onPress={() => props.navigation.navigate("Single Budget")}
+                    onPress={() =>
+                      props.navigation.navigate("Single Budget", item)
+                    }
                   >
                     <BudgetCard>
                       <Text style={style.categoryName}>{item.category}</Text>
@@ -124,6 +126,13 @@ const style = StyleSheet.create({
     alignItems: "center",
     justifyContent: "flex-start",
     marginTop: 90,
+  },
+  scrollView: {
+    height: "100%",
+    width: "100%",
+    // backgroundColor: '#adffe1',
+    backgroundColor: "white",
+    overflow: "scroll",
   },
   budgets: {
     width: "95%",

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { AsyncStorage, AppRegistry } from "react-native";
+console.ignoredYellowBox = ["Warning:"];
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import {
