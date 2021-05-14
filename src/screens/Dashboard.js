@@ -1,11 +1,19 @@
-import React, {useState,useEffect} from "react";
-import { View, Text, StyleSheet, SafeAreaView, ScrollView,ActivityIndicator, FlatList } from "react-native";
+import React, { useState, useEffect } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  SafeAreaView,
+  ScrollView,
+  ActivityIndicator,
+  FlatList,
+} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { VictoryPie, VictoryTheme } from "victory-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { client } from "../../App";
 import { gql } from "@apollo/client";
-import SingleTransaction from './SingleTransaction'
+import SingleTransaction from "./SingleTransaction";
 
 const FETCH_PLAID = gql`
   query FetchPlaid {
@@ -27,55 +35,54 @@ const FETCH_PLAID = gql`
   }
 `;
 
-const getGraphData = (data)=>{
-   const init={
+const getGraphData = (data) => {
+  const init = {
     Travel: 0,
     Payment: 0,
     Shops: 0,
     Transfer: 0, // there are both negative and pos
-    Other: 0
-  }
+    Other: 0,
+  };
 
-  const categories = Object.keys(init)
-  const graphData = data.reduce((accum, transaction)=>{
-      const curCategory = transaction.category[0]
-      if (categories.includes(curCategory)){
-          accum[curCategory] += transaction.amount
-      }else{
-      accum.Other += transaction.amount
-      }
-      return accum
-  },init)
-  return graphData
-}
+  const categories = Object.keys(init);
+  const graphData = data.reduce((accum, transaction) => {
+    const curCategory = transaction.category[0];
+    if (categories.includes(curCategory)) {
+      accum[curCategory] += transaction.amount;
+    } else {
+      accum.Other += transaction.amount;
+    }
+    return accum;
+  }, init);
+  return graphData;
+};
 
 export default function Dashboard() {
   const navigation = useNavigation();
-  function seeAllTransaction(){
-    navigation.navigate('All Transactions',{
-      transactions
-    })
+  function seeAllTransaction() {
+    navigation.navigate("All Transactions", {
+      transactions,
+    });
   }
 
   const [transactions, setTransactions] = useState(null);
-  const [graphData, setGraphData] = useState({})
+  const [graphData, setGraphData] = useState({});
 
   useEffect(() => {
     const account = client.readQuery({
       query: FETCH_PLAID,
     });
 
-    let transactions = account.plaid.transactions
-    console.log("TRANSACTIONS", transactions)
+    let transactions = account.plaid.transactions;
     setTransactions(transactions || [{}]);
-    const data = getGraphData(transactions)
-    const reordered = Object.keys(data).map(key=>{
+    const data = getGraphData(transactions);
+    const reordered = Object.keys(data).map((key) => {
       return {
         x: key,
-        y: data[key]
-      }
-    })
-    setGraphData(reordered)
+        y: data[key],
+      };
+    });
+    setGraphData(reordered);
   }, []);
   if (!transactions) {
     return (
@@ -115,19 +122,16 @@ export default function Dashboard() {
             </Text>
           </View>
           <FlatList
-            data={transactions.slice(0,5)}
+            data={transactions.slice(0, 5)}
             keyExtractor={(item) => item.account_id}
-            renderItem={
-              (props)=>{
-                return (
-                  <View>
-                    <SingleTransaction {...props}/>
+            renderItem={(props) => {
+              return (
+                <View>
+                  <SingleTransaction {...props} />
                 </View>
-                )
-              }
-            }
-          >
-          </FlatList>
+              );
+            }}
+          ></FlatList>
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -182,7 +186,7 @@ const styles = StyleSheet.create({
     height: 500,
     width: "100%",
   },
-    transactions: {
+  transactions: {
     width: "95%",
     ...center,
     // backgroundColor: "lightgrey",

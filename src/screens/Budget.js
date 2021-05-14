@@ -47,55 +47,52 @@ export default function Budget(props) {
   }
 
   return (
-    <View style={style.container}>
-      <View style={style.chartContainer}>
-        {/* BUDGET CHART */}
-        <BudgetChart />
-      </View>
-      {/* Budgets List */}
-      <View>
-        <SafeAreaView>
-          <ScrollView>
-            <View style={style.budgets}>
-              <View style={style.budgetsHeader}>
-                <Text style={style.budgetHeaderText}>Budgets</Text>
-              </View>
-              <FlatList
-                data={allBudgets}
-                keyExtractor={(item) => item.id}
-                renderItem={({ item }) => (
-                  <TouchableOpacity
-                    onPress={() => props.navigation.navigate('Single Budget')}
-                  >
-                    <BudgetCard>
-                      <Text style={style.categoryName}>{item.category}</Text>
-                      <Text style={style.goalText}>
-                        ${item.goalAmount / 100}
-                      </Text>
-                    </BudgetCard>
-                  </TouchableOpacity>
-                )}
-              />
+    <SafeAreaView>
+      <ScrollView>
+        <View style={style.container}>
+          <View style={style.chartContainer}>
+            {/* BUDGET CHART */}
+            <BudgetChart />
+          </View>
 
-              {/* buttons */}
+          {/* Budgets List */}
 
-              <TouchableOpacity
-                onPress={() => props.navigation.navigate('Add Budget')}
-              >
-                <View style={style.addBudget}>
-                  <Text>Add Budget</Text>
-                  <MaterialCommunityIcons
-                    name='plus-circle'
-                    color={'#00A86B'}
-                    size={27}
-                  />
-                </View>
-              </TouchableOpacity>
+          <View style={style.budgets}>
+            <View style={style.budgetsHeader}>
+              <Text style={style.budgetHeaderText}>Budgets</Text>
             </View>
-          </ScrollView>
-        </SafeAreaView>
-      </View>
-    </View>
+            <FlatList
+              data={allBudgets}
+              keyExtractor={(item) => item.id}
+              renderItem={({ item }) => (
+                <TouchableOpacity
+                  onPress={() => props.navigation.navigate('Single Budget', item)}
+                >
+                  <BudgetCard>
+                    <Text style={style.categoryName}>{item.category}</Text>
+                    <Text style={style.goalText}>${item.goalAmount / 100}</Text>
+                  </BudgetCard>
+                </TouchableOpacity>
+              )}
+            />
+
+            {/* buttons */}
+            <TouchableOpacity
+              onPress={() => props.navigation.navigate('Add Budget')}
+            >
+              <View style={style.addBudget}>
+                <Text>Add Budget</Text>
+                <MaterialCommunityIcons
+                  name='plus-circle'
+                  color={'#00A86B'}
+                  size={27}
+                />
+              </View>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
@@ -125,13 +122,6 @@ const style = StyleSheet.create({
     justifyContent: 'flex-start',
     marginTop: 90,
   },
-  scrollView: {
-    height: '100%',
-    width: '100%',
-    // backgroundColor: '#adffe1',
-    backgroundColor: 'white',
-    overflow: 'scroll',
-  },
   budgets: {
     width: '95%',
     ...center,
@@ -151,16 +141,7 @@ const style = StyleSheet.create({
   budgetHeaderText: {
     fontSize: 22,
   },
-  singleBudget: {
-    height: 100,
-    width: '98%',
-    backgroundColor: 'lightgrey',
-    borderRadius: 10,
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    ...center,
-  },
+
   categoryName: {
     fontSize: 20,
   },
@@ -172,6 +153,7 @@ const style = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row-reverse',
   },
+  // CHART STYLES
   chartContainer: {
     height: 320,
     width: '95%',
