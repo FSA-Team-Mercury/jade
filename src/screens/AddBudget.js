@@ -20,11 +20,7 @@ const reviewSchema = yup.object({
 });
 
 const ADD_BUGDET = gql`
-  mutation AddBudget(
-    $category: String
-    $goalAmount: Int
-    $currentAmount: Int
-  ) {
+  mutation AddBudget($category: String, $goalAmount: Int, $currentAmount: Int) {
     addBudget(
       category: $category
       goalAmount: $goalAmount
@@ -38,10 +34,10 @@ const ADD_BUGDET = gql`
   }
 `;
 
-export default function AddBudget({navigation}) {
+export default function AddBudget({ navigation }) {
   const [addBudget] = useMutation(ADD_BUGDET);
   const [budget, setBudget] = useState();
-  const [error, setError] = useState(false)
+  const [error, setError] = useState(false);
 
   return (
     <View style={styles.container}>
@@ -61,11 +57,11 @@ export default function AddBudget({navigation}) {
           })
             .then((res) => {
               // navigation.reset({index:1,routes:[{name:"Budget"}]})
-              navigation.navigate('Budget')
+              navigation.navigate('Budget');
               console.log(res);
             })
             .catch((error) => {
-              setError(true)
+              setError(true);
               console.log(error);
             });
         }}
@@ -80,10 +76,14 @@ export default function AddBudget({navigation}) {
               onValueChange={formikProps.handleChange('category')}
               selectedValue={formikProps.values.category}
             >
-              <Picker.Item label='Groceries' value='groceries' />
-              <Picker.Item label='Bills' value='bills' />
-              <Picker.Item label='Entertainment' value='entertainment' />
-              <Picker.Item label='Other' value='other' />
+              <Picker.Item label='Food and Drink' value='Food and Drink' />
+              <Picker.Item label='Shops' value='Shops' />
+              <Picker.Item label='Entertainment' value='Entertainment' />
+              <Picker.Item label='Recreation' value='Recreation' />
+              <Picker.Item label='Transfer' value='Transfer' />
+              <Picker.Item label='Payment' value='Payment' />
+              <Picker.Item label='Travel' value='Travel' />
+              <Picker.Item label='Other' value='Other' />
             </Picker>
 
             <TextInput
@@ -99,12 +99,10 @@ export default function AddBudget({navigation}) {
               value={formikProps.values.amount}
               onBlur={formikProps.handleBlur('amount')}
             />
-            <Text >
+            <Text>
               {formikProps.touched.amount && formikProps.errors.amount}
             </Text>
-            <Text>
-              {'You already have a budget for this' && error}
-            </Text>
+            <Text>{'You already have a budget for this' && error}</Text>
 
             <Button
               text='Submit Budget'

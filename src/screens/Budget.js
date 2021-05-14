@@ -125,6 +125,13 @@ const style = StyleSheet.create({
     justifyContent: 'flex-start',
     marginTop: 90,
   },
+  scrollView: {
+    height: '100%',
+    width: '100%',
+    // backgroundColor: '#adffe1',
+    backgroundColor: 'white',
+    overflow: 'scroll',
+  },
   budgets: {
     width: '95%',
     ...center,
@@ -161,9 +168,9 @@ const style = StyleSheet.create({
   goalText: {
     fontSize: 20,
   },
-  addBudget:{
+  addBudget: {
     display: 'flex',
-    flexDirection: 'row-reverse'
+    flexDirection: 'row-reverse',
   },
   chartContainer: {
     height: 320,
