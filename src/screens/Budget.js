@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -7,15 +7,19 @@ import {
   StyleSheet,
   SafeAreaView,
   ScrollView,
-} from "react-native";
-import { client } from "../../App";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import { gql } from "@apollo/client";
-import BudgetChart from "./BudgetChart";
+  FlatList,
+} from 'react-native';
+import { client } from '../../App';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { gql } from '@apollo/client';
+import BudgetChart from './BudgetChart';
+import BudgetCard from './BudgetCard';
+
 const GET_USER = gql`
   query GetUser {
     user {
       budgets {
+        id
         category
         goalAmount
         isCompleted
@@ -32,15 +36,12 @@ export default function Budget(props) {
       query: GET_USER,
     });
     setAllBudgets(user.budgets);
-    console.log("In BUDGET", user.budgets);
   }, []);
-
-  console.log(allBudgets);
 
   if (!allBudgets) {
     return (
       <View>
-        <ActivityIndicator size="large" color="#00A86B" />
+        <ActivityIndicator size='large' color='#00A86B' />
       </View>
     );
   }
@@ -51,7 +52,7 @@ export default function Budget(props) {
         {/* BUDGET CHART */}
         <BudgetChart />
       </View>
-
+      {/* Budgets List */}
       <View>
         <SafeAreaView>
           <ScrollView>
@@ -59,74 +60,34 @@ export default function Budget(props) {
               <View style={style.budgetsHeader}>
                 <Text style={style.budgetHeaderText}>Budgets</Text>
               </View>
-              {allBudgets.map((budget, idx) => {
-                return (
-                  <View key={idx}>
-                    <View style={style.singleBudget}>
-                      {/* budget name */}
-                      <View style={style.budgetCategory}>
-                        <Text
-                          style={style.companyName}
-                          ellipsizeMode="tail"
-                          numberOfLines={2}
-                        >
-                          {item.companyName}{" "}
-                        </Text>
-                        <Text
-                          style={style.purchaseCategory}
-                          ellipsizeMode="tail"
-                          numberOfLines={2}
-                        >
-                          {item.catagory}
-                        </Text>
-                      </View>
-                      {/* price and when it was bought on the bottom */}
-                      <View style={style.priceAndDate}>
-                        <Text
-                          style={style.price}
-                          ellipsizeMode="tail"
-                          numberOfLines={2}
-                        >
-                          {item.price}{" "}
-                        </Text>
-                        <Text
-                          style={style.date}
-                          ellipsizeMode="tail"
-                          numberOfLines={2}
-                        >
-                          {item.datePurchased}
-                        </Text>
-                      </View>
-                    </View>
-                    <View style={style.borderBottom}></View>
-                  </View>
-                );
-              })}
-            </View>
-            <View>
+              <FlatList
+                data={allBudgets}
+                keyExtractor={(item) => item.id}
+                renderItem={({ item }) => (
+                  <TouchableOpacity
+                    onPress={() => props.navigation.navigate('Single Budget')}
+                  >
+                    <BudgetCard>
+                      <Text style={style.categoryName}>{item.category}</Text>
+                      <Text style={style.goalText}>
+                        ${item.goalAmount / 100}
+                      </Text>
+                    </BudgetCard>
+                  </TouchableOpacity>
+                )}
+              />
+
+              {/* buttons */}
+
               <TouchableOpacity
-                onPress={() => props.navigation.navigate("Single Budget")}
+                onPress={() => props.navigation.navigate('Add Budget')}
               >
-                <View>
-                  <Text>Single Budget</Text>
-                  <MaterialCommunityIcons
-                    name="chevron-right"
-                    color={"#00A86B"}
-                    size={30}
-                  />
-                </View>
-              </TouchableOpacity>
-            </View>
-            <View>
-              <TouchableOpacity
-                onPress={() => props.navigation.navigate("Add Budget")}
-              >
-                <View>
+                <View style={style.addBudget}>
                   <Text>Add Budget</Text>
                   <MaterialCommunityIcons
-                    name="chevron-right"
-                    color={"#00A86B"}
-                    size={30}
+                    name='plus-circle'
+                    color={'#00A86B'}
+                    size={27}
                   />
                 </View>
               </TouchableOpacity>
@@ -139,12 +100,12 @@ export default function Budget(props) {
 }
 
 const center = {
-  marginRight: "auto",
-  marginLeft: "auto",
+  marginRight: 'auto',
+  marginLeft: 'auto',
 };
 
 const colors = {
-  primary: "black",
+  primary: 'black',
 };
 
 const shadow = {
@@ -156,54 +117,63 @@ const shadow = {
   shadowRadius: 5,
 };
 
-
 const style = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "flex-start",
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
     marginTop: 90,
   },
   budgets: {
-    width: "95%",
+    width: '95%',
     ...center,
-    backgroundColor: "lightgrey",
-    marginBottom: 10,
+    backgroundColor: 'lightgrey',
     ...shadow,
   },
   budgetsHeader: {
     height: 50,
-    width: "100%",
-    display: "flex",
-    alignItems: "center",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-around",
-    backgroundColor: "#00A86B",
+    width: '100%',
+    display: 'flex',
+    alignItems: 'center',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+    backgroundColor: '#00A86B',
   },
   budgetHeaderText: {
-    fontSize: 18,
+    fontSize: 22,
   },
   singleBudget: {
     height: 100,
-    width: "98%",
-    backgroundColor: "lightgrey",
+    width: '98%',
+    backgroundColor: 'lightgrey',
     borderRadius: 10,
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
     ...center,
+  },
+  categoryName: {
+    fontSize: 20,
+  },
+
+  goalText: {
+    fontSize: 20,
+  },
+  addBudget:{
+    display: 'flex',
+    flexDirection: 'row-reverse'
   },
   chartContainer: {
     height: 320,
-    width: "95%",
-    backgroundColor: "white",
+    width: '95%',
+    backgroundColor: 'white',
     marginBottom: 20,
     borderRadius: 10,
     paddingLeft: 20,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     shadowOpacity: 0.2,
     shadowRadius: 5,
     shadowOffset: {
