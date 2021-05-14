@@ -12,6 +12,7 @@ const GET_USER = gql`
         auth_token
       }
       budgets {
+        id
         category
         goalAmount
         isCompleted

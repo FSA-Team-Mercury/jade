@@ -22,7 +22,7 @@ const GET_USER = gql`
       }
     }
   }
-`; 
+`;
 
 const FETCH_TOKEN = gql`
   mutation FetchToken($public_token: String!) {
@@ -41,7 +41,6 @@ export default function Plaid(props) {
       const q = await client.readQuery({
         query: GET_USER,
       });
-      console.log(q.user);
       const { data } = await axios.post(
         "http://localhost:3000/plaid/link/token/create",
         {

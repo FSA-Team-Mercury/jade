@@ -66,6 +66,7 @@ export default function Dashboard() {
     });
 
     let transactions = account.plaid.transactions
+    console.log("TRANSACTIONS", transactions)
     setTransactions(transactions || [{}]);
     const data = getGraphData(transactions)
     const reordered = Object.keys(data).map(key=>{
