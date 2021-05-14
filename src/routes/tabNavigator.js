@@ -1,13 +1,12 @@
 /* eslint-disable react/display-name */
 import React from "react";
-import { View, ActivityIndicator, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 import BudgetStack from "./budgetStack";
 import Friends from "../screens/Friends";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import AccountStack from "./accountStack";
 import DashboardStack from "./dashBoardStack";
-import { gql, useQuery } from "@apollo/client";
 
 const Tab = createBottomTabNavigator();
 
