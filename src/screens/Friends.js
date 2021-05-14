@@ -24,8 +24,8 @@ import FriendCard from './FriendCard';
 //   }
 // `;
 
-const user = {
-  friends: [{username: 'steve'}, {username: 'boris'}, {username: 'amy'}]
+const user = { //DUMMY DATA - comment this out when query is working
+  friends: [{username: 'steve'}, {username: 'boris'}, {username: 'amy'}] 
 }
 
 export default function Friends(props) {
