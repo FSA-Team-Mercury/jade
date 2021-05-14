@@ -20,10 +20,32 @@ import { useNavigation } from '@react-navigation/native';
 
 export default function Dashboard({route, navigation}) {
   const [search,setSearch] = useState('')
+  const [searchTransactions,setSearchTransactions] = useState([])
   function onChangeText(value){
     setSearch(value)
   }
   let {transactions} = route.params
+
+  function searchUserTransactions(){
+    const resSearch = transactions.filter(item=>{
+      let category = item.category[0].toLowerCase().includes(search.toLowerCase())
+      let merchant_name = false
+      if (item.merchant_name){
+      merchant_name = item.merchant_name.toLowerCase().includes(search.toLowerCase())
+      }
+      return category || merchant_name
+    })
+    setSearchTransactions(resSearch)
+  }
+
+  function handleChange(value){
+    setSearch(value)
+
+    if (!value){
+      return
+    }
+    searchUserTransactions()
+  }
 
   return (
     <SafeAreaView>
@@ -34,16 +56,26 @@ export default function Dashboard({route, navigation}) {
             onChangeText={onChangeText}
             value={search}
             placeholder=" Search..."
+            onChange={handleChange}
           />
           <Icon name="search1" size={30} color="white" />
         </View>
         <View style={styles.transactions}>
-          <FlatList
+        {
+          // when using search
+          search ? (
+            searchTransactions.map((item, index)=>{
+              return <SingleTransaction item={item} key={index}/>
+            })
+
+
+          ) : (
+            // when viewing all transactions
+            <FlatList
             data={transactions}
             keyExtractor={(item) => item.account_id}
             renderItem={
               (props)=>{
-                console.log('here in alll transactions')
                 return (
                   <View>
                     <SingleTransaction {...props}/>
@@ -53,6 +85,9 @@ export default function Dashboard({route, navigation}) {
             }
           >
           </FlatList>
+          )
+        }
+
         </View>
       </ScrollView>
     </SafeAreaView>
