@@ -1,28 +1,28 @@
 import React from "react";
-import { View, ActivityIndicator, StyleSheet } from "react-native";
+import { View, ActivityIndicator, Text, StyleSheet } from "react-native";
 import { useQuery, gql } from "@apollo/client";
 import Plaid from "./Plaid";
 
-const GET_USER = gql`
-  query GetUser {
+export const GET_USER_DATA = gql`
+  query GetUserData {
     user {
       id
       username
       accounts {
         auth_token
       }
-      budgets {
-        id
-        category
-        goalAmount
-        isCompleted
-      }
+    }
+    budgets {
+      id
+      category
+      goalAmount
+      currentAmount
     }
   }
 `;
 
 export default function Home(props) {
-  const { data, loading } = useQuery(GET_USER);
+  const { data, loading, error } = useQuery(GET_USER_DATA);
 
   if (loading) {
     return (
@@ -31,14 +31,17 @@ export default function Home(props) {
       </View>
     );
   }
-
+  if (error) {
+    console.log(error);
+  }
+  console.log(data.budgets);
   if (data.user.accounts.length) {
     props.navigation.reset({
       index: 0,
       routes: [{ name: "Nav" }],
     });
   }
-  // Goes to Plaid if user has no account
+  //Goes to Plaid if user has no account
   return <Plaid {...props} />;
 }
 

@@ -37,6 +37,7 @@
     "react-native-vector-icons": "^8.1.0",
     "react-native-web": "~0.13.12",
     "react-native-webview": "^11.4.4",
+    "recompose": "^0.30.0",
     "victory-native": "^35.3.3",
     "yup": "^0.32.9"
   },
