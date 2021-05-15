@@ -57,7 +57,7 @@ export default function Login(props) {
               });
             })
             .catch((err) => {
-              console.log("error loggin in!!!", err);
+              console.log("error logging in!!!", err);
             });
         }}
       >

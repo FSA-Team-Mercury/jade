@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
+import { useIsFocused } from "@react-navigation/native";
 import {
   View,
   Text,
@@ -8,40 +9,39 @@ import {
   SafeAreaView,
   ScrollView,
   FlatList,
-} from 'react-native';
-import { client } from '../../App';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { gql } from '@apollo/client';
-import BudgetChart from './BudgetChart';
-import BudgetCard from './BudgetCard';
+} from "react-native";
+import { client } from "../../App";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import { gql } from "@apollo/client";
+import BudgetChart from "./BudgetChart";
+import BudgetCard from "./BudgetCard";
 
-const GET_USER = gql`
-  query GetUser {
-    user {
-      budgets {
-        id
-        category
-        goalAmount
-        isCompleted
-      }
+export const GET_BUDGETS = gql`
+  query Budgets {
+    budgets {
+      id
+      category
+      goalAmount
+      currentAmount
     }
   }
 `;
 
 export default function Budget(props) {
+  const isFocused = useIsFocused();
   const [allBudgets, setAllBudgets] = useState(null);
 
   useEffect(() => {
-    const { user } = client.readQuery({
-      query: GET_USER,
+    const { budgets } = client.readQuery({
+      query: GET_BUDGETS,
     });
-    setAllBudgets(user.budgets);
-  }, []);
+    setAllBudgets(budgets);
+  }, [isFocused]);
 
   if (!allBudgets) {
     return (
       <View>
-        <ActivityIndicator size='large' color='#00A86B' />
+        <ActivityIndicator size="large" color="#00A86B" />
       </View>
     );
   }
@@ -66,7 +66,9 @@ export default function Budget(props) {
               keyExtractor={(item) => item.id}
               renderItem={({ item }) => (
                 <TouchableOpacity
-                  onPress={() => props.navigation.navigate('Single Budget', item)}
+                  onPress={() =>
+                    props.navigation.navigate("Single Budget", item)
+                  }
                 >
                   <BudgetCard>
                     <Text style={style.categoryName}>{item.category}</Text>
@@ -78,13 +80,13 @@ export default function Budget(props) {
 
             {/* buttons */}
             <TouchableOpacity
-              onPress={() => props.navigation.navigate('Add Budget')}
+              onPress={() => props.navigation.navigate("Add Budget")}
             >
               <View style={style.addBudget}>
                 <Text>Add Budget</Text>
                 <MaterialCommunityIcons
-                  name='plus-circle'
-                  color={'#00A86B'}
+                  name="plus-circle"
+                  color={"#00A86B"}
                   size={27}
                 />
               </View>
@@ -97,12 +99,12 @@ export default function Budget(props) {
 }
 
 const center = {
-  marginRight: 'auto',
-  marginLeft: 'auto',
+  marginRight: "auto",
+  marginLeft: "auto",
 };
 
 const colors = {
-  primary: 'black',
+  primary: "black",
 };
 
 const shadow = {
@@ -117,26 +119,26 @@ const shadow = {
 const style = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'flex-start',
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "flex-start",
     marginTop: 90,
   },
   budgets: {
-    width: '95%',
+    width: "95%",
     ...center,
-    backgroundColor: 'lightgrey',
+    backgroundColor: "lightgrey",
     ...shadow,
   },
   budgetsHeader: {
     height: 50,
-    width: '100%',
-    display: 'flex',
-    alignItems: 'center',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-around',
-    backgroundColor: '#00A86B',
+    width: "100%",
+    display: "flex",
+    alignItems: "center",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-around",
+    backgroundColor: "#00A86B",
   },
   budgetHeaderText: {
     fontSize: 22,
@@ -150,19 +152,19 @@ const style = StyleSheet.create({
     fontSize: 20,
   },
   addBudget: {
-    display: 'flex',
-    flexDirection: 'row-reverse',
+    display: "flex",
+    flexDirection: "row-reverse",
   },
   // CHART STYLES
   chartContainer: {
     height: 320,
-    width: '95%',
-    backgroundColor: 'white',
+    width: "95%",
+    backgroundColor: "white",
     marginBottom: 20,
     borderRadius: 10,
     paddingLeft: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     shadowOpacity: 0.2,
     shadowRadius: 5,
     shadowOffset: {
