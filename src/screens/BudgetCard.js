@@ -21,13 +21,13 @@ const styles = StyleSheet.create({
   card: {
     borderRadius: 6,
     elevation: 3,
-    backgroundColor: '#b3e9c7',
+    backgroundColor: 'white',
     shadowOffset: { width: 1, height: 1 },
     shadowColor: '#333',
     shadowOpacity: 0.3,
     shadowRadius: 2,
-    marginHorizontal: 7,
-    marginVertical: 15,
+    marginHorizontal: 4,
+    marginVertical: 5,
   },
   cardContent: {
     marginHorizontal: 18,
