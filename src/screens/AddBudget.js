@@ -14,6 +14,7 @@ import {
   Image as Img,
 } from "react-native";
 import * as yup from "yup";
+import {GET_USER_DATA} from './home'
 
 const reviewSchema = yup.object({
   amount: yup.number().required(),
@@ -34,22 +35,9 @@ const ADD_BUGDET = gql`
   }
 `;
 
-const GET_USER = gql`
-  query GetUser {
-    user {
-      budgets {
-        id
-        category
-        goalAmount
-        isCompleted
-      }
-    }
-  }
-`;
 
 export default function AddBudget({ navigation }) {
   const [addBudget] = useMutation(ADD_BUGDET);
-  const [budget, setBudget] = useState();
   const [error, setError] = useState(false);
 
   return (
@@ -60,7 +48,6 @@ export default function AddBudget({ navigation }) {
         initialValues={{ category: "", amount: "" }}
         validationSchema={reviewSchema}
         onSubmit={(values) => {
-          //add budget to database and cahce, navigate back to budget
           addBudget({
             variables: {
               category: values.category,
@@ -68,16 +55,21 @@ export default function AddBudget({ navigation }) {
               currentAmount: 5,
             },
             update: (cache, {data:{addBudget}}) => {
-              const data = cache.readQuery({ query: GET_USER });
-              console.log("IN THE UPDATE/CACHE", data.user.budgets)
+              const data = cache.readQuery({ query: GET_USER_DATA });
+              console.log("IN THE UPDATE/CACHE DATA", data)
+              console.log('IN THE UPDATE/CACHE BUDGETS', data.budgets);
               console.log("ADDED BUDGET", addBudget)
-              data.user.budgets = [...data.user.budgets, addBudget]
-              console.log("LOGGING", data.user.budgets)
-              cache.writeQuery({ query: GET_USER }, data);
+
+              cache.writeQuery({
+                query: GET_USER_DATA,
+                data: {
+                  budgets: [...data.budgets, addBudget],
+                },
+              });
+              console.log('LOGGING', data.budgets);
             }
           })
             .then((res) => {
-              // navigation.reset({index:1,routes:[{name:"Budget"}]})
               navigation.navigate("Budget");
               console.log(res);
             })
