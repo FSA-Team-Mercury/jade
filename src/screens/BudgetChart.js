@@ -28,8 +28,22 @@ export default function BudgetChart() {
         domain={{ y: [0, 30000] }}
         domainPadding={{ x: [10, 10], y: 5 }}
       >
-        <VictoryBar data={data2012} x="quarter" y="earnings" />
-        <VictoryBar data={data2013} x="quarter" y="earnings" />
+        <VictoryBar
+          data={data2012}
+          x="quarter"
+          y="earnings"
+          animate={{
+            duration: 10,
+          }}
+        />
+        <VictoryBar
+          data={data2013}
+          x="quarter"
+          y="earnings"
+          animate={{
+            duration: 10,
+          }}
+        />
       </VictoryStack>
     </VictoryChart>
   );

@@ -1,5 +1,12 @@
 import React from "react";
-import { View, Text, TextInput, AsyncStorage } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  AsyncStorage,
+  Button,
+  Image,
+} from "react-native";
 import { signinStyles } from "../styles/signin";
 import { gql, useMutation } from "@apollo/client";
 import FlatButton from "../shared/button";
@@ -21,13 +28,23 @@ const SIGNUP = gql`
 
 export default function Signup(props) {
   const [signup] = useMutation(SIGNUP);
+  const handleGoBack = () => {
+    props.navigation.reset({
+      index: 0,
+      routes: [{ name: "Login" }],
+    });
+  };
 
   return (
     <View style={signinStyles.container}>
+      <Image
+        source={require("../../assets/jade_transparent.png")}
+        style={signinStyles.logo}
+      />
       <Formik
         initialValues={{ username: "", password: "" }}
         validationSchema={signupSchema}
-        onSubmit={(text) => {
+        onSubmit={(text, { setSubmitting, setFieldError }) => {
           //logic to handle login
           signup({
             variables: {
@@ -38,14 +55,16 @@ export default function Signup(props) {
             .then(async (res) => {
               await AsyncStorage.clear();
               await AsyncStorage.setItem("TOKEN", res.data.signUp.token);
-
               props.navigation.reset({
                 index: 0,
                 routes: [{ name: "Home" }],
               });
             })
             .catch((err) => {
-              console.log("error signing up!!!", err);
+              setFieldError("signupFail", err.message);
+            })
+            .finally(() => {
+              setSubmitting(false);
             });
         }}
       >
@@ -80,6 +99,15 @@ export default function Signup(props) {
             </Text>
 
             <FlatButton text="Sign up" onPress={formikProps.handleSubmit} />
+            <Text style={signinStyles.errorText}>
+              {formikProps.errors.signupFail}
+            </Text>
+
+            <Button
+              title="cancel"
+              style={signinStyles.cancel}
+              onPress={handleGoBack}
+            />
           </View>
         )}
       </Formik>

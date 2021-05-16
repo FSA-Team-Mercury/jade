@@ -1,5 +1,5 @@
-import React,{useState, useEffect} from "react";
-import { useNavigation } from '@react-navigation/native';
+import React, { useState, useEffect } from "react";
+import { useNavigation } from "@react-navigation/native";
 import {
   View,
   Text,
@@ -8,31 +8,37 @@ import {
   ScrollView,
   Dimensions,
   ActivityIndicator,
-  FlatList
+  FlatList,
 } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
-import  Ionicons from 'react-native-vector-icons/Ionicons'
-import  MaterialCommunityIcons
- from 'react-native-vector-icons/MaterialCommunityIcons'
+import Ionicons from "react-native-vector-icons/Ionicons";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 const categoryIcons = {
-  Shops: <FontAwesome name="shopping-cart" size={30} color="black" />,
-  Travel: <FontAwesome name="car" size={30} color="black" />,
-  Transfer: <MaterialCommunityIcons name="arrow-left-right" size={30} color='black' />,
-  'Food and Drink': <MaterialCommunityIcons name="silverware-fork-knife" size={30} color="black" />,
-  Entertainment: <FontAwesome name="film" size={30} color="black" />,
-  Other: <FontAwesome5 name="money-check-alt" size={30} color="black" />,
-  Payment:<FontAwesome name="money" size={30} color="black" />
+  Shops: <FontAwesome name="shopping-cart" size={30} color="#00A86B" />,
+  Travel: <FontAwesome name="car" size={30} color="#00A86A" />,
+  Transfer: (
+    <MaterialCommunityIcons name="arrow-left-right" size={30} color="#00A86B" />
+  ),
+  "Food and Drink": (
+    <MaterialCommunityIcons
+      name="silverware-fork-knife"
+      size={30}
+      color="#00A86B"
+    />
+  ),
+  Entertainment: <FontAwesome name="film" size={30} color="#00A86B" />,
+  Other: <FontAwesome5 name="money-check-alt" size={30} color="#00A86B" />,
+  Payment: <FontAwesome name="money" size={30} color="#00A86B" />,
 };
 
-
-const SingleTransaction = ({item})=>{
-  const date = item.date
-  if (item.category.includes('Payment') || item.category.includes('Transfer')){
-    item = {...item}
-    item.merchant_name = item.category[0]
-    item.category = ['']
+const SingleTransaction = ({ item }) => {
+  const date = item.date;
+  if (item.category.includes("Payment") || item.category.includes("Transfer")) {
+    item = { ...item };
+    item.merchant_name = item.category[0];
+    item.category = [""];
   }
 
   return (
@@ -40,10 +46,7 @@ const SingleTransaction = ({item})=>{
       <View style={styles.singleTransaction}>
         {/* catigory picture (entertainment, food, shoping...) */}
         <View style={styles.catagoryPic}>
-          {
-            categoryIcons[item.category[0]] || categoryIcons.Other
-          }
-
+          {categoryIcons[item.category[0]] || categoryIcons.Other}
         </View>
         {/* componay name and catagory on the bottom */}
         <View style={styles.nameAndCategory}>
@@ -64,27 +67,18 @@ const SingleTransaction = ({item})=>{
         </View>
         {/* price and when it was bought on the bottom */}
         <View style={styles.priceAndDate}>
-          <Text
-            style={styles.price}
-            ellipsizeMode="tail"
-            numberOfLines={2}
-          >
-            {`$${item.amount }`}{" "}
+          <Text style={styles.price} ellipsizeMode="tail" numberOfLines={2}>
+            {`$${item.amount}`}{" "}
           </Text>
-          <Text
-            style={styles.date}
-            ellipsizeMode="tail"
-            numberOfLines={2}
-          >
-            { date}
+          <Text style={styles.date} ellipsizeMode="tail" numberOfLines={2}>
+            {date}
           </Text>
         </View>
       </View>
       <View style={styles.borderBottom}></View>
     </View>
-  )
-}
-
+  );
+};
 
 const center = {
   marginRight: "auto",
@@ -108,7 +102,6 @@ const styles = StyleSheet.create({
   singleTransaction: {
     height: 100,
     width: "98%",
-    // backgroundColor: "lightgrey",
     borderRadius: 10,
     display: "flex",
     flexDirection: "row",
@@ -119,12 +112,12 @@ const styles = StyleSheet.create({
     height: 60,
     width: 60,
     borderRadius: 100,
-    backgroundColor: "#00A86B",
+    backgroundColor: "#E0FFE8",
     marginLeft: 10,
     marginRight: 10,
-    display:'flex',
-    justifyContent: 'center',
-    alignItems: 'center'
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
   },
   nameAndCategory: {
     height: "42%",
@@ -167,4 +160,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SingleTransaction
+export default SingleTransaction;
