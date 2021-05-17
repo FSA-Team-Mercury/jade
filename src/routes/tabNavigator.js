@@ -2,7 +2,8 @@
 import React from "react";
 import { StyleSheet } from "react-native";
 import BudgetStack from "./budgetStack";
-import FriendsStack from "./friendsStack";
+// import FriendsStack from "./friendsStack";
+import Friends from '../screens/Friends'
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import AccountStack from "./accountStack";

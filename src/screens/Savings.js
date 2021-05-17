@@ -13,6 +13,7 @@ import { gql } from '@apollo/client';
 import { useIsFocused } from '@react-navigation/native';
 import BudgetChart from './BudgetChart';
 import BudgetCard from './BudgetCard';
+import {GET_USER_DATA} from './home'
 
 const FETCH_PLAID = gql`
   query FetchPlaid {
@@ -81,13 +82,13 @@ export default () => {
     const account = client.readQuery({
       query: FETCH_PLAID,
     });
-
+    console.log("IN SAVINGS ->>>>>", account)
     let transactions = account.plaid.transactions;
     setTransactions(transactions || [{}]);
-    console.log('SAVINGS ---> ', transactions);
+    // console.log('SAVINGS ---> ', transactions);
     const data = getGraphData(transactions);
     setGraphData(data);
-    console.log('GRAPH DATA ---->', data);
+    // console.log('GRAPH DATA ---->', data);
   }, []);
 
   // fetching budgets to measure savings
@@ -99,6 +100,13 @@ export default () => {
     });
     setAllBudgets(budgets);
   }, [isFocused]);
+
+  // useEffect(() => {
+  //   const response = client.readQuery({
+  //     query: GET_USER_DATA,
+  //   });
+  //   console.log('RESPONSE ------->', response.user.accounts)
+  // }, []);
 
   if (!transactions) {
     return (
@@ -114,7 +122,7 @@ export default () => {
         <View style={style.container}>
           <View style={style.chartContainer}>
             {/* BUDGET CHART */}
-            <BudgetChart />
+            {/* <BudgetChart /> */}
           </View>
 
           {/* Budgets List */}
