@@ -49,14 +49,15 @@ export default function Budget(props) {
   return (
     <SafeAreaView>
       <ScrollView>
+        <View style={style.container}>
+          <View style={style.chartContainer}>
+            {/* BUDGET CHART */}
+            <BudgetChart budgets={allBudgets} />
+          </View>
 
-          <View style={style.container}>
-            <View style={style.chartContainer}>
-              {/* BUDGET CHART */}
-              <BudgetChart />
-            </View>
+          {/* Budgets List */}
 
-            {/* Budgets List */}
+
 
             <View style={style.budgets}>
               <View style={style.budgetsHeader}>
@@ -146,6 +147,7 @@ const style = StyleSheet.create({
   },
   budgetHeaderText: {
     fontSize: 22,
+    color: "white",
   },
 
   categoryName: {

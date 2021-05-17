@@ -5,6 +5,7 @@ import {
   TextInput,
   AsyncStorage,
   TouchableOpacity,
+  Image,
 } from "react-native";
 import { signinStyles } from "../styles/signin";
 import { gql, useMutation } from "@apollo/client";
@@ -36,10 +37,14 @@ export default function Login(props) {
   };
   return (
     <View style={signinStyles.container}>
+      <Image
+        source={require("../../assets/jade_transparent.png")}
+        style={signinStyles.logo}
+      />
       <Formik
         initialValues={{ username: "cody", password: "12345" }}
         validationSchema={reviewSchema}
-        onSubmit={(text) => {
+        onSubmit={(text, { setSubmitting, setFieldError }) => {
           //logic to handle login
           login({
             variables: {
@@ -50,14 +55,19 @@ export default function Login(props) {
             .then(async (res) => {
               await AsyncStorage.clear();
               await AsyncStorage.setItem("TOKEN", res.data.logIn.token);
-
+              loginError = false;
               props.navigation.reset({
                 index: 0,
                 routes: [{ name: "Home" }],
               });
             })
             .catch((err) => {
-              console.log("error logging in!!!", err);
+              setFieldError("loginError", err.message);
+              loginError = true;
+              console.log(err.message);
+            })
+            .finally(() => {
+              setSubmitting(false);
             });
         }}
       >
@@ -87,14 +97,16 @@ export default function Login(props) {
             <Text style={signinStyles.errorText}>
               {formikProps.touched.password && formikProps.errors.password}
             </Text>
-
             <FlatButton text="Sign In" onPress={formikProps.handleSubmit} />
+            <Text style={signinStyles.errorText}>
+              {formikProps.errors.loginError}
+            </Text>
           </View>
         )}
       </Formik>
       <View style={signinStyles.signupContainer}>
         <Text>new to Jade? </Text>
-        <TouchableOpacity onPress={goToSignup}>
+        <TouchableOpacity onPress={goToSignup} style={signinStyles.signupTouch}>
           <Text style={signinStyles.signupButton}>Sign up</Text>
         </TouchableOpacity>
       </View>
