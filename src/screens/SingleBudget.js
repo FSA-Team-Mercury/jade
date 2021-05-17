@@ -99,7 +99,7 @@ export default function SingleBudget({ navigation, route }) {
         }}
       >
         {(formikProps) => (
-          <View>
+          <View style={styles.formikView}>
             <TextInput
               name="amount"
               keyboardType="numeric"
@@ -148,6 +148,9 @@ const styles = StyleSheet.create({
   cardArea: {
     width: 50,
   },
+  formikView: {
+    width: "100%",
+  },
   input: {
     borderWidth: 1,
     borderColor: "#ddd",
@@ -157,6 +160,7 @@ const styles = StyleSheet.create({
     width: 300,
     alignSelf: "center",
     backgroundColor: "white",
+    textAlign: "center",
   },
   buttons: {
     flexDirection: "row",

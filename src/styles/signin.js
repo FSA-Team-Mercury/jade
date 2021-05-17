@@ -4,7 +4,7 @@ export const signinStyles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 40,
-    paddingTop: 250,
+    paddingTop: 100,
   },
   titleText: {
     fontFamily: "nunito-bold",
@@ -38,9 +38,18 @@ export const signinStyles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     justifyContent: "center",
-    margin: 25,
+    margin: 10,
   },
   signupButton: {
     color: "#00A86B",
+    padding: 1,
+  },
+  signupTouch: {
+    height: 20,
+  },
+  logo: {
+    alignSelf: "center",
+    width: 300,
+    height: 200,
   },
 });

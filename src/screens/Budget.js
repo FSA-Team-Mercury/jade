@@ -52,7 +52,7 @@ export default function Budget(props) {
         <View style={style.container}>
           <View style={style.chartContainer}>
             {/* BUDGET CHART */}
-            <BudgetChart />
+            <BudgetChart budgets={allBudgets} />
           </View>
 
           {/* Budgets List */}
@@ -127,7 +127,6 @@ const style = StyleSheet.create({
   budgets: {
     width: "95%",
     ...center,
-    backgroundColor: "lightgrey",
     ...shadow,
   },
   budgetsHeader: {
@@ -142,6 +141,7 @@ const style = StyleSheet.create({
   },
   budgetHeaderText: {
     fontSize: 22,
+    color: "white",
   },
 
   categoryName: {
