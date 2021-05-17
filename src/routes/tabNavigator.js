@@ -8,6 +8,7 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import AccountStack from "./accountStack";
 import DashboardStack from "./dashBoardStack";
 import Savings from '../screens/Savings'
+import Friends from '../screens/Friends'
 
 const Tab = createBottomTabNavigator();
 
@@ -49,18 +50,10 @@ export default function TabNav() {
       />
 
       <Tab.Screen
-<<<<<<< HEAD
-        name="Friends"
-        component={FriendsStack}
-        options={{
-          headerStyle: {height: 100},
-          tabBarLabel: "Friends",
-=======
         name='Friends'
         component={Friends}
         options={{
           tabBarLabel: 'Friends',
->>>>>>> 1db361ec0d8ead065f283562aab78b3c7c863540
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons
               name='account-group'
