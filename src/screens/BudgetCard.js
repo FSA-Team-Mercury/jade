@@ -23,7 +23,7 @@ const categoryIcons = {
 };
 
 export default function Card ({children,item}) {
-  console.log("IN BUDGET CARD TEXT---->", children)
+  // console.log("IN BUDGET CARD TEXT---->", children)
   console.log('IN BUDGET CARD ITEM---->', item);
   return (
     <View style={styles.card}>
