@@ -1,9 +1,11 @@
 /* eslint-disable react/display-name */
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
+import {Text} from 'react-native'
 import Friends from "../screens/Friends";
 import SingleFriend from "../screens/SingleFriend";
-import AddFriend from "../screens/AddFriend"; 
+import AddFriend from "../screens/AddFriend";
+import FriendsHeader from '../shared/friendsHeader'
 
 const Stack = createStackNavigator();
 
@@ -14,17 +16,21 @@ export default function FriendsStack() {
         name="Friends"
         component={Friends}
         options={{
-          headerShown: false,
+          headerShown: true,
+          title: <FriendsHeader />,
+          headerStyle: {height: 120}
         }}
       />
+
       <Stack.Screen
         name="Single Friend"
         component={SingleFriend}
         options={({ navigation }) => ({
-          title: "",
+          title: "single friend",
           headerTintColor: "#00A86B",
         })}
       />
+      
         <Stack.Screen
         name="Add Friend"
         component={AddFriend}

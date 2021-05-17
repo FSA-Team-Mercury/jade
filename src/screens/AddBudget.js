@@ -19,7 +19,7 @@ import { Snackbar } from 'react-native-paper';
 
 const reviewSchema = yup.object({
   amount: yup.number().required(),
-});
+}); 
 
 const ADD_BUGDET = gql`
   mutation AddBudget($category: String, $goalAmount: Int, $currentAmount: Int) {

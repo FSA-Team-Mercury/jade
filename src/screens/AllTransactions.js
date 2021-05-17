@@ -10,7 +10,8 @@ import {
   Dimensions,
   ActivityIndicator,
   FlatList,
-  TextInput
+  TextInput,
+  Image
 } from "react-native";
 import Icon from 'react-native-vector-icons/AntDesign';
 import SingleTransaction from './SingleTransaction'
@@ -50,15 +51,14 @@ export default function Dashboard({route, navigation}) {
   return (
     <SafeAreaView>
       <ScrollView style={styles.dashBoard}>
-        <View style={styles.header}>
-          <TextInput
-            style={styles.search}
-            onChangeText={onChangeText}
-            value={search}
-            placeholder=" Search..."
-            onChange={handleChange}
+        <View style={styles.searchBox}>
+          <Image source={require('../../assets/icons/search.png')} style={styles.searchIcon}/>
+          <TextInput style={styles.searchField} placeholder="Search..."
+          onChangeText={onChangeText}
+          value={search}
+          placeholder=" Search..."
+          onChange={handleChange}
           />
-          <Icon name="search1" size={30} color="white" />
         </View>
         <View style={styles.transactions}>
         {
@@ -115,6 +115,28 @@ const shadow = (size)=>{
 }
 
 const styles = StyleSheet.create({
+  searchBox:{
+    height: 50,
+    width: '90%',
+    borderWidth: 1,
+    marginTop: 20,
+    marginBottom: 20,
+    borderRadius: 30,
+    borderColor: 'lightgrey',
+    flexDirection: 'row',
+    alignItems: 'center',
+    ...center
+  },
+  searchIcon:{
+    height: 20,
+    width: 20,
+    marginLeft: 15
+  },
+  searchField:{
+    height: 30,
+    width: '60%',
+    marginLeft: 10,
+  },
   dashBoard:{
     height: '100%',
     width: '100%',
