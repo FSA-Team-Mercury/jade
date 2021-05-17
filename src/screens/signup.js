@@ -103,11 +103,7 @@ export default function Signup(props) {
               {formikProps.errors.signupFail}
             </Text>
 
-            <Button
-              title="cancel"
-              style={signinStyles.cancel}
-              onPress={handleGoBack}
-            />
+            <Button title="cancel" onPress={handleGoBack} />
           </View>
         )}
       </Formik>

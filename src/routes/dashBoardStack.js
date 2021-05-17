@@ -42,7 +42,7 @@ export default function DashboardStack() {
       </View>
     );
   }
-
+  console.log("server data for Plaid ---> ", data);
   return (
     <Stack.Navigator initialRouteName={"Dashboard"}>
       <Stack.Screen name="Dashboard">

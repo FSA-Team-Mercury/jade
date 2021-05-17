@@ -42,10 +42,10 @@ export const signinStyles = StyleSheet.create({
   },
   signupButton: {
     color: "#00A86B",
+    padding: 1,
   },
-  cancel: {
-    color: "#00A86B",
-    marginTop: 20,
+  signupTouch: {
+    height: 20,
   },
   logo: {
     alignSelf: "center",

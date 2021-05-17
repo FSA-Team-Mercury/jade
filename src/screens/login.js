@@ -28,7 +28,6 @@ const LOGIN = gql`
 
 export default function Login(props) {
   const [login] = useMutation(LOGIN);
-  let loginError = false;
 
   const goToSignup = () => {
     props.navigation.reset({
@@ -107,7 +106,7 @@ export default function Login(props) {
       </Formik>
       <View style={signinStyles.signupContainer}>
         <Text>new to Jade? </Text>
-        <TouchableOpacity onPress={goToSignup}>
+        <TouchableOpacity onPress={goToSignup} style={signinStyles.signupTouch}>
           <Text style={signinStyles.signupButton}>Sign up</Text>
         </TouchableOpacity>
       </View>

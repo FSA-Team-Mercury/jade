@@ -19,10 +19,6 @@ const FETCH_PLAID = gql`
   query FetchPlaid {
     plaid {
       total_transactions
-      accounts {
-        name
-        type
-      }
       transactions {
         account_id
         amount
