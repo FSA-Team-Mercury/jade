@@ -49,18 +49,10 @@ export default function TabNav() {
       />
 
       <Tab.Screen
-<<<<<<< HEAD
-        name="Friends"
-        component={FriendsStack}
-        options={{
-          headerStyle: {height: 100},
-          tabBarLabel: "Friends",
-=======
         name='Friends'
         component={Friends}
         options={{
           tabBarLabel: 'Friends',
->>>>>>> 1db361ec0d8ead065f283562aab78b3c7c863540
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons
               name='account-group'
