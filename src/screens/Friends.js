@@ -8,21 +8,12 @@ import {
   SafeAreaView,
   ScrollView,
   FlatList,
-<<<<<<< HEAD
-} from 'react-native';
-import { client } from '../../App';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { gql } from '@apollo/client';
-import FriendCard from './FriendCard';
-import ExplorePage from './ExplorePage'
-=======
 } from "react-native";
 import { client } from "../../App";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { gql } from "@apollo/client";
 import FriendCard from "./FriendCard";
->>>>>>> 1db361ec0d8ead065f283562aab78b3c7c863540
-
+import ExplorePage from "./ExplorePage";
 // const GET_USER = gql` //query to get friends
 //   query GetUser {
 //     user {
@@ -33,16 +24,10 @@ import FriendCard from "./FriendCard";
 //   }
 // `;
 
-<<<<<<< HEAD
-const user = { //DUMMY DATA - comment this out when query is working
-  friends: [{username: 'steve'}, {username: 'boris'}, {username: 'amy'}]
-}
-=======
 const user = {
   //DUMMY DATA - comment this out when query is working
   friends: [{ username: "steve" }, { username: "boris" }, { username: "amy" }],
 };
->>>>>>> 1db361ec0d8ead065f283562aab78b3c7c863540
 
 export default function Friends(props) {
   const [allFriends, setAllFriends] = useState(null);
@@ -61,7 +46,7 @@ export default function Friends(props) {
       </View>
     );
   }
-  return <ExplorePage />
+  return <ExplorePage />;
   return (
     <View>
       <SafeAreaView>
