@@ -62,18 +62,6 @@ export default function TabNav() {
         }}
       />
       <Tab.Screen
-        name='Account'
-        options={{
-          tabBarLabel: 'Account',
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name='account' color={color} size={size} />
-          ),
-        }}
-      >
-        {(props) => <AccountStack {...props} />}
-      </Tab.Screen>
-      
-      <Tab.Screen
         name='Savings'
         component= {Savings}
         options={{
@@ -84,6 +72,19 @@ export default function TabNav() {
         }}
       >
       </Tab.Screen>
+      <Tab.Screen
+        name='Account'
+        options={{
+          tabBarLabel: 'Account',
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name='account' color={color} size={size} />
+          ),
+        }}
+      >
+        {(props) => <AccountStack {...props} />}
+      </Tab.Screen>
+
+
     </Tab.Navigator>
   );
 }
