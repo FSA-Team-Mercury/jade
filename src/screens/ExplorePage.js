@@ -5,6 +5,8 @@ import MutualFriends from './MutualFriends'
 import ExploreFriends from './ExploreFriends'
 import { client } from "../../App";
 import { gql,useQuery } from "@apollo/client";
+import { useNavigation } from "@react-navigation/native";
+import { UserSearch } from "./UserSearch";
 
 
 const display = {
@@ -12,12 +14,19 @@ const display = {
   FRIENDS: <ExploreFriends />
 }
 
-
-export default function ExplorePage(){
+export default function ExplorePage(props){
   const [selected, setSelected]= useState('FRIENDS')
+
+  const navigation = useNavigation();
 
   function handlePress(pageName){
     setSelected(pageName)
+  }
+
+  function handleSubmit(username){
+    navigation.navigate("User Search", {
+      username,
+    });
   }
 
   return (
@@ -26,7 +35,10 @@ export default function ExplorePage(){
       <ScrollView style >
       <View style={styles.searchBox}>
         <Image source={require('../../assets/icons/search.png')} style={styles.searchIcon}/>
-        <TextInput style={styles.searchField} placeholder="Search..." />
+        <TextInput onSubmitEditing={(username) =>
+                      props.navigation.navigate('User Search', username)
+                    } style={styles.searchField} placeholder="Search..." 
+                    />
       </View>
       <Text style={styles.pageTitle}>
         Explore Jade

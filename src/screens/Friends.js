@@ -8,20 +8,12 @@ import {
   SafeAreaView,
   ScrollView,
   FlatList,
-<<<<<<< HEAD
-} from 'react-native';
-import { client } from '../../App';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { gql } from '@apollo/client';
-import FriendCard from './FriendCard';
-import ExplorePage from './ExplorePage'
-=======
 } from "react-native";
 import { client } from "../../App";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { gql } from "@apollo/client";
 import FriendCard from "./FriendCard";
->>>>>>> 1db361ec0d8ead065f283562aab78b3c7c863540
+import ExplorePage from "./ExplorePage"
 
 // const GET_USER = gql` //query to get friends
 //   query GetUser {
@@ -33,16 +25,10 @@ import FriendCard from "./FriendCard";
 //   }
 // `;
 
-<<<<<<< HEAD
-const user = { //DUMMY DATA - comment this out when query is working
-  friends: [{username: 'steve'}, {username: 'boris'}, {username: 'amy'}]
-}
-=======
 const user = {
   //DUMMY DATA - comment this out when query is working
   friends: [{ username: "steve" }, { username: "boris" }, { username: "amy" }],
 };
->>>>>>> 1db361ec0d8ead065f283562aab78b3c7c863540
 
 export default function Friends(props) {
   const [allFriends, setAllFriends] = useState(null);
@@ -61,49 +47,49 @@ export default function Friends(props) {
       </View>
     );
   }
-  return <ExplorePage />
-  return (
-    <View>
-      <SafeAreaView>
-        <ScrollView>
-          <View style={style.friends}>
-            <View style={style.friendsHeader}>
-              <Text style={style.friendsHeaderText}>Your Friends</Text>
-            </View>
-            <FlatList
-              data={allFriends}
-              keyExtractor={(item) => item.id}
-              renderItem={({ item }) => (
-                <TouchableOpacity
-                  onPress={() => props.navigation.navigate("Single Friend")}
-                >
-                  <FriendCard>
-                    <Text style={style.categoryName}>{item.username}</Text>
-                    {/* add image? */}
-                  </FriendCard>
-                </TouchableOpacity>
-              )}
-            />
+  return <ExplorePage navigation={props.navigation}/>
+//   return (
+//     <View>
+//       <SafeAreaView>
+//         <ScrollView>
+//           <View style={style.friends}>
+//             <View style={style.friendsHeader}>
+//               <Text style={style.friendsHeaderText}>Your Friends</Text>
+//             </View>
+//             <FlatList
+//               data={allFriends}
+//               keyExtractor={(item) => item.id}
+//               renderItem={({ item }) => (
+//                 <TouchableOpacity
+//                   onPress={() => props.navigation.navigate("Single Friend")}
+//                 >
+//                   <FriendCard>
+//                     <Text style={style.categoryName}>{item.username}</Text>
+//                     {/* add image? */}
+//                   </FriendCard>
+//                 </TouchableOpacity>
+//               )}
+//             />
 
-            {/* buttons */}
+//             {/* buttons */}
 
-            <TouchableOpacity
-              onPress={() => props.navigation.navigate("Add Friend")}
-            >
-              <View style={style.addFriend}>
-                <Text>Add Friends</Text>
-                <MaterialCommunityIcons
-                  name="plus-circle"
-                  color={"#00A86B"}
-                  size={27}
-                />
-              </View>
-            </TouchableOpacity>
-          </View>
-        </ScrollView>
-      </SafeAreaView>
-    </View>
-  );
+//             <TouchableOpacity
+//               onPress={() => props.navigation.navigate("Add Friend")}
+//             >
+//               <View style={style.addFriend}>
+//                 <Text>Add Friends</Text>
+//                 <MaterialCommunityIcons
+//                   name="plus-circle"
+//                   color={"#00A86B"}
+//                   size={27}
+//                 />
+//               </View>
+//             </TouchableOpacity>
+//           </View>
+//         </ScrollView>
+//       </SafeAreaView>
+//     </View>
+//   );
 }
 
 const center = {
