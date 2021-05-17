@@ -114,7 +114,7 @@ export default () => {
         <View style={style.container}>
           <View style={style.chartContainer}>
             {/* BUDGET CHART */}
-            <BudgetChart />
+            {/* <BudgetChart /> */}
           </View>
 
           {/* Budgets List */}
