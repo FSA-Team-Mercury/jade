@@ -13,6 +13,7 @@ import { client } from '../../App';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { gql } from '@apollo/client';
 import FriendCard from './FriendCard';
+import ExplorePage from './ExplorePage'
 
 // const GET_USER = gql` //query to get friends
 //   query GetUser {
@@ -25,7 +26,7 @@ import FriendCard from './FriendCard';
 // `;
 
 const user = { //DUMMY DATA - comment this out when query is working
-  friends: [{username: 'steve'}, {username: 'boris'}, {username: 'amy'}] 
+  friends: [{username: 'steve'}, {username: 'boris'}, {username: 'amy'}]
 }
 
 export default function Friends(props) {
@@ -45,6 +46,7 @@ export default function Friends(props) {
       </View>
     );
   }
+  return <ExplorePage />
   return (
     <View>
       <SafeAreaView>

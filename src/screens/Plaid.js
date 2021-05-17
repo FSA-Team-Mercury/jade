@@ -47,7 +47,7 @@ export default function Plaid(props) {
           client_user_id: q.user.id,
         }
       );
-      setToken(data.link_token);
+      setToken(data.link_token)
     } catch (err) {
       throw err;
     }
@@ -70,13 +70,13 @@ export default function Plaid(props) {
       tokenConfig={{
         token: token,
       }}
-      onSuccess={(success) => {
+      onSuccess={success => {
         getPlaid({
           variables: {
             public_token: success.publicToken,
           },
         })
-          .then(async (res) => {
+          .then(async res => {
             console.log(res);
             await AsyncStorage.setItem(
               "PLAID_TOKEN",
@@ -87,11 +87,11 @@ export default function Plaid(props) {
               routes: [{ name: "Nav" }],
             });
           })
-          .catch((err) => {
+          .catch(err => {
             console.log(err);
           });
       }}
-      onExit={(exit) => {
+      onExit={exit => {
         console.log(exit);
       }}
     >

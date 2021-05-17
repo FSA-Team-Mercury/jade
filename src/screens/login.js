@@ -27,7 +27,6 @@ const LOGIN = gql`
 
 export default function Login(props) {
   const [login] = useMutation(LOGIN);
-
   const goToSignup = () => {
     props.navigation.reset({
       index: 0,
@@ -39,7 +38,7 @@ export default function Login(props) {
       <Formik
         initialValues={{ username: "cody", password: "12345" }}
         validationSchema={reviewSchema}
-        onSubmit={(text) => {
+        onSubmit={text => {
           //logic to handle login
           login({
             variables: {
@@ -47,7 +46,7 @@ export default function Login(props) {
               password: text.password,
             },
           })
-            .then(async (res) => {
+            .then(async res => {
               await AsyncStorage.clear();
               await AsyncStorage.setItem("TOKEN", res.data.logIn.token);
 
@@ -56,12 +55,12 @@ export default function Login(props) {
                 routes: [{ name: "Home" }],
               });
             })
-            .catch((err) => {
+            .catch(err => {
               console.log("error logging in!!!", err);
             });
         }}
       >
-        {(formikProps) => (
+        {formikProps => (
           <View>
             <TextInput
               autoCapitalize="none"

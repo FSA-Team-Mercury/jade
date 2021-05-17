@@ -17,7 +17,7 @@ import * as yup from "yup";
 
 const reviewSchema = yup.object({
   amount: yup.number().required(),
-});
+}); 
 
 const ADD_BUGDET = gql`
   mutation AddBudget($category: String, $goalAmount: Int, $currentAmount: Int) {

@@ -34,7 +34,7 @@ export default function Home(props) {
   if (error) {
     console.log(error);
   }
-  console.log(data.budgets);
+  console.log(data);
   if (data.user.accounts.length) {
     props.navigation.reset({
       index: 0,
