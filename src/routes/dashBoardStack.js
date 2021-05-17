@@ -14,6 +14,10 @@ const FETCH_PLAID = gql`
       accounts {
         name
         type
+        subtype
+        balances {
+          current
+        }
       }
       transactions {
         account_id
