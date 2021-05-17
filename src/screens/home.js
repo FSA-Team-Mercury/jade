@@ -18,6 +18,11 @@ export const GET_USER_DATA = gql`
       goalAmount
       currentAmount
     }
+    allSavings {
+      id
+      goalAmount
+      currentAmount
+    }
   }
 `;
 
@@ -32,7 +37,7 @@ export default function Home(props) {
     );
   }
   if (error) {
-    console.log(error);
+    console.log("IN HOME PAGE ERROR -------->",error);
   }
   console.log(data);
   if (data.user.accounts.length) {

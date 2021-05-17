@@ -6,14 +6,12 @@ import {
   StyleSheet,
   SafeAreaView,
   ScrollView,
-  FlatList,
+  TouchableOpacity,
 } from 'react-native';
 import { client } from '../../App';
 import { gql } from '@apollo/client';
 import { useIsFocused } from '@react-navigation/native';
-import BudgetChart from './BudgetChart';
-import BudgetCard from './BudgetCard';
-import {GET_USER_DATA} from './home'
+import SavingsCard from './SavingsCard';
 
 const FETCH_PLAID = gql`
   query FetchPlaid {
@@ -22,6 +20,8 @@ const FETCH_PLAID = gql`
       accounts {
         name
         type
+        subtype
+        balances
       }
       transactions {
         account_id
@@ -35,86 +35,53 @@ const FETCH_PLAID = gql`
   }
 `;
 
-export const GET_BUDGETS = gql`
-  query Budgets {
-    budgets {
+export const GET_SAVINGS = gql`
+  query Savings {
+    allSavings {
       id
-      category
       goalAmount
       currentAmount
     }
   }
 `;
-const init = {
-  Travel: 0,
-  'Food and Drink': 0,
-  Entertainment: 0,
-  Recreation: 0,
-  Payment: 0,
-  Shops: 0,
-  Transfer: 0, // there are both negative and pos
-  Other: 0,
-};
-
-//monthly spending
-const getGraphData = (data) => {
-  const categories = Object.keys(init);
-  const graphData = data.reduce((accum, transaction) => {
-    const curCategory = transaction.category[0];
-    if (categories.includes(curCategory)) {
-      accum[curCategory] += transaction.amount;
-    } else {
-      accum.Other += transaction.amount;
-    }
-    return accum;
-  }, init);
-  return graphData;
-};
 
 export default () => {
   const isFocused = useIsFocused();
-  const [allBudgets, setAllBudgets] = useState(null);
-  const [transactions, setTransactions] = useState(null);
-  const [graphData, setGraphData] = useState({});
+  const [allSavings, setAllSavings] = useState(null);
+  const [account, setAccount] = useState(null);
+
 
   //fetching Plaid Data
   useEffect(() => {
     const account = client.readQuery({
       query: FETCH_PLAID,
     });
-    console.log("IN SAVINGS ->>>>>", account)
-    let transactions = account.plaid.transactions;
-    setTransactions(transactions || [{}]);
-    // console.log('SAVINGS ---> ', transactions);
-    const data = getGraphData(transactions);
-    setGraphData(data);
-    // console.log('GRAPH DATA ---->', data);
+    // console.log("IN SAVINGS ->>>>>", account.plaid.accounts)
+    let savingsAccount = account.plaid.accounts.filter(
+      (item) => item.subtype === 'savings'
+    );
+    // console.log("SAVINGS ACCOUNTS -------->", savingsAccount)
+    setAccount(savingsAccount);
   }, []);
 
-  // fetching budgets to measure savings
-  // fetching savings?
-  // savings measured from month before?
+  // fetching savings
   useEffect(() => {
-    const { budgets } = client.readQuery({
-      query: GET_BUDGETS,
+    const { allSavings } = client.readQuery({
+      query: GET_SAVINGS,
     });
-    setAllBudgets(budgets);
+    setAllSavings(allSavings);
+    console.log('CHECKING SAVINGS FETCH ---> ', allSavings);
   }, [isFocused]);
 
-  // useEffect(() => {
-  //   const response = client.readQuery({
-  //     query: GET_USER_DATA,
-  //   });
-  //   console.log('RESPONSE ------->', response.user.accounts)
-  // }, []);
-
-  if (!transactions) {
+  if (!account) {
     return (
       <View>
         <ActivityIndicator size='large' color='#00A86B' />
       </View>
     );
   }
+
+
 
   return (
     <SafeAreaView>
@@ -128,30 +95,14 @@ export default () => {
           {/* Budgets List */}
           <View style={style.savings}>
             <View style={style.savingsHeader}>
-              <Text style={style.savingsHeaderText}>Savings This Month</Text>
+              <Text style={style.savingsHeaderText}>Savings</Text>
             </View>
-            <FlatList
-              data={allBudgets}
-              keyExtractor={(item) => item.id}
-              renderItem={({ item }) => (
-                <BudgetCard item={item}>
-                  <Text style={style.categoryName}>{item.category}</Text>
-                  <Text
-                    style={{
-                      fontSize: 20,
-                      color:
-                        item.goalAmount / 100 - graphData[item.category] > 0
-                          ? 'green'
-                          : 'red',
-                    }}
-                  >
-                    $
-                    {item.goalAmount / 100 -
-                      graphData[item.category].toFixed(2)}
-                  </Text>
-                </BudgetCard>
-              )}
-            />
+            <TouchableOpacity>
+              <SavingsCard>
+                <Text>${account[0].balances.current}</Text>
+                <Text>${allSavings.goalAmount / 100}</Text>
+              </SavingsCard>
+            </TouchableOpacity>
           </View>
         </View>
       </ScrollView>

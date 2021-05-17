@@ -54,7 +54,7 @@ export default function Login(props) {
             .then(async res => {
               await AsyncStorage.clear();
               await AsyncStorage.setItem("TOKEN", res.data.logIn.token);
-              loginError = false;
+
               props.navigation.reset({
                 index: 0,
                 routes: [{ name: "Home" }],
@@ -62,8 +62,8 @@ export default function Login(props) {
             })
             .catch((err) => {
               setFieldError("loginError", err.message);
-              loginError = true;
-              console.log(err.message);
+
+              
             })
             .finally(() => {
               setSubmitting(false);
