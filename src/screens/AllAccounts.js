@@ -2,12 +2,14 @@ import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
+  FlatList,
   ActivityIndicator,
   StyleSheet,
   Image as Img,
 } from "react-native";
 import { gql } from "@apollo/client";
 import { client } from "../../App";
+import SingleAccount from "./SingleAccount";
 
 const FETCH_PLAID = gql`
   query FetchPlaid {
@@ -34,6 +36,7 @@ export default function AllAccounts() {
       query: FETCH_PLAID,
     });
     setAccount(acc);
+    console.log(acc);
   }, []);
 
   if (!account) {
@@ -58,6 +61,17 @@ export default function AllAccounts() {
             uri: `data:image/png;base64,${account.plaid.institution.logo}`,
           }}
         />
+        {/* <FlatList
+          data={account.accounts}
+          keyExtractor={(item) => item.account_id}
+          renderItem={({ item }) => {
+            return (
+              <View>
+                <SingleAccount item={item} />
+              </View>
+            );
+          }}
+        ></FlatList> */}
       </View>
     </View>
   );

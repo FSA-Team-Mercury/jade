@@ -6,14 +6,16 @@ import CurrencyInput from "react-native-currency-input"; //this won't allow text
 import {
   View,
   Text,
-  ActivityIndicator,
   StyleSheet,
   Button,
   TextInput,
   Picker, //depracated, but works better than the alternative
   Image as Img,
+  Alert
 } from "react-native";
 import * as yup from "yup";
+import {GET_USER_DATA} from './home'
+import { Snackbar } from 'react-native-paper';
 
 const reviewSchema = yup.object({
   amount: yup.number().required(),
@@ -34,102 +36,100 @@ const ADD_BUGDET = gql`
   }
 `;
 
-const GET_USER = gql`
-  query GetUser {
-    user {
-      budgets {
-        id
-        category
-        goalAmount
-        isCompleted
-      }
-    }
-  }
-`;
 
 export default function AddBudget({ navigation }) {
   const [addBudget] = useMutation(ADD_BUGDET);
-  const [budget, setBudget] = useState();
   const [error, setError] = useState(false);
+  const [visible, setVisible] = useState(false);
+  const onDismissSnackBar = () => setVisible(false);
+
 
   return (
     <View style={styles.container}>
       <Text style={styles.titleText}>Add Budget</Text>
 
       <Formik
-        initialValues={{ category: "", amount: "" }}
+        initialValues={{ category: '', amount: '' }}
         validationSchema={reviewSchema}
         onSubmit={(values) => {
-          //add budget to database and cahce, navigate back to budget
           addBudget({
             variables: {
               category: values.category,
               goalAmount: +values.amount,
               currentAmount: 5,
             },
-            update: (cache, {data:{addBudget}}) => {
-              const data = cache.readQuery({ query: GET_USER });
-              console.log("IN THE UPDATE/CACHE", data.user.budgets)
-              console.log("ADDED BUDGET", addBudget)
-              data.user.budgets = [...data.user.budgets, addBudget]
-              console.log("LOGGING", data.user.budgets)
-              cache.writeQuery({ query: GET_USER }, data);
-            }
+            update: (cache, { data: { addBudget } }) => {
+              const data = cache.readQuery({ query: GET_USER_DATA });
+
+              cache.writeQuery({
+                query: GET_USER_DATA,
+                data: {
+                  budgets: [...data.budgets, addBudget],
+                },
+              });
+            },
           })
             .then((res) => {
-              // navigation.reset({index:1,routes:[{name:"Budget"}]})
-              navigation.navigate("Budget");
-              console.log(res);
+              setVisible(true);
             })
             .catch((error) => {
+              Alert.alert('Budget already exists.', 'Please select another.', [{text: "Continue", onPress:() => console.log('alert closed')}])
               setError(true);
-              console.log(error);
             });
         }}
       >
         {(formikProps) => (
           <View>
             <Picker
-              autoCapitalize="none"
-              name="category"
+              autoCapitalize='none'
+              name='category'
               style={styles.picker}
-              //   placeholder="Budget Category"
-              onValueChange={formikProps.handleChange("category")}
+              onValueChange={formikProps.handleChange('category')}
               selectedValue={formikProps.values.category}
             >
-              <Picker.Item label="Food and Drink" value="Food and Drink" />
-              <Picker.Item label="Shops" value="Shops" />
-              <Picker.Item label="Entertainment" value="Entertainment" />
-              <Picker.Item label="Recreation" value="Recreation" />
-              <Picker.Item label="Transfer" value="Transfer" />
-              <Picker.Item label="Payment" value="Payment" />
-              <Picker.Item label="Travel" value="Travel" />
-              <Picker.Item label="Other" value="Other" />
+              <Picker.Item label='Food and Drink' value='Food and Drink' />
+              <Picker.Item label='Shops' value='Shops' />
+              <Picker.Item label='Entertainment' value='Entertainment' />
+              <Picker.Item label='Recreation' value='Recreation' />
+              <Picker.Item label='Transfer' value='Transfer' />
+              <Picker.Item label='Payment' value='Payment' />
+              <Picker.Item label='Travel' value='Travel' />
+              <Picker.Item label='Other' value='Other' />
             </Picker>
 
             <TextInput
-              keyboardType="numeric"
-              name="amount"
-              unit="$"
-              delimiter=","
-              separator="."
+              keyboardType='numeric'
+              name='amount'
+              unit='$'
+              delimiter=','
+              separator='.'
               precision={2}
               style={styles.input}
-              placeholder="Budget Amount"
-              onChangeText={formikProps.handleChange("amount")}
+              placeholder='Budget Amount'
+              onChangeText={formikProps.handleChange('amount')}
               value={formikProps.values.amount}
-              onBlur={formikProps.handleBlur("amount")}
+              onBlur={formikProps.handleBlur('amount')}
             />
             <Text>
               {formikProps.touched.amount && formikProps.errors.amount}
             </Text>
-            <Text>{"You already have a budget for this" && error}</Text>
+            {/* <Text style={styles.errorText}>
+              {error && 'You already have a budget for this category.'}
+            </Text> */}
 
             <Button
-              text="Submit Budget"
+              text='Submit Budget'
               onPress={formikProps.handleSubmit}
-              title="Submit"
+              title='Submit'
             />
+            <Snackbar
+              visible={visible}
+              onDismiss={onDismissSnackBar}
+              duration={2000}
+              style={styles.snack}
+            >
+              Your {formikProps.values.category} budget was added!
+            </Snackbar>
           </View>
         )}
       </Formik>
@@ -140,35 +140,52 @@ export default function AddBudget({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
     //   paddingTop: 200,
     //   padding: 40,
   },
   input: {
     borderWidth: 1,
-    borderColor: "#ddd",
+    borderColor: '#ddd',
     padding: 10,
     fontSize: 18,
     borderRadius: 6,
     margin: 5,
     width: 300,
-    backgroundColor: "white",
+    backgroundColor: 'white',
   },
   picker: {
     borderWidth: 1,
-    borderColor: "#ddd",
+    borderColor: '#ddd',
     padding: 5,
     fontSize: 18,
     borderRadius: 6,
     margin: 5,
     width: 300,
-    backgroundColor: "white",
+    backgroundColor: 'white',
   },
   titleText: {
     // fontFamily: "",
     fontSize: 30,
-    color: "#333",
+    color: '#333',
     padding: 30,
   },
+  snack: {
+    // display: 'flex',
+    // justifyContent: 'center',
+    backgroundColor: 'green',
+    marginBottom: -90,
+    marginVertical: 70,
+    // alignItems: 'flex-end',
+    // marginTop: 150,
+    // marginHorizontal: 0,
+    marginRight: 120,
+    // marginLeft: 50
+    fontSize: 16,
+  },
+  errorText: {
+    fontSize: 16,
+    color: "red"
+  }
 });

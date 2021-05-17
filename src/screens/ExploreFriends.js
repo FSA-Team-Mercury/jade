@@ -112,20 +112,31 @@ export default function ExploreFriends(){
                     style={friend.unfollow}
                     onPress={()=>unfollowUser(user.id)}
                     >
-                    <Text>Unfollow</Text>
+                    <Text style={{color:'white'}}>Unfollow</Text>
                   </TouchableOpacity>
               </View>
               {/* <View style={friend.levelTwo}>
                 <Text>Badges</Text>
               </View> */}
 
-              <View style={friend.levelThree}>
-                <View style={friend.badge}>
-                  <View style={friend.badgeImage}>
-                  </View>
-                  <Text style={friend.badgeName}>Big Spender</Text>
-                </View>
-              </View>
+                      <View style={friend.levelThree}>
+              {
+                !user.badges.length ? <Text>No Badges Yet</Text> :(
+                  user.badges.map(badge=>{
+                    console.log('\nbadge-->', badge)
+                    return (
+                        <View style={friend.badge}>
+                          <View style={friend.badgeImage}>
+                          </View>
+                          <Text style={friend.badgeName}>{badge.type}</Text>
+                        </View>
+                    )
+                  })
+                )
+              }
+                      </View>
+
+
 
             </View>
             )

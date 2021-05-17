@@ -2,6 +2,11 @@
   "name": "jade",
   "displayName": "jade",
   "expo": {
+    "splash": {
+      "image": "./assets/jadesplash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#000000"
+    },
     "name": "jade",
     "slug": "jade",
     "version": "1.0.0",

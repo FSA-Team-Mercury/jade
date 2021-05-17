@@ -1,53 +1,12 @@
-import React, { useState, useEffect } from "react";
-import { useNavigation } from "@react-navigation/native";
-import {
-  View,
-  Text,
-  StyleSheet,
-  SafeAreaView,
-  ScrollView,
-  Dimensions,
-  ActivityIndicator,
-  FlatList,
-} from "react-native";
-import FontAwesome from "react-native-vector-icons/FontAwesome";
-import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
-import Ionicons from "react-native-vector-icons/Ionicons";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import React from "react";
+import { View, Text, StyleSheet } from "react-native";
 
-const categoryIcons = {
-  Shops: <FontAwesome name="shopping-cart" size={30} color="#00A86B" />,
-  Travel: <FontAwesome name="car" size={30} color="#00A86A" />,
-  Transfer: (
-    <MaterialCommunityIcons name="arrow-left-right" size={30} color="#00A86B" />
-  ),
-  "Food and Drink": (
-    <MaterialCommunityIcons
-      name="silverware-fork-knife"
-      size={30}
-      color="#00A86B"
-    />
-  ),
-  Entertainment: <FontAwesome name="film" size={30} color="#00A86B" />,
-  Other: <FontAwesome5 name="money-check-alt" size={30} color="#00A86B" />,
-  Payment: <FontAwesome name="money" size={30} color="#00A86B" />,
-};
-
-const SingleTransaction = ({ item }) => {
-  const date = item.date;
-  if (item.category.includes("Payment") || item.category.includes("Transfer")) {
-    item = { ...item };
-    item.merchant_name = item.category[0];
-    item.category = [""];
-  }
-
+const SingleAccount = ({ item }) => {
   return (
     <View>
       <View style={styles.singleTransaction}>
         {/* catigory picture (entertainment, food, shoping...) */}
-        <View style={styles.catagoryPic}>
-          {categoryIcons[item.category[0]] || categoryIcons.Other}
-        </View>
+        <View style={styles.catagoryPic}></View>
         {/* componay name and catagory on the bottom */}
         <View style={styles.nameAndCategory}>
           <Text
@@ -70,9 +29,11 @@ const SingleTransaction = ({ item }) => {
           <Text style={styles.price} ellipsizeMode="tail" numberOfLines={2}>
             {`$${item.amount}`}{" "}
           </Text>
-          <Text style={styles.date} ellipsizeMode="tail" numberOfLines={2}>
-            {date}
-          </Text>
+          <Text
+            style={styles.date}
+            ellipsizeMode="tail"
+            numberOfLines={2}
+          ></Text>
         </View>
       </View>
       <View style={styles.borderBottom}></View>
@@ -160,4 +121,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SingleTransaction;
+export default SingleAccount;

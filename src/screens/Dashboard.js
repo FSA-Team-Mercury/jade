@@ -19,10 +19,6 @@ const FETCH_PLAID = gql`
   query FetchPlaid {
     plaid {
       total_transactions
-      accounts {
-        name
-        type
-      }
       transactions {
         account_id
         amount
@@ -86,7 +82,7 @@ export default function Dashboard() {
   }, []);
   if (!transactions) {
     return (
-      <View style={styles.container}>
+      <View style={styles.loader}>
         <ActivityIndicator size="large" color="#00A86B" />
       </View>
     );
@@ -153,6 +149,10 @@ const shadow = {
 };
 
 const styles = StyleSheet.create({
+  loader: {
+    flex: 1,
+    justifyContent: "center",
+  },
   dashBoard: {
     height: "100%",
     width: "100%",
@@ -196,16 +196,19 @@ const styles = StyleSheet.create({
   transactionsHeader: {
     height: 50,
     width: "100%",
-    display: "flex",
     alignItems: "center",
     flexDirection: "row",
-    justifyContent: "space-around",
+    justifyContent: "space-between",
     backgroundColor: "#00A86B",
   },
   recentTransactions: {
     fontSize: 18,
+    marginLeft: 10,
+    color: "white",
   },
   seeAll: {
     fontSize: 18,
+    marginRight: 15,
+    color: "white",
   },
 });
