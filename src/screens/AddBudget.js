@@ -11,6 +11,7 @@ import {
   TextInput,
   Picker, //depracated, but works better than the alternative
   Image as Img,
+  Alert
 } from "react-native";
 import * as yup from "yup";
 import {GET_USER_DATA} from './home'
@@ -72,6 +73,7 @@ export default function AddBudget({ navigation }) {
               setVisible(true);
             })
             .catch((error) => {
+              Alert.alert('Budget already exists.', 'Please select another.', [{text: "Continue", onPress:() => console.log('alert closed')}])
               setError(true);
             });
         }}
@@ -111,9 +113,9 @@ export default function AddBudget({ navigation }) {
             <Text>
               {formikProps.touched.amount && formikProps.errors.amount}
             </Text>
-            <Text>
+            {/* <Text style={styles.errorText}>
               {error && 'You already have a budget for this category.'}
-            </Text>
+            </Text> */}
 
             <Button
               text='Submit Budget'
@@ -180,5 +182,10 @@ const styles = StyleSheet.create({
     // marginHorizontal: 0,
     marginRight: 120,
     // marginLeft: 50
+    fontSize: 16,
   },
+  errorText: {
+    fontSize: 16,
+    color: "red"
+  }
 });

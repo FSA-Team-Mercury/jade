@@ -67,10 +67,10 @@ export default function Budget(props) {
               renderItem={({ item }) => (
                 <TouchableOpacity
                   onPress={() =>
-                    props.navigation.navigate("Single Budget", item)
+                    props.navigation.navigate('Single Budget', item)
                   }
                 >
-                  <BudgetCard>
+                  <BudgetCard item={item}>
                     <Text style={style.categoryName}>{item.category}</Text>
                     <Text style={style.goalText}>${item.goalAmount / 100}</Text>
                   </BudgetCard>
@@ -80,15 +80,15 @@ export default function Budget(props) {
 
             {/* buttons */}
             <TouchableOpacity
-              onPress={() => props.navigation.navigate("Add Budget")}
+              onPress={() => props.navigation.navigate('Add Budget')}
             >
               <View style={style.addBudget}>
-                <Text>Add Budget</Text>
                 <MaterialCommunityIcons
-                  name="plus-circle"
-                  color={"#00A86B"}
-                  size={27}
+                  name='plus-circle'
+                  color={'#00A86B'}
+                  size={70}
                 />
+                <Text style={style.addBudgetText}>Add Budget</Text>
               </View>
             </TouchableOpacity>
           </View>
@@ -153,7 +153,15 @@ const style = StyleSheet.create({
   },
   addBudget: {
     display: 'flex',
-    flexDirection: 'row-reverse',
+    // justifyContent: 'center',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  addBudgetText: {
+    fontSize: 20,
+    // marginRight: 20,
+    // fontWeight: 'bold'
+
   },
   // CHART STYLES
   chartContainer: {
