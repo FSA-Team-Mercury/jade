@@ -8,23 +8,16 @@ import {
   Image,
 } from "react-native";
 import { signinStyles } from "../styles/signin";
-import { gql, useMutation } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import FlatButton from "../shared/button";
 import { Formik } from "formik";
 import * as yup from "yup";
+import { SIGNUP } from "../queries/user";
 
 const signupSchema = yup.object({
   username: yup.string().required().min(4),
   password: yup.string().required().min(5),
 });
-
-const SIGNUP = gql`
-  mutation Signup($username: String!, $password: String!) {
-    signUp(username: $username, password: $password) {
-      token
-    }
-  }
-`;
 
 export default function Signup(props) {
   const [signup] = useMutation(SIGNUP);
@@ -44,28 +37,25 @@ export default function Signup(props) {
       <Formik
         initialValues={{ username: "", password: "" }}
         validationSchema={signupSchema}
-        onSubmit={(text, { setSubmitting, setFieldError }) => {
-          //logic to handle login
-          signup({
-            variables: {
-              username: text.username,
-              password: text.password,
-            },
-          })
-            .then(async (res) => {
-              await AsyncStorage.clear();
-              await AsyncStorage.setItem("TOKEN", res.data.signUp.token);
-              props.navigation.reset({
-                index: 0,
-                routes: [{ name: "Home" }],
-              });
-            })
-            .catch((err) => {
-              setFieldError("signupFail", err.message);
-            })
-            .finally(() => {
-              setSubmitting(false);
+        onSubmit={async (text, { setSubmitting, setFieldError }) => {
+          //logic to handle signup
+          try {
+            const { data } = await signup({
+              variables: {
+                username: text.username,
+                password: text.password,
+              },
             });
+            await AsyncStorage.clear();
+            await AsyncStorage.setItem("TOKEN", data.signUp.token);
+            props.navigation.reset({
+              index: 0,
+              routes: [{ name: "Home" }],
+            });
+          } catch (err) {
+            setFieldError("signupFail", err.message);
+            setSubmitting(false);
+          }
         }}
       >
         {(formikProps) => (

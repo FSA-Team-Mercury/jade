@@ -7,36 +7,18 @@ import {
   StyleSheet,
   Image as Img,
 } from "react-native";
-import { gql } from "@apollo/client";
 import { client } from "../../App";
 import SingleAccount from "./SingleAccount";
-
-const FETCH_PLAID = gql`
-  query FetchPlaid {
-    plaid {
-      accounts {
-        name
-        type
-      }
-      institution {
-        logo
-        name
-        url
-        primary_color
-      }
-    }
-  }
-`;
+import { ACCOUNTS_AND_INSTITUTIONS } from "../queries/plaid";
 
 export default function AllAccounts() {
   const [account, setAccount] = useState(null);
 
   useEffect(() => {
     const acc = client.readQuery({
-      query: FETCH_PLAID,
+      query: ACCOUNTS_AND_INSTITUTIONS,
     });
     setAccount(acc);
-    console.log(acc);
   }, []);
 
   if (!account) {
@@ -46,7 +28,6 @@ export default function AllAccounts() {
       </View>
     );
   }
-
   return (
     <View style={styles.container}>
       <View
@@ -55,23 +36,30 @@ export default function AllAccounts() {
           backgroundColor: account.plaid.institution.primary_color,
         }}
       >
-        <Img
-          style={styles.logo_img}
-          source={{
-            uri: `data:image/png;base64,${account.plaid.institution.logo}`,
-          }}
-        />
-        {/* <FlatList
-          data={account.accounts}
+        <View style={styles.header}>
+          <Img
+            style={styles.logo_img}
+            source={{
+              uri: `data:image/png;base64,${account.plaid.institution.logo}`,
+            }}
+          />
+          <Text style={styles.headerText}>
+            Your {account.plaid.institution.name} Accounts
+          </Text>
+        </View>
+
+        <FlatList
+          data={account.plaid.accounts}
+          style={styles.accountList}
           keyExtractor={(item) => item.account_id}
           renderItem={({ item }) => {
             return (
-              <View>
+              <View style={styles.accountContainer}>
                 <SingleAccount item={item} />
               </View>
             );
           }}
-        ></FlatList> */}
+        ></FlatList>
       </View>
     </View>
   );
@@ -87,12 +75,43 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
   },
+  header: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  headerText: {
+    marginRight: 20,
+    marginTop: 15,
+    color: "white",
+    fontSize: 18,
+  },
   account_card: {
-    width: 300,
-    height: 200,
+    width: 369,
+    height: 420,
+    borderRadius: 6,
   },
   logo_img: {
     width: 50,
     height: 50,
+    margin: 10,
+    marginBottom: 0,
+  },
+  accountList: {
+    marginTop: 10,
+    marginHorizontal: 20,
+  },
+  accountContainer: {
+    flex: 1,
+    alignItems: "center",
+    width: "100%",
+    marginTop: 10,
+    marginBottom: 10,
+    height: 50,
+    borderRadius: 8,
+    padding: 2,
+    shadowOffset: { width: 1, height: 1 },
+    elevation: 3,
+    backgroundColor: "white",
   },
 });

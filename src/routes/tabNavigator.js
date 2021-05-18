@@ -1,8 +1,8 @@
 /* eslint-disable react/display-name */
 import React from "react";
-import { StyleSheet } from "react-native";
 import BudgetStack from "./budgetStack";
 import Friends from "../screens/Friends";
+import FriendsStack from './friendsStack'
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import AccountStack from "./accountStack";
@@ -49,7 +49,7 @@ export default function TabNav() {
 
       <Tab.Screen
         name="Friends"
-        component={Friends}
+        component={FriendsStack}
         options={{
           tabBarLabel: "Friends",
           tabBarIcon: ({ color, size }) => (
@@ -76,10 +76,3 @@ export default function TabNav() {
     </Tab.Navigator>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-  },
-});

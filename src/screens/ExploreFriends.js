@@ -4,6 +4,7 @@ import {View,Text, SafeAreaView, ScrollView,Image,TextInput,TouchableOpacity,Act
 import { client } from "../../App";
 import { gql,useQuery,useMutation } from "@apollo/client";
 
+
 const FETCH_FRIENDS = gql`
   query FetchFriends{
     friends{
@@ -28,25 +29,9 @@ const UNFOLLOW_USER = gql`
 `
 
 
-const GetUserFriends = ({setFriends,friends})=>{
-  const {data, loading, error} = useQuery(FETCH_FRIENDS)
-  if (loading) {
-    return (
-      <View style={friend.container}>
-        <ActivityIndicator size="large" color="#00A86B" />
-      </View>
-    );
-  }
-  console.log('SET BYE DB REQUEST', data.friends)
-  setFriends(data.friends || [])
-  return <View></View>
-}
-
-
 export default function ExploreFriends(){
   const [friends, setFriends] = useState(false)
   const [unfollower] = useMutation(UNFOLLOW_USER)
-
 
   function unfollowUser(friendId){
     unfollower({
@@ -66,31 +51,26 @@ export default function ExploreFriends(){
         })
       }
       })
-      setFriends(friends.filter(user=>{
+      setFriends(friends.filter(user=>{ 
         console.log('in for loop!!!!-->>', user)
         return friendId !== user.id
       }))
     // alert('fried',friendId,'is deleted')
   }
-  useEffect(()=>{
-    const friendsArr = client.readQuery({
-    query: FETCH_FRIENDS,
-    });
-    console.log('SET BYE APOLLO REQUEST')
-    if (friends === null){
-      return
-    }else if (friend.length === 0){
-      return
-    }
-    setFriends(friendsArr === null ? false : friendsArr.friends)
-  },[])
 
-  if (friends === false){
-    return <GetUserFriends setFriends={setFriends}  friends={friends}/>
-  }
-  if (friends.friends){
-    setFriends(friends.friends)
-  }
+  const {data, loading, error} = useQuery(FETCH_FRIENDS)
+    if (loading) {
+      return (
+        <View style={friend.container}>
+          <ActivityIndicator size="large" color="#00A86B" />
+        </View>
+      );
+    }
+    console.log('SET BYE DB REQUEST', data.friends)
+    if (!friends){
+      setFriends(data.friends || [])
+    }
+
   console.log('setFrieds!!!\n\n', friends,'\n\n')
   return (
     <View style={friend.page}>
@@ -99,8 +79,8 @@ export default function ExploreFriends(){
         !friends.length ? <Text>No Friends Yet</Text> : (
           friends.map(user=>{
             return (
-              <View style={friend.container} >
-              <View style={friend.levelOne}>
+          <View style={friend.container} >
+            <View style={friend.levelOne}>
                 <View style={friend.profileImageContainer}>
                   <Image source={require('../../assets/images/icons8-rihanna-96.png')} style={friend.profilePic}/>
                 </View>
@@ -114,12 +94,12 @@ export default function ExploreFriends(){
                     >
                     <Text style={{color:'white'}}>Unfollow</Text>
                   </TouchableOpacity>
-              </View>
+                </View>
               {/* <View style={friend.levelTwo}>
                 <Text>Badges</Text>
               </View> */}
 
-                      <View style={friend.levelThree}>
+            <View style={friend.levelThree}>
               {
                 !user.badges.length ? <Text>No Badges Yet</Text> :(
                   user.badges.map(badge=>{
@@ -134,11 +114,8 @@ export default function ExploreFriends(){
                   })
                 )
               }
-                      </View>
-
-
-
             </View>
+          </View>
             )
           })
         )

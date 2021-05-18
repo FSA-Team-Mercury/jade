@@ -10,9 +10,9 @@ const categoryIcons = {
   Transfer: (
     <MaterialCommunityIcons name='arrow-left-right' size={30} color='#00A86B' />
   ),
-  'Food and Drink': (
+  "Food and Drink": (
     <MaterialCommunityIcons
-      name='silverware-fork-knife'
+      name="silverware-fork-knife"
       size={30}
       color='#00A86B'
     />
