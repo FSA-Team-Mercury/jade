@@ -7,8 +7,7 @@ import FriendsStack from './friendsStack'
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import AccountStack from "./accountStack";
-import DashboardStack from "./dashBoardStack";
-import Savings from "../screens/Savings";
+import DashboardStack from "./dashBoardStack"
 
 const Tab = createBottomTabNavigator();
 
@@ -64,20 +63,7 @@ export default function TabNav() {
           ),
         }}
       />
-      <Tab.Screen
-        name="Savings"
-        component={Savings}
-        options={{
-          tabBarLabel: "Savings",
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons
-              name="piggy-bank"
-              color={color}
-              size={size}
-            />
-          ),
-        }}
-      ></Tab.Screen>
+
       <Tab.Screen
         name="Account"
         options={{
