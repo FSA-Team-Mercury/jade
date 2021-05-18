@@ -25,9 +25,10 @@ import ExplorePage from './ExplorePage'
 //   }
 // `;
 
-const user = { //DUMMY DATA - comment this out when query is working
-  friends: [{username: 'steve'}, {username: 'boris'}, {username: 'amy'}]
-}
+const user = {
+  //DUMMY DATA - comment this out when query is working
+  friends: [{ username: "steve" }, { username: "boris" }, { username: "amy" }],
+};
 
 export default function Friends(props) {
   const [allFriends, setAllFriends] = useState(null);
@@ -46,7 +47,7 @@ export default function Friends(props) {
       </View>
     );
   }
-  return <ExplorePage />
+  return <ExplorePage />;
   return (
     <View>
       <SafeAreaView>
