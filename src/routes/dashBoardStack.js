@@ -2,40 +2,13 @@
 import React from "react";
 import { View, ActivityIndicator, StyleSheet } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
-import { gql, useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import AllTransactions from "../screens/AllTransactions";
 import Dashboard from "../screens/Dashboard";
+import { FETCH_PLAID } from "../queries/plaid";
 
 const Stack = createStackNavigator();
-const FETCH_PLAID = gql`
-  query FetchPlaid {
-    plaid {
-      total_transactions
-      accounts {
-        name
-        type
-        subtype
-        balances {
-          current
-        }
-      }
-      transactions {
-        account_id
-        amount
-        date
-        category
-        pending
-        merchant_name
-      }
-      institution {
-        logo
-        name
-        url
-        primary_color
-      }
-    }
-  }
-`;
+
 export default function DashboardStack() {
   const { data, loading } = useQuery(FETCH_PLAID);
 
@@ -46,7 +19,7 @@ export default function DashboardStack() {
       </View>
     );
   }
-  console.log("server data for Plaid ---> ", data);
+
   return (
     <Stack.Navigator initialRouteName={"Dashboard"}>
       <Stack.Screen name="Dashboard">

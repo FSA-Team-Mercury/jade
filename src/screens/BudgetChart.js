@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useIsFocused } from "@react-navigation/native";
-import { View, Text, StyleSheet, ActivityIndicator } from "react-native";
+import { View, ActivityIndicator } from "react-native";
 import {
   VictoryBar,
   VictoryChart,
@@ -17,7 +17,7 @@ export default function BudgetChart({ budgets }) {
   useEffect(() => {
     const budgetBars = createBudgetBars(budgets);
     setChartData(budgetBars);
-  }, [isFocused]);
+  }, [isFocused, budgets]);
 
   if (!chartData) {
     return (

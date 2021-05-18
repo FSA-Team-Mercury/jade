@@ -1,36 +1,11 @@
 import React, { useEffect, useState } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  ActivityIndicator,
-  AsyncStorage,
-} from "react-native";
+import { View, Text, StyleSheet, ActivityIndicator } from "react-native";
 import { PlaidLink } from "react-native-plaid-link-sdk";
 import axios from "axios";
 import { client } from "../../App";
-import { useMutation, gql } from "@apollo/client";
-
-const GET_USER = gql`
-  query GetUser {
-    user {
-      id
-      username
-      accounts {
-        auth_token
-        type
-      }
-    }
-  }
-`;
-
-const FETCH_TOKEN = gql`
-  mutation FetchToken($public_token: String!) {
-    fetchPlaidToken(public_token: $public_token) {
-      auth_token
-    }
-  }
-`;
+import { useMutation } from "@apollo/client";
+import { USER_PLAID_AUTH } from "../queries/user";
+import { FETCH_TOKEN } from "../queries/plaid.js";
 
 export default function Plaid(props) {
   const [token, setToken] = useState(null);
@@ -38,18 +13,18 @@ export default function Plaid(props) {
 
   const getToken = async () => {
     try {
-      const q = await client.readQuery({
-        query: GET_USER,
+      const { user } = await client.readQuery({
+        query: USER_PLAID_AUTH,
       });
       const { data } = await axios.post(
         "http://localhost:3000/plaid/link/token/create",
         {
-          client_user_id: q.user.id,
+          client_user_id: user.id,
         }
       );
-      setToken(data.link_token)
+      setToken(data.link_token);
     } catch (err) {
-      throw err;
+      throw new Error(err);
     }
   };
 
@@ -70,28 +45,23 @@ export default function Plaid(props) {
       tokenConfig={{
         token: token,
       }}
-      onSuccess={success => {
+      onSuccess={(success) => {
         getPlaid({
           variables: {
             public_token: success.publicToken,
           },
         })
-          .then(async res => {
-            console.log(res);
-            await AsyncStorage.setItem(
-              "PLAID_TOKEN",
-              res.data.fetchPlaidToken.auth_token
-            );
+          .then((res) => {
             props.navigation.reset({
               index: 0,
               routes: [{ name: "Nav" }],
             });
           })
-          .catch(err => {
+          .catch((err) => {
             console.log(err);
           });
       }}
-      onExit={exit => {
+      onExit={(exit) => {
         console.log(exit);
       }}
     >

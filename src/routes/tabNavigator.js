@@ -1,6 +1,5 @@
 /* eslint-disable react/display-name */
 import React from "react";
-import { StyleSheet } from "react-native";
 import BudgetStack from "./budgetStack";
 import Friends from "../screens/Friends";
 import FriendsStack from './friendsStack'
@@ -91,10 +90,3 @@ export default function TabNav() {
     </Tab.Navigator>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-  },
-});

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -7,12 +7,11 @@ import {
   SafeAreaView,
   ScrollView,
   FlatList,
-} from 'react-native';
-import { client } from '../../App';
-import { gql } from '@apollo/client';
-import { useIsFocused } from '@react-navigation/native';
-import BudgetChart from './BudgetChart';
-import BudgetCard from './BudgetCard';
+} from "react-native";
+import { client } from "../../App";
+import { gql } from "@apollo/client";
+import { useIsFocused } from "@react-navigation/native";
+import BudgetCard from "./BudgetCard";
 
 const FETCH_PLAID = gql`
   query FetchPlaid {
@@ -46,7 +45,7 @@ export const GET_BUDGETS = gql`
 `;
 const init = {
   Travel: 0,
-  'Food and Drink': 0,
+  "Food and Drink": 0,
   Entertainment: 0,
   Recreation: 0,
   Payment: 0,
@@ -84,10 +83,10 @@ export default () => {
 
     let transactions = account.plaid.transactions;
     setTransactions(transactions || [{}]);
-    console.log('SAVINGS ---> ', transactions);
+    console.log("SAVINGS ---> ", transactions);
     const data = getGraphData(transactions);
     setGraphData(data);
-    console.log('GRAPH DATA ---->', data);
+    console.log("GRAPH DATA ---->", data);
   }, []);
 
   // fetching budgets to measure savings
@@ -103,7 +102,7 @@ export default () => {
   if (!transactions) {
     return (
       <View>
-        <ActivityIndicator size='large' color='#00A86B' />
+        <ActivityIndicator size="large" color="#00A86B" />
       </View>
     );
   }
@@ -112,10 +111,7 @@ export default () => {
     <SafeAreaView>
       <ScrollView>
         <View style={style.container}>
-          <View style={style.chartContainer}>
-            {/* BUDGET CHART */}
-            {/* <BudgetChart /> */}
-          </View>
+          <View style={style.chartContainer}></View>
 
           {/* Budgets List */}
           <View style={style.savings}>
@@ -133,8 +129,8 @@ export default () => {
                       fontSize: 20,
                       color:
                         item.goalAmount / 100 - graphData[item.category] > 0
-                          ? 'green'
-                          : 'red',
+                          ? "green"
+                          : "red",
                     }}
                   >
                     $
@@ -153,8 +149,8 @@ export default () => {
 
 // STYLING
 const center = {
-  marginRight: 'auto',
-  marginLeft: 'auto',
+  marginRight: "auto",
+  marginLeft: "auto",
 };
 
 const shadow = {
@@ -169,26 +165,26 @@ const shadow = {
 const style = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'flex-start',
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "flex-start",
     marginTop: 90,
   },
   savings: {
-    width: '95%',
+    width: "95%",
     ...center,
-    backgroundColor: '#ededed',
+    backgroundColor: "#ededed",
     ...shadow,
   },
   savingsHeader: {
     height: 50,
-    width: '100%',
-    display: 'flex',
-    alignItems: 'center',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-around',
-    backgroundColor: '#00A86B',
+    width: "100%",
+    display: "flex",
+    alignItems: "center",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-around",
+    backgroundColor: "#00A86B",
   },
   savingsHeaderText: {
     fontSize: 22,
@@ -205,13 +201,13 @@ const style = StyleSheet.create({
   // CHART STYLES
   chartContainer: {
     height: 320,
-    width: '95%',
-    backgroundColor: 'white',
+    width: "95%",
+    backgroundColor: "white",
     marginBottom: 20,
     borderRadius: 10,
     paddingLeft: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     shadowOpacity: 0.2,
     shadowRadius: 5,
     shadowOffset: {
