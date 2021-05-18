@@ -18,11 +18,6 @@ export const GET_USER_DATA = gql`
       goalAmount
       currentAmount
     }
-    allSavings {
-      id
-      goalAmount
-      currentAmount
-    }
   }
 `;
 

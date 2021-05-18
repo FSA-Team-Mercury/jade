@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TextInput } from 'react-native';
 import * as yup from 'yup';
 import { Formik } from 'formik';
@@ -10,6 +10,7 @@ import { client } from '../../App';
 const reviewSchema = yup.object({
   amount: yup.number().required(),
 });
+import { useIsFocused } from '@react-navigation/native';
 import BudgetRecap from './BudgetRecap';
 
 const UPDATE_AMOUNT = gql`
@@ -32,9 +33,28 @@ const DELETE_BUDGET = gql`
   }
 `;
 
+export const GET_BUDGETS = gql`
+  query Budgets {
+    budgets {
+      id
+      category
+      goalAmount
+      currentAmount
+    }
+  }
+`;
+
 export default function SingleBudget({ navigation, route }) {
+  const isFocused = useIsFocused()
   const [updateAmount] = useMutation(UPDATE_AMOUNT);
   const [deleteBudget] = useMutation(DELETE_BUDGET);
+
+  // useEffect(() => {
+  //   const { budgets } = client.readQuery({
+  //     query: GET_BUDGETS,
+  //   });
+  //   setAllBudgets(budgets);
+  // }, [isFocused]);
 
   const handleRemoveItem = async (budgetId) => {
     try {
@@ -95,8 +115,6 @@ export default function SingleBudget({ navigation, route }) {
           } catch (err) {
             throw err;
           }
-
-          //add budget to database and cahce, navigate back to budget
         }}
       >
         {(formikProps) => (
