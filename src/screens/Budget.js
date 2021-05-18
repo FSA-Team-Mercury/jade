@@ -15,6 +15,7 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import { gql } from "@apollo/client";
 import BudgetChart from "./BudgetChart";
 import BudgetCard from "./BudgetCard";
+import MonthlySpentCalc from './MonthlySpentCalc'
 
 export const GET_BUDGETS = gql`
   query Budgets {
@@ -41,10 +42,14 @@ export default function Budget(props) {
   if (!allBudgets) {
     return (
       <View>
-        <ActivityIndicator size="large" color="#00A86B" />
+        <ActivityIndicator size='large' color='#00A86B' />
       </View>
     );
   }
+
+  const TODAY = new Date();
+  const CURRENT_MONTH = TODAY.toLocaleString('default', { month: 'long' });
+
 
   return (
     <SafeAreaView>
@@ -56,10 +61,12 @@ export default function Budget(props) {
           </View>
 
           {/* Budgets List */}
-
           <View style={style.budgets}>
             <View style={style.budgetsHeader}>
-              <Text style={style.budgetHeaderText}> Budget for May </Text>
+              <Text style={style.budgetHeaderText}>
+                {' '}
+                Budget for {CURRENT_MONTH}{' '}
+              </Text>
             </View>
             <FlatList
               data={allBudgets}
@@ -87,14 +94,16 @@ export default function Budget(props) {
                         Goal: ${item.goalAmount / 100}/mo.
                       </Text>
                     </View>
-                    <Text>${item.goalAmount / 100}</Text>
+                    <Text style={style.goalTextAmount}>
+                      <MonthlySpentCalc item={item} />
+                      /${item.goalAmount / 100}
+                    </Text>
                   </BudgetCard>
                 </TouchableOpacity>
               )}
             />
 
             {/* buttons */}
-
             <TouchableOpacity
               onPress={() => props.navigation.navigate('Add Budget')}
             >
@@ -104,7 +113,6 @@ export default function Budget(props) {
                   color={'#00A86B'}
                   size={70}
                 />
-                <Text style={style.addBudgetText}>Add Budget</Text>
               </View>
             </TouchableOpacity>
           </View>
@@ -114,13 +122,10 @@ export default function Budget(props) {
   );
 }
 
+// STYLING
 const center = {
   marginRight: "auto",
   marginLeft: "auto",
-};
-
-const colors = {
-  primary: "black",
 };
 
 const shadow = {
@@ -165,7 +170,8 @@ const style = StyleSheet.create({
     height: '42%',
     width: '50%',
     flexDirection: 'column',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 
   categoryName: {
@@ -175,19 +181,17 @@ const style = StyleSheet.create({
   goalText: {
     fontSize: 15,
   },
+  goalTextAmount: {
+    fontSize: 18,
+  },
 
   addBudget: {
     display: 'flex',
-    // justifyContent: 'center',
-    // flexDirection: 'column',
     alignItems: 'center',
   },
   addBudgetText: {
     fontSize: 20,
-    // marginRight: 20,
-    // fontWeight: 'bold'
   },
-  // CHART STYLES
   chartContainer: {
     height: 320,
     width: '95%',
