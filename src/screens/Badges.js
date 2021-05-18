@@ -8,11 +8,16 @@ const GET_BADGES = gql`
     userBadges{
       id
       type
-      imageUrl
+      badgeImage
     }
   }
 `
-
+const images = {
+    rainbow: require('../../assets/badges/rainbow.png'),
+    earth: require('../../assets/badges/earth.png'),
+    thunder: require('../../assets/badges/thunder.png'),
+    cascade: require('../../assets/badges/cascade.png'),
+}
 // const badges = [
 //     {id: 1, type: "big-saver", imageUrl: "https://www.pngkit.com/png/full/201-2012600_image-result-for-pokemon-red-and-blue-logo.png"}, 
 //     {id: 2, type: "big-spender", imageUrl: "https://www.pngkit.com/png/full/201-2012600_image-result-for-pokemon-red-and-blue-logo.png"},
@@ -26,6 +31,7 @@ export function Badges(props) {
         const badges = client.readQuery({
             query: GET_BADGES,
         });
+        console.log('badges-->', badges.userBadges)
         setAllBadges(badges.userBadges);
     });
   
@@ -46,7 +52,7 @@ export function Badges(props) {
                     keyExtractor={(item) => item.id}
                     renderItem={({ item }) => (
                         <View style={style.badgeContainer}>
-                            <Image style={style.badgeImage} source={require("../../assets/badges/rainbow.png")}/> 
+                            <Image style={style.badgeImage} source={images[item.badgeImage]}/> 
                             <Text style={style.badgeType} >{item.type}</Text>
                         </View>
                     )}

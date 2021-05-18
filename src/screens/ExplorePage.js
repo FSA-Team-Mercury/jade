@@ -19,8 +19,6 @@ export default function ExplorePage(props){
   const [selected, setSelected]= useState('FRIENDS')
   const navigation = useNavigation();
 
-  const navigation = useNavigation();
-
   function handlePress(pageName){
     setSelected(pageName)
   }
