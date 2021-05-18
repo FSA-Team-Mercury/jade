@@ -8,23 +8,15 @@ import {
   Image,
 } from "react-native";
 import { signinStyles } from "../styles/signin";
-import { gql, useMutation } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import FlatButton from "../shared/button";
 import { Formik } from "formik";
 import * as yup from "yup";
-
+import { LOGIN } from "../queries/user";
 const reviewSchema = yup.object({
   username: yup.string().required().min(4),
   password: yup.string().required().min(5),
 });
-
-const LOGIN = gql`
-  mutation Login($username: String!, $password: String!) {
-    logIn(username: $username, password: $password) {
-      token
-    }
-  }
-`;
 
 export default function Login(props) {
   const [login] = useMutation(LOGIN);
@@ -43,34 +35,29 @@ export default function Login(props) {
       <Formik
         initialValues={{ username: "", password: "" }}
         validationSchema={reviewSchema}
-        onSubmit={(text, { setSubmitting, setFieldError }) => {
+        onSubmit={async (text, { setSubmitting, setFieldError }) => {
           //logic to handle login
-          login({
-            variables: {
-              username: text.username,
-              password: text.password,
-            },
-          })
-            .then(async res => {
-              await AsyncStorage.clear();
-              await AsyncStorage.setItem("TOKEN", res.data.logIn.token);
-              loginError = false;
-              props.navigation.reset({
-                index: 0,
-                routes: [{ name: "Home" }],
-              });
-            })
-            .catch((err) => {
-              setFieldError("loginError", err.message);
-              loginError = true;
-              console.log(err.message);
-            })
-            .finally(() => {
-              setSubmitting(false);
+          try {
+            const { data } = await login({
+              variables: {
+                username: text.username,
+                password: text.password,
+              },
             });
+            await AsyncStorage.clear();
+            await AsyncStorage.setItem("TOKEN", data.logIn.token);
+            props.navigation.reset({
+              index: 0,
+              routes: [{ name: "Home" }],
+            });
+          } catch (err) {
+            setFieldError("loginError", err.message);
+            setSubmitting(false);
+            console.log(err);
+          }
         }}
       >
-        {formikProps => (
+        {(formikProps) => (
           <View>
             <TextInput
               autoCapitalize="none"

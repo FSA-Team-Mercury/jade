@@ -13,7 +13,6 @@ import {
 } from "@apollo/client";
 import Login from "./src/screens/login";
 import Home from "./src/screens/home";
-import Plaid from "./src/screens/Plaid";
 import TabNav from "./src/routes/tabNavigator";
 import Signup from "./src/screens/signup";
 
@@ -72,13 +71,10 @@ export default function App() {
           }}
         >
           <Stack.Screen name="Login">
-            {(props) => <Login {...props} setUser={setUser} />}
+            {(props) => <Login {...props} />}
           </Stack.Screen>
           <Stack.Screen name="Signup">
             {(props) => <Signup {...props} />}
-          </Stack.Screen>
-          <Stack.Screen name="Plaid">
-            {(props) => <Plaid {...props} />}
           </Stack.Screen>
           <Stack.Screen name="Nav">
             {(props) => <TabNav {...props} client={client} />}

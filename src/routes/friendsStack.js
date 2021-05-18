@@ -1,11 +1,10 @@
 /* eslint-disable react/display-name */
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import {Text} from 'react-native'
 import Friends from "../screens/Friends";
 import SingleFriend from "../screens/SingleFriend";
 import AddFriend from "../screens/AddFriend";
-import FriendsHeader from '../shared/friendsHeader'
+import FriendsHeader from "../shared/friendsHeader";
 
 const Stack = createStackNavigator();
 
@@ -18,7 +17,7 @@ export default function FriendsStack() {
         options={{
           headerShown: true,
           title: <FriendsHeader />,
-          headerStyle: {height: 120}
+          headerStyle: { height: 120 },
         }}
       />
 
@@ -30,8 +29,8 @@ export default function FriendsStack() {
           headerTintColor: "#00A86B",
         })}
       />
-      
-        <Stack.Screen
+
+      <Stack.Screen
         name="Add Friend"
         component={AddFriend}
         options={({ navigation }) => ({
