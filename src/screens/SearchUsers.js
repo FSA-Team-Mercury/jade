@@ -9,10 +9,10 @@ const SEARCH_USERS = gql`
         username
         id
         profileImage
+        relationship
       }
-      pendingFriends{
-        id
-      }
+
+
     }
   }
 `
@@ -53,6 +53,9 @@ export default function SearchUsers({route}){
       }
     })
   }
+  if (data){
+    console.log('pending firends-->', data.searchUsers.result)
+  }
   return (
     <View>
       {
@@ -61,7 +64,7 @@ export default function SearchUsers({route}){
             return (
               <View style={styles.user}>
                 <View style={styles.profileImageContainer}>
-                  <Image source={require(`../../assets/images/icons8-rihanna-96.png`)} style={styles.profilePic}/>
+                  {/* <Image source={require(`../../assets/images/icons8-rihanna-96.png`)} style={styles.profilePic}/> */}
                 </View>
                   <View>
                   {/* <Text style={styles.name}></Text> */}
