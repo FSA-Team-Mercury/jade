@@ -1,5 +1,7 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+
 
 export default function SavingsCard({children}) {
 
@@ -7,6 +9,7 @@ export default function SavingsCard({children}) {
     <View style={styles.card}>
       <View style={styles.cardContent}>
         <View style={styles.categoryPic}>
+          {}
         </View>
         {children}
       </View>

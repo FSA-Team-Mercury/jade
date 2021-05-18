@@ -57,47 +57,58 @@ export default function Budget(props) {
 
           {/* Budgets List */}
 
-
-
-            <View style={style.budgets}>
-              <View style={style.budgetsHeader}>
-                <Text style={style.budgetHeaderText}>Budgets</Text>
-              </View>
-              <FlatList
-                data={allBudgets}
-                keyExtractor={(item) => item.id}
-                renderItem={({ item }) => (
-                  <TouchableOpacity
-                    onPress={() =>
-                      props.navigation.navigate('Single Budget', item)
-                    }
-                  >
-                    <BudgetCard item={item}>
-                      <Text style={style.categoryName}>{item.category}</Text>
-                      <Text style={style.goalText}>
-                        ${item.goalAmount / 100}
-                      </Text>
-                    </BudgetCard>
-                  </TouchableOpacity>
-                )}
-              />
-
-              {/* buttons */}
-
-              <TouchableOpacity
-                onPress={() => props.navigation.navigate('Add Budget')}
-              >
-                <View style={style.addBudget}>
-                  <MaterialCommunityIcons
-                    name='plus-circle'
-                    color={'#00A86B'}
-                    size={70}
-                  />
-                  <Text style={style.addBudgetText}>Add Budget</Text>
-                </View>
-              </TouchableOpacity>
+          <View style={style.budgets}>
+            <View style={style.budgetsHeader}>
+              <Text style={style.budgetHeaderText}> Budget for May </Text>
             </View>
+            <FlatList
+              data={allBudgets}
+              keyExtractor={(item) => item.id}
+              renderItem={({ item }) => (
+                <TouchableOpacity
+                  onPress={() =>
+                    props.navigation.navigate('Single Budget', item)
+                  }
+                >
+                  <BudgetCard item={item}>
+                    <View style={style.categoryAndGoal}>
+                      <Text
+                        style={style.categoryName}
+                        ellipsizeMode='tail'
+                        numberOfLines={2}
+                      >
+                        {item.category}
+                      </Text>
+                      <Text
+                        style={style.goalText}
+                        ellipsizeMode='tail'
+                        numberOfLines={2}
+                      >
+                        Goal: ${item.goalAmount / 100}/mo.
+                      </Text>
+                    </View>
+                    <Text>${item.goalAmount / 100}</Text>
+                  </BudgetCard>
+                </TouchableOpacity>
+              )}
+            />
+
+            {/* buttons */}
+
+            <TouchableOpacity
+              onPress={() => props.navigation.navigate('Add Budget')}
+            >
+              <View style={style.addBudget}>
+                <MaterialCommunityIcons
+                  name='plus-circle'
+                  color={'#00A86B'}
+                  size={70}
+                />
+                <Text style={style.addBudgetText}>Add Budget</Text>
+              </View>
+            </TouchableOpacity>
           </View>
+        </View>
       </ScrollView>
     </SafeAreaView>
   );
@@ -147,7 +158,14 @@ const style = StyleSheet.create({
   },
   budgetHeaderText: {
     fontSize: 22,
-    color: "white",
+    color: 'white',
+  },
+
+  categoryAndGoal: {
+    height: '42%',
+    width: '50%',
+    flexDirection: 'column',
+    justifyContent: 'center'
   },
 
   categoryName: {
@@ -155,8 +173,9 @@ const style = StyleSheet.create({
   },
 
   goalText: {
-    fontSize: 20,
+    fontSize: 15,
   },
+
   addBudget: {
     display: 'flex',
     // justifyContent: 'center',
@@ -167,7 +186,6 @@ const style = StyleSheet.create({
     fontSize: 20,
     // marginRight: 20,
     // fontWeight: 'bold'
-
   },
   // CHART STYLES
   chartContainer: {

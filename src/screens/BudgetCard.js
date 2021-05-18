@@ -23,8 +23,6 @@ const categoryIcons = {
 };
 
 export default function Card ({children,item}) {
-  // console.log("IN BUDGET CARD TEXT---->", children)
-  console.log('IN BUDGET CARD ITEM---->', item);
   return (
     <View style={styles.card}>
       <View style={styles.cardContent}>
@@ -48,7 +46,6 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     elevation: 3,
     backgroundColor: 'white',
-
     shadowOffset: { width: 1, height: 1 },
     shadowColor: "#333",
     shadowOpacity: 0.3,
@@ -61,6 +58,8 @@ const styles = StyleSheet.create({
     marginVertical: 30,
     display: 'flex',
     flexDirection: 'row',
+    flex: 3,
+    // alignContent:'space-around'
     justifyContent: 'space-between',
     alignItems: 'center'
   },
