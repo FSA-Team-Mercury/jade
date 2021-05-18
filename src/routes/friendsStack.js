@@ -6,6 +6,8 @@ import Friends from "../screens/Friends";
 import SingleFriend from "../screens/SingleFriend";
 import AddFriend from "../screens/AddFriend";
 import FriendsHeader from '../shared/friendsHeader'
+import SearchUsers from '../screens/SearchUsers'
+
 
 const Stack = createStackNavigator();
 
@@ -17,20 +19,19 @@ export default function FriendsStack() {
         component={Friends}
         options={{
           headerShown: true,
-          title: <FriendsHeader />,
-          headerStyle: {height: 120}
+          title: 'Friends',
         }}
       />
 
       <Stack.Screen
-        name="Single Friend"
-        component={SingleFriend}
+        name="Search Users"
+        component={SearchUsers}
         options={({ navigation }) => ({
-          title: "single friend",
+          title: "search",
           headerTintColor: "#00A86B",
         })}
       />
-      
+
         <Stack.Screen
         name="Add Friend"
         component={AddFriend}

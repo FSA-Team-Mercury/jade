@@ -4,6 +4,7 @@ import {View,Text, SafeAreaView, ScrollView,Image,TextInput,TouchableOpacity,Act
 import { client } from "../../App";
 import { gql,useQuery,useMutation } from "@apollo/client";
 
+
 const FETCH_FRIENDS = gql`
   query FetchFriends{
     friends{
@@ -32,7 +33,6 @@ export default function ExploreFriends(){
   const [friends, setFriends] = useState(false)
   const [unfollower] = useMutation(UNFOLLOW_USER)
 
-
   function unfollowUser(friendId){
     unfollower({
       variables:{
@@ -51,7 +51,7 @@ export default function ExploreFriends(){
         })
       }
       })
-      setFriends(friends.filter(user=>{
+      setFriends(friends.filter(user=>{ 
         console.log('in for loop!!!!-->>', user)
         return friendId !== user.id
       }))
@@ -79,8 +79,8 @@ export default function ExploreFriends(){
         !friends.length ? <Text>No Friends Yet</Text> : (
           friends.map(user=>{
             return (
-              <View style={friend.container} >
-              <View style={friend.levelOne}>
+          <View style={friend.container} >
+            <View style={friend.levelOne}>
                 <View style={friend.profileImageContainer}>
                   <Image source={require('../../assets/images/icons8-rihanna-96.png')} style={friend.profilePic}/>
                 </View>
@@ -94,12 +94,12 @@ export default function ExploreFriends(){
                     >
                     <Text style={{color:'white'}}>Unfollow</Text>
                   </TouchableOpacity>
-              </View>
+                </View>
               {/* <View style={friend.levelTwo}>
                 <Text>Badges</Text>
               </View> */}
 
-                      <View style={friend.levelThree}>
+            <View style={friend.levelThree}>
               {
                 !user.badges.length ? <Text>No Badges Yet</Text> :(
                   user.badges.map(badge=>{
@@ -114,8 +114,8 @@ export default function ExploreFriends(){
                   })
                 )
               }
-                      </View>
             </View>
+          </View>
             )
           })
         )
