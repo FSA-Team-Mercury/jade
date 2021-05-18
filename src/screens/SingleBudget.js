@@ -12,11 +12,20 @@ import { UPDATE_AMOUNT, DELETE_BUDGET } from "../queries/budget";
 const budgetSchema = yup.object({
   amount: yup.number().required(),
 });
+import { useIsFocused } from '@react-navigation/native';
+import BudgetRecap from './BudgetRecap';
 
 export default function SingleBudget({ navigation, route }) {
   console.log(Object.keys(route));
   const [updateAmount] = useMutation(UPDATE_AMOUNT);
   const [deleteBudget] = useMutation(DELETE_BUDGET);
+
+  // useEffect(() => {
+  //   const { budgets } = client.readQuery({
+  //     query: GET_BUDGETS,
+  //   });
+  //   setAllBudgets(budgets);
+  // }, [isFocused]);
 
   const handleRemoveItem = async (budgetId) => {
     try {
@@ -27,7 +36,7 @@ export default function SingleBudget({ navigation, route }) {
             fields: {
               budgets(existingBudgets, { readField }) {
                 return existingBudgets.filter(
-                  (budgetRef) => budgetId !== readField("id", budgetRef)
+                  (budgetRef) => budgetId !== readField('id', budgetRef)
                 );
               },
             },
@@ -46,7 +55,7 @@ export default function SingleBudget({ navigation, route }) {
     <View style={styles.container}>
       <Formik
         initialValues={{
-          amount: (route.params.goalAmount / 100).toString() || "0",
+          amount: (route.params.goalAmount / 100).toString() || '0',
         }}
         validationSchema={budgetSchema}
         onSubmit={async (values) => {
@@ -67,7 +76,7 @@ export default function SingleBudget({ navigation, route }) {
                 }
               `,
               data: {
-                __typename: "Budget",
+                __typename: 'Budget',
                 goalAmount: +budgetData.updateBudget.goalAmount,
               },
             });
@@ -76,35 +85,35 @@ export default function SingleBudget({ navigation, route }) {
           } catch (err) {
             throw err;
           }
-
-          //add budget to database and cahce, navigate back to budget
         }}
       >
         {(formikProps) => (
           <View style={styles.formikView}>
             <TextInput
-              name="amount"
-              keyboardType="numeric"
+              name='amount'
+              keyboardType='numeric'
               precision={2}
               style={styles.input}
-              placeholder="Budget Amount"
-              onChangeText={formikProps.handleChange("amount")}
+              placeholder='Budget Amount'
+              onChangeText={formikProps.handleChange('amount')}
               value={formikProps.values.amount}
-              onBlur={formikProps.handleBlur("amount")}
+              onBlur={formikProps.handleBlur('amount')}
             />
             <Text>
               {formikProps.touched.amount && formikProps.errors.amount}
             </Text>
             <View style={styles.buttons}>
               <DeleteButton
-                text="Delete"
+                text='Delete'
                 onPress={() => handleRemoveItem(route.params.id)}
               />
               <SaveButton
                 onPress={formikProps.handleSubmit}
-                text="Save Changes"
+                text='Save Changes'
               />
             </View>
+            <View style={styles.borderBottom}></View>
+            <BudgetRecap item={route.params} />
           </View>
         )}
       </Formik>
@@ -120,39 +129,48 @@ export default function SingleBudget({ navigation, route }) {
   );
 }
 
+const center = {
+  marginRight: 'auto',
+  marginLeft: 'auto',
+};
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginTop: 100,
-    alignItems: "center",
-    justifyContent: "space-between",
-  },
-  cardArea: {
-    width: 50,
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   formikView: {
-    width: "100%",
+    width: '100%',
   },
   input: {
     borderWidth: 1,
-    borderColor: "#ddd",
+    borderColor: '#ddd',
     padding: 10,
     fontSize: 18,
     borderRadius: 6,
     width: 300,
-    alignSelf: "center",
-    backgroundColor: "white",
-    textAlign: "center",
+    alignSelf: 'center',
+    backgroundColor: 'white',
+    textAlign: 'center',
   },
   buttons: {
-    flexDirection: "row",
-    width: "100%",
+    flexDirection: 'row',
+    width: '100%',
     marginTop: 20,
-    justifyContent: "space-between",
+    justifyContent: 'space-between',
   },
   snack: {
-    backgroundColor: "green",
-    alignSelf: "flex-start",
+    backgroundColor: 'green',
+    alignSelf: 'flex-start',
     marginTop: 300,
+  },
+  borderBottom: {
+    height: 2,
+    width: '90%',
+    backgroundColor: 'lightgrey',
+    ...center,
+    marginTop: 50,
   },
 });

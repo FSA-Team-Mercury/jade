@@ -15,7 +15,7 @@ export default function Home(props) {
     );
   }
   if (error) {
-    console.log(error);
+    console.log("IN HOME PAGE ERROR -------->",error);
   }
 
   if (data.user.accounts.length) {

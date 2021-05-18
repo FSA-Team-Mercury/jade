@@ -18,6 +18,7 @@ import BudgetCard from "./BudgetCard";
 import { FETCH_PLAID } from "../queries/plaid";
 import { GET_BUDGETS } from "../queries/budget";
 import currentMonth from "../calculations/currentMonth";
+import MonthlySpentCalc from  './MonthlySpentCalc'
 
 export default function Budget(props) {
   const isFocused = useIsFocused();
@@ -37,10 +38,14 @@ export default function Budget(props) {
   if (!allBudgets) {
     return (
       <View>
-        <ActivityIndicator size="large" color="#00A86B" />
+        <ActivityIndicator size='large' color='#00A86B' />
       </View>
     );
   }
+
+  const TODAY = new Date();
+  const CURRENT_MONTH = TODAY.toLocaleString('default', { month: 'long' });
+
 
   return (
     <SafeAreaView>
@@ -55,7 +60,7 @@ export default function Budget(props) {
 
           <View style={style.budgets}>
             <View style={style.budgetsHeader}>
-              <Text style={style.budgetHeaderText}>Budgets</Text>
+              <Text style={style.budgetHeaderText}>Budget for {CURRENT_MONTH}{' '}</Text>
             </View>
             <FlatList
               data={allBudgets}
@@ -63,12 +68,30 @@ export default function Budget(props) {
               renderItem={({ item }) => (
                 <TouchableOpacity
                   onPress={() =>
-                    props.navigation.navigate("Single Budget", item)
+                    props.navigation.navigate('Single Budget', item)
                   }
                 >
                   <BudgetCard item={item}>
-                    <Text style={style.categoryName}>{item.category}</Text>
-                    <Text style={style.goalText}>${item.goalAmount / 100}</Text>
+                    <View style={style.categoryAndGoal}>
+                      <Text
+                        style={style.categoryName}
+                        ellipsizeMode='tail'
+                        numberOfLines={2}
+                      >
+                        {item.category}
+                      </Text>
+                      <Text
+                        style={style.goalText}
+                        ellipsizeMode='tail'
+                        numberOfLines={2}
+                      >
+                        Goal: ${item.goalAmount / 100}/mo.
+                      </Text>
+                    </View>
+                    <Text style={style.goalTextAmount}>
+                      <MonthlySpentCalc item={item} />
+                      /${item.goalAmount / 100}
+                    </Text>
                   </BudgetCard>
                 </TouchableOpacity>
               )}
@@ -85,7 +108,6 @@ export default function Budget(props) {
                   color={"#00A86B"}
                   size={70}
                 />
-                <Text style={style.addBudgetText}>Add Budget</Text>
               </View>
             </TouchableOpacity>
           </View>
@@ -95,13 +117,10 @@ export default function Budget(props) {
   );
 }
 
+// STYLING
 const center = {
   marginRight: "auto",
   marginLeft: "auto",
-};
-
-const colors = {
-  primary: "black",
 };
 
 const shadow = {
@@ -139,7 +158,15 @@ const style = StyleSheet.create({
   },
   budgetHeaderText: {
     fontSize: 22,
-    color: "white",
+    color: 'white',
+  },
+
+  categoryAndGoal: {
+    height: '42%',
+    width: '50%',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 
   categoryName: {
@@ -147,20 +174,19 @@ const style = StyleSheet.create({
   },
 
   goalText: {
-    fontSize: 20,
+    fontSize: 15,
   },
+  goalTextAmount: {
+    fontSize: 18,
+  },
+
   addBudget: {
-    display: "flex",
-    // justifyContent: 'center',
-    // flexDirection: 'column',
-    alignItems: "center",
+    display: 'flex',
+    alignItems: 'center',
   },
   addBudgetText: {
     fontSize: 20,
-    // marginRight: 20,
-    // fontWeight: 'bold'
   },
-  // CHART STYLES
   chartContainer: {
     height: 320,
     width: "95%",
