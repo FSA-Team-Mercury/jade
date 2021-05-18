@@ -57,6 +57,12 @@ const NUM_DAYS_MONTH = new Date(
   0
 ).getDate(); //31
 
+export let DAILY_BUDGET;
+export let DAILY_AVERAGE_SPEND;
+export let CURRENT_SPEND;
+export let PROJECTED_MONTHLY_SPEND;
+export let PROJECTED_MONTHLY_SAVINGS;
+
 export default ({ item }) => {
   const [transactions, setTransactions] = useState(null);
   const [graphData, setGraphData] = useState({});
@@ -83,19 +89,19 @@ export default ({ item }) => {
     );
   }
 
-  const DAILY_BUDGET = parseInt(
+   DAILY_BUDGET = parseInt(
     (item.goalAmount / 100 / NUM_DAYS_MONTH).toFixed(2)
   );
-  const DAILY_AVERAGE_SPEND = parseInt(
+   DAILY_AVERAGE_SPEND = parseInt(
     (graphData[item.category] / CURRENT_DAY).toFixed(2)
   );
 
-  const CURRENT_SPEND = parseInt(graphData[item.category].toFixed(0));
+    CURRENT_SPEND = parseInt(graphData[item.category].toFixed(0));
 
-  const PROJECTED_MONTHLY_SPEND = parseInt(
+    PROJECTED_MONTHLY_SPEND = parseInt(
     DAILY_AVERAGE_SPEND * NUM_DAYS_MONTH
   ).toFixed(2);
-  const PROJECTED_MONTHLY_SAVINGS = parseInt(
+    PROJECTED_MONTHLY_SAVINGS = parseInt(
     item.goalAmount / 100 - PROJECTED_MONTHLY_SPEND
   );
 
