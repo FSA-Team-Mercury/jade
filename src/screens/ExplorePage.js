@@ -7,11 +7,13 @@ import { client } from "../../App";
 import { gql,useQuery } from "@apollo/client";
 import { useNavigation } from "@react-navigation/native";
 import { UserSearch } from "./UserSearch";
+import { Badges } from "./Badges";
 
 
 const display = {
   MUTUAL_FRIENDS: <MutualFriends />,
-  FRIENDS: <ExploreFriends />
+  FRIENDS: <ExploreFriends />,
+  BADGES: <Badges />,
 }
 
 export default function ExplorePage(props){
