@@ -31,7 +31,6 @@ export default function SearchUsers({route}){
   const [oldSearch, setOldSearch] = useState('')
   const [requestFriendship] = useMutation(REQUEST_FRIENDSHIP)
   let search = route.params.search.toLowerCase()
-  console.log('route.params.search-->',search)
   const { data, loading, error } = useQuery(SEARCH_USERS, {
     variables:{
       search
@@ -53,9 +52,6 @@ export default function SearchUsers({route}){
         friendId
       }
     })
-  }
-  if (data){
-    console.log('pending firends-->', data.searchUsers.pendingFriends)
   }
   return (
     <View>
