@@ -18,21 +18,15 @@ const images = {
     thunder: require('../../assets/badges/thunder.png'),
     cascade: require('../../assets/badges/cascade.png'),
 }
-// const badges = [
-//     {id: 1, type: "big-saver", imageUrl: "https://www.pngkit.com/png/full/201-2012600_image-result-for-pokemon-red-and-blue-logo.png"}, 
-//     {id: 2, type: "big-spender", imageUrl: "https://www.pngkit.com/png/full/201-2012600_image-result-for-pokemon-red-and-blue-logo.png"},
-//     {id: 3, type: "big-saver", imageUrl: "https://www.pngkit.com/png/full/201-2012600_image-result-for-pokemon-red-and-blue-logo.png"},
-//     {id: 4, type: "big-spender", imageUrl: "https://www.pngkit.com/png/full/201-2012600_image-result-for-pokemon-red-and-blue-logo.png"}]
 
 export function Badges(props) {
     const [allBadges, setAllBadges] = useState(null);
   
     useEffect(() => {
-        const badges = client.readQuery({
+        const data = client.readQuery({
             query: GET_BADGES,
         });
-        console.log('badges-->', badges.userBadges)
-        setAllBadges(badges.userBadges);
+        setAllBadges(data.userBadges);
     });
   
     if (!allBadges) {
@@ -98,8 +92,7 @@ const style = StyleSheet.create({
 
     badgeType: {
         fontSize: 18,
-        // backgroundColor: '#00A86B',
-        // color: 'white',
+        color: '#00A86B',
     },
 
     badgeImage: {
