@@ -1,18 +1,7 @@
-import React, { useState, useEffect } from "react";
-import { useNavigation } from "@react-navigation/native";
-import {
-  View,
-  Text,
-  StyleSheet,
-  SafeAreaView,
-  ScrollView,
-  Dimensions,
-  ActivityIndicator,
-  FlatList,
-} from "react-native";
+import React from "react";
+import { View, Text, StyleSheet } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
-import Ionicons from "react-native-vector-icons/Ionicons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 const categoryIcons = {

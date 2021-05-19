@@ -10,26 +10,9 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { VictoryPie, VictoryTheme } from "victory-native";
-import Icon from "react-native-vector-icons/FontAwesome";
 import { client } from "../../App";
-import { gql } from "@apollo/client";
 import SingleTransaction from "./SingleTransaction";
-
-const FETCH_PLAID = gql`
-  query FetchPlaid {
-    plaid {
-      total_transactions
-      transactions {
-        account_id
-        amount
-        date
-        category
-        pending
-        merchant_name
-      }
-    }
-  }
-`;
+import { TRANSACTIONS } from "../queries/plaid";
 
 const getGraphData = (data) => {
   const init = {
@@ -66,7 +49,7 @@ export default function Dashboard() {
 
   useEffect(() => {
     const account = client.readQuery({
-      query: FETCH_PLAID,
+      query: TRANSACTIONS,
     });
 
     let transactions = account.plaid.transactions;
@@ -119,7 +102,7 @@ export default function Dashboard() {
           </View>
           <FlatList
             data={transactions.slice(0, 5)}
-            keyExtractor={(item) => item.account_id}
+            keyExtractor={(item) => item.transaction_id}
             renderItem={(props) => {
               return (
                 <View>
