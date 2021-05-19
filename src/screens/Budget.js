@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { useIsFocused } from "@react-navigation/native";
+import React, { useState, useEffect } from 'react';
+import { useIsFocused } from '@react-navigation/native';
 import {
   View,
   Text,
@@ -9,18 +9,19 @@ import {
   SafeAreaView,
   ScrollView,
   FlatList,
-} from "react-native";
-import { client } from "../../App";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+} from 'react-native';
+import { client } from '../../App';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import BudgetChart from "./BudgetChart";
-import BudgetCard from "./BudgetCard";
-import { FETCH_PLAID } from "../queries/plaid";
-import { GET_BUDGETS } from "../queries/budget";
-import currentMonth from "../calculations/currentMonth";
-import MonthlySpentCalc from  './MonthlySpentCalc'
+import BudgetChart from './BudgetChart';
+import BudgetCard from './BudgetCard';
+import { FETCH_PLAID } from '../queries/plaid';
+import { GET_BUDGETS } from '../queries/budget';
+import currentMonth from '../calculations/currentMonth';
+import MonthlySpentCalc from './MonthlySpentCalc';
 
 export default function Budget(props) {
+  console.log('IN BUDGETS', props)
   const isFocused = useIsFocused();
   const [allBudgets, setAllBudgets] = useState(null);
 
@@ -46,7 +47,6 @@ export default function Budget(props) {
   const TODAY = new Date();
   const CURRENT_MONTH = TODAY.toLocaleString('default', { month: 'long' });
 
-
   return (
     <SafeAreaView>
       <ScrollView>
@@ -60,7 +60,9 @@ export default function Budget(props) {
 
           <View style={style.budgets}>
             <View style={style.budgetsHeader}>
-              <Text style={style.budgetHeaderText}>Budget for {CURRENT_MONTH}{' '}</Text>
+              <Text style={style.budgetHeaderText}>
+                Budget for {CURRENT_MONTH}{' '}
+              </Text>
             </View>
             <FlatList
               data={allBudgets}
@@ -100,12 +102,12 @@ export default function Budget(props) {
             {/* buttons */}
 
             <TouchableOpacity
-              onPress={() => props.navigation.navigate("Add Budget")}
+              onPress={() => props.navigation.navigate('Add Budget')}
             >
               <View style={style.addBudget}>
                 <MaterialCommunityIcons
-                  name="plus-circle"
-                  color={"#00A86B"}
+                  name='plus-circle'
+                  color={'#00A86B'}
                   size={70}
                 />
               </View>
@@ -119,8 +121,8 @@ export default function Budget(props) {
 
 // STYLING
 const center = {
-  marginRight: "auto",
-  marginLeft: "auto",
+  marginRight: 'auto',
+  marginLeft: 'auto',
 };
 
 const shadow = {
@@ -135,26 +137,26 @@ const shadow = {
 const style = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "flex-start",
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
     marginTop: 90,
   },
   budgets: {
-    width: "95%",
+    width: '95%',
     ...center,
-    backgroundColor: "#ededed",
+    backgroundColor: '#ededed',
     ...shadow,
   },
   budgetsHeader: {
     height: 50,
-    width: "100%",
-    display: "flex",
-    alignItems: "center",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-around",
-    backgroundColor: "#00A86B",
+    width: '100%',
+    display: 'flex',
+    alignItems: 'center',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+    backgroundColor: '#00A86B',
   },
   budgetHeaderText: {
     fontSize: 22,
@@ -189,13 +191,13 @@ const style = StyleSheet.create({
   },
   chartContainer: {
     height: 320,
-    width: "95%",
-    backgroundColor: "white",
+    width: '95%',
+    backgroundColor: 'white',
     marginBottom: 20,
     borderRadius: 10,
     paddingLeft: 20,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     shadowOpacity: 0.2,
     shadowRadius: 5,
     shadowOffset: {

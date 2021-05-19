@@ -1,7 +1,8 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
-export default ({ textItem, itemAmount }) => {
+
+export default ({ textItem, itemAmount, colorText }) => {
   return (
     <View style={styles.container}>
       <View style={styles.dot}></View>
@@ -9,7 +10,9 @@ export default ({ textItem, itemAmount }) => {
       <View style={styles.category}>
         <Text style={styles.analysis}>{textItem}</Text>
       </View>
-      <Text style={styles.amount}>${itemAmount}</Text>
+      <Text style={styles.amount, {color: colorText}}>
+        ${itemAmount}
+      </Text>
     </View>
   );
 };
@@ -52,5 +55,8 @@ const styles = StyleSheet.create({
   amount: {
     fontSize: 14,
     height: 14,
+
   },
 });
+
+

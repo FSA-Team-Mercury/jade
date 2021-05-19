@@ -1,31 +1,39 @@
-import React, { useState } from "react";
-import { View, Text, StyleSheet, TextInput } from "react-native";
-import * as yup from "yup";
-import { Formik } from "formik";
-import DeleteButton from "../shared/delete";
-import SaveButton from "../shared/save";
-import { gql, useMutation } from "@apollo/client";
-import { Snackbar } from "react-native-paper";
-import { client } from "../../App";
-import { UPDATE_AMOUNT, DELETE_BUDGET } from "../queries/budget";
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, TextInput } from 'react-native';
+import * as yup from 'yup';
+import { Formik } from 'formik';
+import DeleteButton from '../shared/delete';
+import SaveButton from '../shared/save';
+import { gql, useMutation } from '@apollo/client';
+import { Snackbar } from 'react-native-paper';
+import { client } from '../../App';
+import { UPDATE_AMOUNT, DELETE_BUDGET } from '../queries/budget';
+import { GET_BUDGETS } from '../queries/budget';
+import BudgetRecap from './BudgetRecap';
+import { useIsFocused } from '@react-navigation/native';
 
 const budgetSchema = yup.object({
   amount: yup.number().required(),
 });
-import { useIsFocused } from '@react-navigation/native';
-import BudgetRecap from './BudgetRecap';
 
 export default function SingleBudget({ navigation, route }) {
+  const [budget, setBudget] = useState(route.params)
   console.log(Object.keys(route));
+  console.log('IN SINGLE BUDGET ----->', route.params);
   const [updateAmount] = useMutation(UPDATE_AMOUNT);
   const [deleteBudget] = useMutation(DELETE_BUDGET);
+  // const [allBudgets, setAllBudgets] = useState(null);
+  const isFocused = useIsFocused();
 
-  // useEffect(() => {
-  //   const { budgets } = client.readQuery({
-  //     query: GET_BUDGETS,
-  //   });
-  //   setAllBudgets(budgets);
-  // }, [isFocused]);
+ useEffect(() => {
+   console.log('FIRST RENDER');
+   // const { budgets } = client.readQuery({
+   //   query: GET_BUDGETS,
+   // });
+
+   // setAllBudgets(budgets);
+   // console.log("BUDGETS IN SINGLE VIEW", allBudgets )
+ }, [isFocused]);
 
   const handleRemoveItem = async (budgetId) => {
     try {
@@ -59,6 +67,7 @@ export default function SingleBudget({ navigation, route }) {
         }}
         validationSchema={budgetSchema}
         onSubmit={async (values) => {
+          //update budget here?
           try {
             const { data: budgetData } = await updateAmount({
               variables: {
@@ -80,7 +89,8 @@ export default function SingleBudget({ navigation, route }) {
                 goalAmount: +budgetData.updateBudget.goalAmount,
               },
             });
-
+            console.log("IN SUBMIT ------->", budgetData)
+            setBudget(budgetData.updateBudget);
             setVisible(true);
           } catch (err) {
             throw err;
@@ -113,7 +123,7 @@ export default function SingleBudget({ navigation, route }) {
               />
             </View>
             <View style={styles.borderBottom}></View>
-            <BudgetRecap item={route.params} />
+            <BudgetRecap item={budget} />
           </View>
         )}
       </Formik>

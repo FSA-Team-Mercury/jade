@@ -1,27 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, ActivityIndicator } from 'react-native';
 import { client } from '../../App';
-import { gql } from '@apollo/client';
+import {FETCH_PLAID} from '../queries/plaid'
 
-const FETCH_PLAID = gql`
-  query FetchPlaid {
-    plaid {
-      total_transactions
-      accounts {
-        name
-        type
-      }
-      transactions {
-        account_id
-        amount
-        date
-        category
-        pending
-        merchant_name
-      }
-    }
-  }
-`;
+
 
 const init = {
   Travel: 0,
@@ -50,22 +32,24 @@ const getGraphData = (data) => {
 };
 
 const TODAY = new Date();
-const CURRENT_DAY = new Date().getDate(); //18
+const CURRENT_DAY = new Date().getDate();
 const NUM_DAYS_MONTH = new Date(
   TODAY.getFullYear(),
   TODAY.getMonth() + 1,
   0
-).getDate(); //31
+).getDate();
 
-export let DAILY_BUDGET;
+let DAILY_BUDGET;
 export let DAILY_AVERAGE_SPEND;
 export let CURRENT_SPEND;
 export let PROJECTED_MONTHLY_SPEND;
-export let PROJECTED_MONTHLY_SAVINGS;
+
 
 export default ({ item }) => {
+
   const [transactions, setTransactions] = useState(null);
   const [graphData, setGraphData] = useState({});
+
 
   //fetching Plaid transactions from beginning of month
   useEffect(() => {
@@ -80,6 +64,9 @@ export default ({ item }) => {
 
     setGraphData(data);
   }, []);
+
+  console.log('IN MONTHLY SPENT', graphData)
+
 
   if (!transactions) {
     return (
@@ -101,9 +88,6 @@ export default ({ item }) => {
     PROJECTED_MONTHLY_SPEND = parseInt(
     DAILY_AVERAGE_SPEND * NUM_DAYS_MONTH
   ).toFixed(2);
-    PROJECTED_MONTHLY_SAVINGS = parseInt(
-    item.goalAmount / 100 - PROJECTED_MONTHLY_SPEND
-  );
 
   return (
     <Text

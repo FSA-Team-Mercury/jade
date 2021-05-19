@@ -1,24 +1,41 @@
-import React, { useState } from 'react';
+import React, {useEffect} from 'react';
 import {
   View,
   SafeAreaView,
   ScrollView,
 } from 'react-native';
 import BulletPoint from './BulletPoint'
-import {DAILY_BUDGET,
+import {
 DAILY_AVERAGE_SPEND,
  CURRENT_SPEND,
  PROJECTED_MONTHLY_SPEND,
- PROJECTED_MONTHLY_SAVINGS} from './MonthlySpentCalc'
+ } from './MonthlySpentCalc'
+ import { useIsFocused } from '@react-navigation/native';
+
+let PROJECTED_MONTHLY_SAVINGS;
 
 export default ({ item }) => {
+  const isFocused = useIsFocused();
+
+
+  useEffect(() => {
+    return () => {
+    };
+  }, [item, isFocused]);
+
   const TODAY = new Date();
-  const CURRENT_DAY = new Date().getDate(); //18
   const NUM_DAYS_MONTH = new Date(
     TODAY.getFullYear(),
     TODAY.getMonth() + 1,
     0
-  ).getDate(); //31
+  ).getDate();
+
+  const DAILY_BUDGET_WITH_UPDATE = parseInt((item.goalAmount / 100 / NUM_DAYS_MONTH).toFixed(2));
+
+  PROJECTED_MONTHLY_SAVINGS = parseInt(
+    item.goalAmount / 100 - PROJECTED_MONTHLY_SPEND
+  );
+
   return (
     <SafeAreaView>
       <ScrollView>
@@ -28,7 +45,10 @@ export default ({ item }) => {
             textItem={'Amount spent so far'}
             itemAmount={CURRENT_SPEND}
           />
-          <BulletPoint textItem={'Daily Budget'} itemAmount={DAILY_BUDGET} />
+          <BulletPoint
+            textItem={'Daily Budget'}
+            itemAmount={DAILY_BUDGET_WITH_UPDATE}
+          />
           <BulletPoint
             textItem={'Daily Average Spend'}
             itemAmount={DAILY_AVERAGE_SPEND}
@@ -40,11 +60,12 @@ export default ({ item }) => {
           <BulletPoint
             textItem={'Projected Monthly Savings'}
             itemAmount={PROJECTED_MONTHLY_SAVINGS}
+            colorText={PROJECTED_MONTHLY_SAVINGS <= 0 ? 'red' : 'green'}
           />
         </View>
       </ScrollView>
     </SafeAreaView>
   );
-};;
+};;;
 
 
