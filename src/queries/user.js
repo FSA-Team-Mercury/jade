@@ -43,6 +43,13 @@ export const GET_USER_DATA = gql`
       type
       badgeImage
     }
+    userChallenges{
+      id
+      type
+      endDate
+      startDate
+      completed
+    }
   }
 `;
 

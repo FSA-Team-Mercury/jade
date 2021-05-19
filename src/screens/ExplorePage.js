@@ -6,18 +6,20 @@ import ExploreFriends from './ExploreFriends'
 import { client } from "../../App";
 import { gql,useQuery } from "@apollo/client";
 import { useNavigation } from "@react-navigation/native";
-import { Badges } from "./Badges";
+import Badges from "./Badges";
 
-
-const display = {
-  MUTUAL_FRIENDS: <MutualFriends />,
-  FRIENDS: <ExploreFriends />,
-  BADGES: <Badges />,
-}
 
 export default function ExplorePage(props){
   const [selected, setSelected]= useState('FRIENDS')
   const navigation = useNavigation();
+
+  const display = {
+    MUTUAL_FRIENDS: <MutualFriends />,
+    FRIENDS: <ExploreFriends />,
+    BADGES: <Badges {...props}/>,
+  }
+
+  console.log('Explore page props-->', props)
 
   function handlePress(pageName){
     setSelected(pageName)

@@ -2,37 +2,30 @@ import React, {useState, useEffect} from 'react'
 import {View,Text, SafeAreaView, ScrollView,Image,TextInput,TouchableOpacity,FlatList,ActivityIndicator,StyleSheet} from 'react-native'
 import { client } from "../../App";
 import { gql, useQuery, useMutation } from "@apollo/client";
-import Challenges from "./Challenges";
 
-const GET_BADGES = gql`
-  query GetBadges{
-    userBadges{
+const GET_CHALLENGES = gql`
+  query GetChallenges{
+    userChallenges{
       id
       type
-      badgeImage
+      endDate
+      startDate
+      completed
     }
   }
 `
-const images = {
-    rainbow: require('../../assets/badges/rainbow.png'),
-    earth: require('../../assets/badges/earth.png'),
-    thunder: require('../../assets/badges/thunder.png'),
-    cascade: require('../../assets/badges/cascade.png'),
-}
 
-export default function Badges(props) {
-    const [allBadges, setAllBadges] = useState(null);
+export default function Challenges(props) {
+    const [allChallenges, setAllChallenges] = useState(null);
   
     useEffect(() => {
         const data = client.readQuery({
-            query: GET_BADGES,
+            query: GET_CHALLENGES,
         });
-        setAllBadges(data.userBadges);
+        setAllChallenges(data.userChallenges);
     });
-
-    console.log('badge props----->', props)
-
-    if (!allBadges) {
+  
+    if (!allChallenges) {
         return (
             <View>
             <ActivityIndicator size="large" color="#00A86B" />
@@ -43,22 +36,30 @@ export default function Badges(props) {
     return (
         <SafeAreaView>
             <View style={style.container}>
-                <View style={style.badges}>
+                <View style={style.challenges}>
                     <FlatList
-                        data={allBadges}
+                        data={allChalenges}
                         keyExtractor={(item) => item.id}
                         renderItem={({ item }) => (
-                        <View style={style.badgeContainer}>
-                            <Image style={style.badgeImage} source={images[item.badgeImage]}/> 
-                            <Text style={style.badgeType} >{item.type}</Text>
+                        <View style={style.challengeContainer}>
+                            {/* <Image style={style.badgeImage} source={images[item.badgeImage]}/> //challenge card
+                            <Text style={style.badgeType} >{item.type}</Text> */}
                         </View>
                     )}
                     />
-                    <TouchableOpacity onPress={() => props.navigation.navigate("Challenges")}>
-                        <Text>Challenges</Text>
+                    <TouchableOpacity 
+                    // onPress={() => props.navigation.navigate("Add Challenge")}
+                    >
+                        <View style={style.addChallenge}>
+                            <MaterialCommunityIcons
+                            name="plus-circle"
+                            color={"#00A86B"}
+                            size={70}
+                            />
+                        </View>
                     </TouchableOpacity>
                 </View>
-                </View>
+            </View>
         </SafeAreaView>
     );
 }
@@ -84,24 +85,19 @@ const style = StyleSheet.create({
         alignItems: 'center',
         // justifyContent: 'flex-start',
     },
-    badges: {
+    challenges: {
         width: '95%',
         ...center,
     },
 
-    badgeContainer: {
+    challengeContainer: {
         flex: 1, 
         flexDirection: 'column',
     },
 
-    badgeType: {
+    challengeType: {
         fontSize: 18,
         color: '#00A86B',
-    },
-
-    badgeImage: {
-        height: 100,
-        width: '25%',
     },
     
     categoryName: {

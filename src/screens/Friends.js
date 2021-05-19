@@ -47,7 +47,7 @@ export default function Friends(props) {
       </View>
     );
   }
-  return <ExplorePage navigation={props.navigation}/>
+  return <ExplorePage {...props}/>
 //   return (
 //     <View>
 //       <SafeAreaView>
