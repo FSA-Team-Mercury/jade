@@ -16,16 +16,19 @@ import ExploreFriends from "./ExploreFriends";
 import { client } from "../../App";
 import { gql, useQuery } from "@apollo/client";
 import { useNavigation } from "@react-navigation/native";
-import FriendRequests from './FriendRequests'
 
-const display = {
-  PENDING_FRIENDS: <FriendRequests />,
-  FRIENDS: <ExploreFriends />,
-};
+import FriendRequests from './FriendRequests'
+import Badges from "./Badges";
 
 export default function ExplorePage() {
   const [selected, setSelected] = useState("FRIENDS");
   const navigation = useNavigation();
+
+  const display = {
+    PENDING_FRIENDS: <FriendRequests />,
+    FRIENDS: <ExploreFriends />,
+    BADGES: <Badges {...props}/>,
+  };
 
   function handlePress(pageName) {
     setSelected(pageName);

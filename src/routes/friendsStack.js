@@ -6,6 +6,8 @@ import SingleFriend from "../screens/SingleFriend";
 import AddFriend from "../screens/AddFriend";
 import FriendsHeader from "../shared/friendsHeader";
 import SearchUsers from "../screens/SearchUsers";
+import Badges from "../screens/Badges";
+import Challenges from "../screens/Challenges";
 
 const Stack = createStackNavigator();
 
@@ -34,10 +36,27 @@ export default function FriendsStack() {
         name="Add Friend"
         component={AddFriend}
         options={({ navigation }) => ({
-          title: "",
+          title: "user search",
           headerTintColor: "#00A86B",
         })}
       />
+      <Stack.Screen
+        name="Badges"
+        component={Badges}
+        options={({ navigation }) => ({
+          title: "badges",
+          headerTintColor: "#00A86B",
+        })}
+      />
+      <Stack.Screen
+        name="Challenges"
+        component={Challenges}
+        options={({ navigation }) => ({
+          title: "challenges",
+          headerTintColor: "#00A86B",
+        })}
+      />
+      
     </Stack.Navigator>
   );
 }

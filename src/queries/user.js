@@ -38,6 +38,18 @@ export const GET_USER_DATA = gql`
       goalAmount
       currentAmount
     }
+    userBadges {
+      id
+      type
+      badgeImage
+    }
+    userChallenges{
+      id
+      type
+      endDate
+      startDate
+      completed
+    }
   }
 `;
 
