@@ -47,49 +47,49 @@ export default function Friends(props) {
       </View>
     );
   }
-  return <ExplorePage />;
-  return (
-    <View>
-      <SafeAreaView>
-        <ScrollView>
-          <View style={style.friends}>
-            <View style={style.friendsHeader}>
-              <Text style={style.friendsHeaderText}>Your Friends</Text>
-            </View>
-            <FlatList
-              data={allFriends}
-              keyExtractor={(item) => item.id}
-              renderItem={({ item }) => (
-                <TouchableOpacity
-                  onPress={() => props.navigation.navigate("Single Friend")}
-                >
-                  <FriendCard>
-                    <Text style={style.categoryName}>{item.username}</Text>
-                    {/* add image? */}
-                  </FriendCard>
-                </TouchableOpacity>
-              )}
-            />
+  return <ExplorePage {...props}/>
+//   return (
+//     <View>
+//       <SafeAreaView>
+//         <ScrollView>
+//           <View style={style.friends}>
+//             <View style={style.friendsHeader}>
+//               <Text style={style.friendsHeaderText}>Your Friends</Text>
+//             </View>
+//             <FlatList
+//               data={allFriends}
+//               keyExtractor={(item) => item.id}
+//               renderItem={({ item }) => (
+//                 <TouchableOpacity
+//                   onPress={() => props.navigation.navigate("Single Friend")}
+//                 >
+//                   <FriendCard>
+//                     <Text style={style.categoryName}>{item.username}</Text>
+//                     {/* add image? */}
+//                   </FriendCard>
+//                 </TouchableOpacity>
+//               )}
+//             />
 
-            {/* buttons */}
+//             {/* buttons */}
 
-            <TouchableOpacity
-              onPress={() => props.navigation.navigate("Add Friend")}
-            >
-              <View style={style.addFriend}>
-                <Text>Add Friends</Text>
-                <MaterialCommunityIcons
-                  name="plus-circle"
-                  color={"#00A86B"}
-                  size={27}
-                />
-              </View>
-            </TouchableOpacity>
-          </View>
-        </ScrollView>
-      </SafeAreaView>
-    </View>
-  );
+//             <TouchableOpacity
+//               onPress={() => props.navigation.navigate("Add Friend")}
+//             >
+//               <View style={style.addFriend}>
+//                 <Text>Add Friends</Text>
+//                 <MaterialCommunityIcons
+//                   name="plus-circle"
+//                   color={"#00A86B"}
+//                   size={27}
+//                 />
+//               </View>
+//             </TouchableOpacity>
+//           </View>
+//         </ScrollView>
+//       </SafeAreaView>
+//     </View>
+//   );
 }
 
 const center = {
