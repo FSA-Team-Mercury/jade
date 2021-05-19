@@ -11,8 +11,6 @@ const SEARCH_USERS = gql`
         profileImage
         relationship
       }
-
-
     }
   }
 `
@@ -27,6 +25,7 @@ const REQUEST_FRIENDSHIP = gql`
 `
 
 export default function SearchUsers({route}){
+  // friendship type: FRIENDS, PENDING, NOT_FRIENDS
   const [results, setResults] = useState(false)
   const [oldSearch, setOldSearch] = useState('')
   const [requestFriendship] = useMutation(REQUEST_FRIENDSHIP)
@@ -46,20 +45,26 @@ export default function SearchUsers({route}){
     setOldSearch(search)
   }
 
-  async function addFriend(friendId){
+  async function addFriend(friendId, relationship){
+    if (relationship !== 'NOT_FRIENDS'){
+      alert('you are friends with this user')
+      return
+    }
     requestFriendship({
       variables:{
         friendId
       }
     })
   }
+
   if (data){
-    console.log('pending firends-->', data.searchUsers.result)
+    console.log(' search result-->', result)
   }
+
   return (
     <View>
       {
-        !result ? <Text>No Reuslts</Text> : (
+         !result.length  ? <Text>No Reuslts</Text> : (
           result.map(user=>{
             return (
               <View style={styles.user}>
@@ -72,7 +77,7 @@ export default function SearchUsers({route}){
                   </View>
                   <TouchableOpacity
                     style={styles.unfollow}
-                    onPress={()=>addFriend(user.id)}
+                    onPress={()=>addFriend(user.id, user.relationship)}
                     >
                     <Text style={{color:'white'}}>Friend</Text>
                   </TouchableOpacity>

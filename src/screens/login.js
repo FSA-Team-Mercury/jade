@@ -41,7 +41,7 @@ export default function Login(props) {
         style={signinStyles.logo}
       />
       <Formik
-        initialValues={{ username: "cody", password: "12345" }}
+        initialValues={{ username: "murphy", password: "12345" }}
         validationSchema={reviewSchema}
         onSubmit={(text, { setSubmitting, setFieldError }) => {
           //logic to handle login
