@@ -51,7 +51,7 @@ export default function ExploreFriends(){
         })
       }
       })
-      setFriends(friends.filter(user=>{ 
+      setFriends(friends.filter(user=>{
         console.log('in for loop!!!!-->>', user)
         return friendId !== user.id
       }))
@@ -66,12 +66,11 @@ export default function ExploreFriends(){
         </View>
       );
     }
-    console.log('SET BYE DB REQUEST', data.friends)
     if (!friends){
       setFriends(data.friends || [])
     }
+    console.log('users friends-->', friends)
 
-  console.log('setFrieds!!!\n\n', friends,'\n\n')
   return (
     <View style={friend.page}>
       {/* <Text>Hello from friends</Text> */}
@@ -86,7 +85,7 @@ export default function ExploreFriends(){
                 </View>
                   <View>
                   <Text style={friend.name}>{user.username}</Text>
-                  <Text style={friend.userName}>UserName</Text>
+                  {/* <Text style={friend.userName}>UserName</Text> */}
                   </View>
                   <TouchableOpacity
                     style={friend.unfollow}
