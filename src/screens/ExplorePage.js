@@ -108,7 +108,7 @@ export default function ExplorePage() {
                   : styles.nonSelectedText
               }
             >
-              Badges
+              Challenges
             </Text>
           </TouchableOpacity>
         </View>
