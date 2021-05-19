@@ -53,7 +53,9 @@ export default function FriendRequests(){
 
   useEffect(()=>{
       console.log('data in effect', data)
-      const res = data ? data.pendingFriends : false
+      // if data try to get pendingFriends else save empty array
+      const res = data ? ( data.pendingFriends ? data.pendingFriends : []) : []
+
       if(loading === false && data){
         setPendingFriends(res);
     }
@@ -82,7 +84,7 @@ export default function FriendRequests(){
               let newPendingList =  pendingFriends.filter(user=> {
                 return friendId !== readField('id', user)
               })
-              setPendingFriends(newPendingList)
+              setPendingFriends(newPendingList || [])
               return newPendingList
             }
           }
