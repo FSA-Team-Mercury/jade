@@ -92,17 +92,18 @@ export default function ExploreFriends() {
       ) : (
         friends.map((user) => {
           return (
-            <View style={friend.container} key={user.id}>
-              <View style={friend.levelOne}>
-                <View style={friend.profileImageContainer}>
-                  <Image
-                    source={images.avatar[user.profileImage]}
-                    style={friend.profilePic}
-                  />
-                </View>
-                <View>
-                  <Text style={friend.name}>{user.username}</Text>
-                  {/* <Text style={friend.userName}>UserName</Text> */}
+            <View>
+              <View style={friend.container} key={user.id}>
+                <View style={friend.levelOne}>
+                  <View style={friend.profileImageContainer}>
+                    <Image
+                      source={images.avatar[user.profileImage]}
+                      style={friend.profilePic}
+                    />
+                  </View>
+                  <View>
+                    <Text style={friend.name}>{user.username}</Text>
+                    {/* <Text style={friend.userName}>UserName</Text> */}
                   </View>
                   <TouchableOpacity
                     style={friend.unfollow}
@@ -119,8 +120,8 @@ export default function ExploreFriends() {
                 </TouchableOpacity>
               </View>
               {/* <View style={friend.levelTwo}>
-                <Text>Badges</Text>
-              </View> */}
+                 <Text>Badges</Text>
+               </View> */}
 
               <View style={friend.levelThree}>
                 {!user.badges.length ? (

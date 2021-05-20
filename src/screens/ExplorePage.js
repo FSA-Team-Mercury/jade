@@ -20,7 +20,7 @@ import { useIsFocused } from "@react-navigation/native";
 
 import FriendRequests from "./FriendRequests";
 import Badges from "./Badges";
-import CreateMultiUserChallenge from "./CreateMultiUserChallenge";
+// import CreateMultiUserChallenge from "./CreateMultiUserChallenge";
 
 export default function ExplorePage(props) {
   const [selected, setSelected] = useState('CHALLENGES')//"FRIENDS");

@@ -6,7 +6,7 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 export default function SingleChallenge({ item }) {
 
   let today = new Date();
-  item = {...item}
+  // item = {...item}
 
   console.log('item-->', item)
   console.log('today-->', today)
