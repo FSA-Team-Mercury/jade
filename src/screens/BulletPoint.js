@@ -52,13 +52,13 @@ const styles = StyleSheet.create({
 
   analysis: {
     fontSize: 16,
-    height: 16,
+    height: 30,
     padding: 0,
     margin: 0,
   },
   amount: {
     fontSize: 20,
-    height: 14,
+    height: 30,
   },
 });
 

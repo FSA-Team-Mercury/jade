@@ -114,7 +114,7 @@ export default function Budget(props) {
               )}
             />
             {/* ADD BUDGET BUTTON */}
-            <TouchableOpacity
+            <TouchableOpacity style={{backgroundColor: 'blue'}}
               onPress={() => props.navigation.navigate('Add Budget')}
             >
               <View style= {style.addButtonContainer}>
