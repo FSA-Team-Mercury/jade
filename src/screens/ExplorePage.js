@@ -16,18 +16,21 @@ import ExploreFriends from "./ExploreFriends";
 import { client } from "../../App";
 import { gql, useQuery } from "@apollo/client";
 import { useNavigation } from "@react-navigation/native";
+import { useIsFocused } from "@react-navigation/native";
 
-import FriendRequests from './FriendRequests'
+import FriendRequests from "./FriendRequests";
 import Badges from "./Badges";
+import CreateMultiUserChallenge from "./CreateMultiUserChallenge";
 
-export default function ExplorePage() {
-  const [selected, setSelected] = useState("FRIENDS");
+export default function ExplorePage(props) {
+  const [selected, setSelected] = useState('CHALLENGES')//"FRIENDS");
   const navigation = useNavigation();
+  const isFocused = useIsFocused();
 
   const display = {
     PENDING_FRIENDS: <FriendRequests />,
     FRIENDS: <ExploreFriends />,
-    BADGES: <Badges {...props}/>,
+    CHALLENGES: <Badges {...props} />,
   };
 
   function handlePress(pageName) {
@@ -39,6 +42,8 @@ export default function ExplorePage() {
       search,
     });
   }
+  
+  // return <CreateMultiUserChallenge />;
   return (
     <SafeAreaView>
       <ScrollView style={styles.scrollView}>
@@ -98,15 +103,15 @@ export default function ExplorePage() {
 
           <TouchableOpacity
             style={
-              selected === "BADGES"
+              selected === "CHALLENGES"
                 ? styles.selectedViewBtn
                 : styles.nonSelectViewBtn
             }
-            onPress={() => handlePress("BADGES")}
+            onPress={() => handlePress("CHALLENGES")}
           >
             <Text
               style={
-                selected === "BADGES"
+                selected === "CHALLENGES"
                   ? styles.selectedText
                   : styles.nonSelectedText
               }
@@ -116,8 +121,14 @@ export default function ExplorePage() {
           </TouchableOpacity>
         </View>
         {display[selected]}
-
       </ScrollView>
+      <TouchableOpacity style={styles.createChallengeBtn}
+      onPress={()=>{
+        navigation.navigate("Add Challenge");
+      }}
+      >
+        <Text style={styles.btnText}>+</Text>
+      </TouchableOpacity>
     </SafeAreaView>
   );
 }
@@ -141,6 +152,7 @@ const styles = StyleSheet.create({
     height: "100%",
     width: "100%",
     backgroundColor: "white",
+    position: "relative",
     // alignItems: "center",
   },
   searchBox: {
@@ -206,5 +218,20 @@ const styles = StyleSheet.create({
   nonSelectedText: {
     fontSize: 12,
     color: "black",
+  },
+  createChallengeBtn: {
+    position: "absolute",
+    bottom: 30,
+    right: 30,
+    height: 70,
+    width: 70,
+    borderRadius: 100,
+    backgroundColor: "#00A86B",
+    ...shadow,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  btnText: {
+    fontSize: 30,
   },
 });
