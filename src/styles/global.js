@@ -34,3 +34,14 @@ export const globalStyles = StyleSheet.create({
     textAlign: "center",
   },
 });
+
+export const images = {
+  avatar: {
+    rihanna: require("../../assets/images/icons8-rihanna-96.png"),
+    ozil: require("../../assets/images/icons8-ozil-96.png"),
+    salah: require("../../assets/images/icons8-salah-96.png"),
+    robo: require("../../assets/images/icons8-bmo-48.png"),
+    "sophia-loren": require("../../assets/images/icons8-sophia-loren-48.png"),
+    beyonce: require("../../assets/images/icons8-beyonce-48.png"),
+  },
+};
