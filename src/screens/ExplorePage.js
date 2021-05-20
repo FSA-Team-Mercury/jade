@@ -20,10 +20,10 @@ import { useIsFocused } from "@react-navigation/native";
 
 import FriendRequests from "./FriendRequests";
 import Badges from "./Badges";
-import CreateMultiUserChallenge from "./CreateMultiUserChallenge";
+//import CreateMultiUserChallenge from "./CreateMultiUserChallenge";
 
 export default function ExplorePage(props) {
-  const [selected, setSelected] = useState('CHALLENGES')//"FRIENDS");
+  const [selected, setSelected] = useState("CHALLENGES"); //"FRIENDS");
   const navigation = useNavigation();
   const isFocused = useIsFocused();
 
@@ -42,7 +42,7 @@ export default function ExplorePage(props) {
       search,
     });
   }
-  
+
   // return <CreateMultiUserChallenge />;
   return (
     <SafeAreaView>
@@ -55,7 +55,7 @@ export default function ExplorePage(props) {
           <TextInput
             style={styles.searchField}
             placeholder="Search..."
-            onSubmitEditing={event => {
+            onSubmitEditing={(event) => {
               let search = event.nativeEvent.text;
               return searchUsers(search);
             }}
@@ -122,10 +122,11 @@ export default function ExplorePage(props) {
         </View>
         {display[selected]}
       </ScrollView>
-      <TouchableOpacity style={styles.createChallengeBtn}
-      onPress={()=>{
-        navigation.navigate("Add Challenge");
-      }}
+      <TouchableOpacity
+        style={styles.createChallengeBtn}
+        onPress={() => {
+          navigation.navigate("Add Challenge");
+        }}
       >
         <Text style={styles.btnText}>+</Text>
       </TouchableOpacity>

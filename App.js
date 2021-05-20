@@ -70,14 +70,14 @@ export default function App() {
             headerShown: false,
           }}
         >
-          <Stack.Screen name="Login">
-            {props => <Login {...props} />}
+          <Stack.Screen name='Login'>
+            {(props) => <Login {...props} />}
           </Stack.Screen>
           <Stack.Screen name="Signup">
             {(props) => <Signup {...props} />}
           </Stack.Screen>
-          <Stack.Screen name="Nav">
-            {props => <TabNav {...props} client={client} />}
+          <Stack.Screen name='Nav'>
+            {(props) => <TabNav {...props} client={client} />}
           </Stack.Screen>
           <Stack.Screen name="Home">
             {(props) => <Home {...props} client={client} />}

@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   StyleSheet,
-  Picker
+  Picker,
 } from "react-native";
 
 import { useIsFocused } from "@react-navigation/native";
@@ -22,22 +22,20 @@ import {
   LEAVE_CHALLENGE,
 } from "../queries/multiChallenges";
 
-
-export default ()=>{
+export default () => {
   const { data, loading, error } = useQuery(FETCH_ALL_CHALLENGES);
   const isFocused = useIsFocused();
 
-
-  useEffect(()=>{
+  useEffect(() => {
     // console.log('endDate-->', endDate)
     return () => {
       console.log("unmounting multi user challenges");
     };
-  },[isFocused])
-  function getUsersCompeting(users){
-    const newObj = users.reduce((accum,user)=>{
-      accum.push()
-    },[])
+  }, [isFocused]);
+  function getUsersCompeting(users) {
+    const newObj = users.reduce((accum, user) => {
+      accum.push();
+    }, []);
   }
   if (loading) {
     return (
@@ -47,60 +45,53 @@ export default ()=>{
     );
   }
 
-  const {multiPlayerChallenges} = data.allMultiPlayerChallenges
+  const { multiPlayerChallenges } = data.allMultiPlayerChallenges;
   // const userId = multiPlayerChallenges.id
-  console.log('multiPlayerChallenges---->',data)
-  if (!multiPlayerChallenges.length){
-    return <Text>No Challenges</Text>
+  console.log("multiPlayerChallenges---->", data);
+  if (!multiPlayerChallenges.length) {
+    return <Text>No Challenges</Text>;
   }
   return (
     <View style={styles.challengePage}>
       <Text style={styles.title}>Challenges Against Friends</Text>
-        {
-          multiPlayerChallenges.map(challenge=>{
-            // console.log("cahllenge--->", challenge)
-            const contenders = challenge.users
-            return (
-              <View style={styles.container}>
-              <View>
+      {multiPlayerChallenges.map(challenge => {
+        // console.log("cahllenge--->", challenge)
+        const contenders = challenge.users;
+        return (
+          <View style={styles.container}>
+            <View>
               <View style={styles.levelOne}>
-                <View style={styles.imageUrlContainer}>
+                <View style={styles.badgeImageContainer}>
                   <Image
-                    // source={images.avatar[user.imageUrl]}
+                    // source={images.avatar[user.badgeImage]}
                     style={styles.profilePic}
                   />
                 </View>
                 <View>
                   <Text style={styles.name}> {challenge.name}</Text>
                   {/* <Text style={styles.userName}>UserName</Text> */}
-                  </View>
-                  <TouchableOpacity
-                    style={styles.view}
-                    >
-                    <Text style={{color:'white'}}>View Status</Text>
-                  </TouchableOpacity>
                 </View>
-              </View>
-              <Text style={{marginRight:'auto', marginLeft:'auto'}}>Vs.</Text>
-              <View style={styles.levelThree}>
-                {
-                  contenders.map(user=>{
-                    return (
-                      <View style={styles.badge}>
-                        <View style={styles.badgeImage}></View>
-                      </View>
-                    )
-                  })
-                }
-
+                <TouchableOpacity style={styles.view}>
+                  <Text style={{ color: "white" }}>View Status</Text>
+                </TouchableOpacity>
               </View>
             </View>
-            )
-          })
-        }
+            <Text style={{ marginRight: "auto", marginLeft: "auto" }}>Vs.</Text>
+            <View style={styles.levelThree}>
+              {contenders.map(user => {
+                return (
+                  <View style={styles.badge}>
+                    <View style={styles.badgeImage}></View>
+                  </View>
+                );
+              })}
+            </View>
+          </View>
+        );
+      })}
     </View>
   );
-}
+};
 
 const shadow = {
   shadowOffset: {
@@ -111,10 +102,10 @@ const shadow = {
   shadowRadius: 10,
 };
 
-const center= {
-  marginLeft: 'auto',
-  marginRight: 'auto'
-}
+const center = {
+  marginLeft: "auto",
+  marginRight: "auto",
+};
 
 const styles = StyleSheet.create({
   page: {
@@ -124,12 +115,12 @@ const styles = StyleSheet.create({
     // backgroundColor:'yellow',
     alignItems: "center",
   },
-  title:{
+  title: {
     fontSize: 20,
-    fontWeight:'500',
+    fontWeight: "500",
     ...center,
     marginBottom: 20,
-    marginTop: 10
+    marginTop: 10,
   },
   container: {
     height: 180,
@@ -151,7 +142,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
   },
-  imageUrlContainer: {
+  badgeImageContainer: {
     height: 65,
     width: 65,
     backgroundColor: "black",
@@ -181,7 +172,7 @@ const styles = StyleSheet.create({
   view: {
     height: 30,
     width: 100,
-    backgroundColor: '#00A86B',
+    backgroundColor: "#00A86B",
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 10,

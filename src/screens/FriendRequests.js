@@ -16,7 +16,7 @@ const FETCH_PENDING_FRIENDS = gql`
     pendingFriends{
       id
       username
-      imageUrl
+      profileImage
     }
   }
 `
@@ -36,10 +36,10 @@ const FETCH_FRIENDS = gql`
     friends{
       id
       username
-      imageUrl
+      profileImage
       badges{
         type
-        imageUrl
+        badgeImage
         createdAt
       }
     }
@@ -105,7 +105,7 @@ export default function FriendRequests(){
               return (
                 <View style={styles.userContainer}>
                   <View style={styles.levelOne}>
-                    <View style={styles.imageUrl}></View>
+                    <View style={styles.badgeImage}></View>
                     <Text style={styles.username}>{user.username}</Text>
                   </View>
                   <View style={styles.levelTwo}>
@@ -168,7 +168,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center'
   },
-  imageUrl:{
+  badgeImage:{
     height: 70,
     width: 70,
     backgroundColor: 'black',

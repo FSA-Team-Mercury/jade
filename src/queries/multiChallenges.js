@@ -35,7 +35,7 @@ export const FETCH_ALL_CHALLENGES = gql`
       users {
         id
         username
-        imageUrl
+        profileImage
         user_challenge {
           currentAmout
           leftChallenge
@@ -57,7 +57,7 @@ export const FETCH_CURENT_CHALLENGES = gql`
       users {
         id
         username
-        imageUrl
+        profileImage
         user_challenge {
           currentAmout
           leftChallenge

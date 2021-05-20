@@ -5,15 +5,6 @@ export const globalStyles = StyleSheet.create({
     flex: 1,
     padding: 20,
   },
-  titleText: {
-    fontFamily: "nunito-bold",
-    fontSize: 18,
-    color: "#333",
-  },
-  paragraph: {
-    marginVertical: 8,
-    lineHeight: 20,
-  },
   buttonContainer: {
     backgroundColor: "#007AFF",
     width: 200,
@@ -29,9 +20,16 @@ export const globalStyles = StyleSheet.create({
   errorText: {
     color: "crimson",
     fontWeight: "bold",
-    marginBottom: 10,
     marginTop: 6,
     textAlign: "center",
+  },
+  profilePic: {
+    height: 60,
+    width: 60,
+    borderRadius: 100,
+    backgroundColor: "lightgrey",
+    marginLeft: 10,
+    marginRight: 10,
   },
 });
 
@@ -43,5 +41,6 @@ export const images = {
     robo: require("../../assets/images/icons8-bmo-48.png"),
     "sophia-loren": require("../../assets/images/icons8-sophia-loren-48.png"),
     beyonce: require("../../assets/images/icons8-beyonce-48.png"),
+    "bad-bunny": require("../../assets/images/icons8-bad-bunny-48.png"),
   },
 };

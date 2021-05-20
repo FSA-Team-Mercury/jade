@@ -5,35 +5,31 @@ import {
   View,
   Text,
   StyleSheet,
-  Button,
   TextInput,
   //depracated, but works better than the alternative
-  Alert,
 } from "react-native";
 import * as yup from "yup";
 import { Picker } from "@react-native-picker/picker";
 import { GET_USER_DATA } from "../queries/user";
 import { Snackbar } from "react-native-paper";
 import { ADD_BUDGET } from "../queries/budget";
-
+import { globalStyles } from "../styles/global";
+import SubmitButton from "../shared/submit";
 const reviewSchema = yup.object({
   amount: yup.number().required(),
 });
 
 export default function AddBudget({ navigation }) {
   const [addBudget] = useMutation(ADD_BUDGET);
-  const [error, setError] = useState(false);
   const [visible, setVisible] = useState(false);
   const onDismissSnackBar = () => setVisible(false);
 
   return (
     <View style={styles.container}>
-      <Text style={styles.titleText}>Add Budget</Text>
-
       <Formik
-        initialValues={{ category: "", amount: "" }}
+        initialValues={{ category: "Food and Drink", amount: "" }}
         validationSchema={reviewSchema}
-        onSubmit={(values) => {
+        onSubmit={(values, { setSubmitting, setFieldError }) => {
           addBudget({
             variables: {
               category: values.category,
@@ -53,19 +49,14 @@ export default function AddBudget({ navigation }) {
             .then((res) => {
               setVisible(true);
             })
-            .catch((error) => {
-              Alert.alert("Budget already exists.", "Please select another.", [
-                {
-                  text: "Continue",
-                  onPress: () => console.log("alert closed"),
-                },
-              ]);
-              setError(true);
+            .catch((err) => {
+              setFieldError("amount", err.message);
+              setSubmitting(false);
             });
         }}
       >
         {(formikProps) => (
-          <View>
+          <View style={styles.formContainer}>
             <Picker
               autoCapitalize="none"
               name="category"
@@ -77,7 +68,6 @@ export default function AddBudget({ navigation }) {
               <Picker.Item label="Shops" value="Shops" />
               <Picker.Item label="Entertainment" value="Entertainment" />
               <Picker.Item label="Recreation" value="Recreation" />
-              <Picker.Item label="Transfer" value="Transfer" />
               <Picker.Item label="Payment" value="Payment" />
               <Picker.Item label="Travel" value="Travel" />
               <Picker.Item label="Other" value="Other" />
@@ -96,18 +86,11 @@ export default function AddBudget({ navigation }) {
               value={formikProps.values.amount}
               onBlur={formikProps.handleBlur("amount")}
             />
-            <Text>
+            <Text style={globalStyles.errorText}>
               {formikProps.touched.amount && formikProps.errors.amount}
             </Text>
-            {/* <Text style={styles.errorText}>
-              {error && 'You already have a budget for this category.'}
-            </Text> */}
 
-            <Button
-              text="Submit Budget"
-              onPress={formikProps.handleSubmit}
-              title="Submit"
-            />
+            <SubmitButton onPress={formikProps.handleSubmit} text="Submit" />
             <Snackbar
               visible={visible}
               onDismiss={onDismissSnackBar}
@@ -128,8 +111,12 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    //   paddingTop: 200,
-    //   padding: 40,
+    marginTop: 40,
+  },
+  formContainer: {
+    flex: 1,
+    justifyContent: "flex-start",
+    alignItems: "center",
   },
   input: {
     borderWidth: 1,
@@ -152,26 +139,14 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
   },
   titleText: {
-    // fontFamily: "",
     fontSize: 30,
     color: "#333",
     padding: 30,
   },
   snack: {
-    // display: 'flex',
-    // justifyContent: 'center',
     backgroundColor: "green",
-    marginBottom: -90,
-    marginVertical: 70,
-    // alignItems: 'flex-end',
-    // marginTop: 150,
-    // marginHorizontal: 0,
-    marginRight: 120,
-    // marginLeft: 50
+    width: "100%",
     fontSize: 16,
-  },
-  errorText: {
-    fontSize: 16,
-    color: "red",
+    alignSelf: "center",
   },
 });

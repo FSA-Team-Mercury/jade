@@ -57,7 +57,7 @@ export default function Signup(props) {
               variables: {
                 username: text.username,
                 password: text.password,
-                imageUrl: img,
+                profileImage: img,
               },
             });
             await AsyncStorage.clear();
@@ -130,6 +130,43 @@ export default function Signup(props) {
                   icon: () => (
                     <Image
                       source={images.avatar["salah"]}
+                      style={styles.icon}
+                    />
+                  ),
+                },
+                {
+                  label: "Benito",
+                  value: "bad-bunny",
+                  icon: () => (
+                    <Image
+                      source={images.avatar["bad-bunny"]}
+                      style={styles.icon}
+                    />
+                  ),
+                },
+                {
+                  label: "Robo",
+                  value: "robo",
+                  icon: () => (
+                    <Image source={images.avatar["robo"]} style={styles.icon} />
+                  ),
+                },
+                {
+                  label: "Bey",
+                  value: "beyonce",
+                  icon: () => (
+                    <Image
+                      source={images.avatar["beyonce"]}
+                      style={styles.icon}
+                    />
+                  ),
+                },
+                {
+                  label: "Sophie",
+                  value: "sophia-loren",
+                  icon: () => (
+                    <Image
+                      source={images.avatar["sophia-loren"]}
                       style={styles.icon}
                     />
                   ),
