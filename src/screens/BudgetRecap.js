@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, SafeAreaView, ScrollView } from 'react-native';
+import { View, SafeAreaView, ScrollView, StyleSheet } from 'react-native';
 import BulletPoint from './BulletPoint';
 import { GRAPH_DATA } from './Budget';
 import { CURRENT_DAY, NUM_DAYS_MONTH } from './MonthlySpentCalc';
@@ -25,22 +25,27 @@ export default ({ item }) => {
 
   return (
     <SafeAreaView>
-      <ScrollView>
+      <ScrollView style={styles.container}>
         <View>
           <BulletPoint textItem={'Goal'} itemAmount={item.goalAmount / 100} />
+          <View style={styles.borderBottom}></View>
           <BulletPoint
             textItem={'Amount spent so far'}
             itemAmount={CURRENT_SPEND}
           />
+          <View style={styles.borderBottom}></View>
           <BulletPoint textItem={'Daily Budget'} itemAmount={DAILY_BUDGET} />
+          <View style={styles.borderBottom}></View>
           <BulletPoint
             textItem={'Daily Average Spend'}
             itemAmount={DAILY_AVERAGE_SPEND}
           />
+          <View style={styles.borderBottom}></View>
           <BulletPoint
             textItem={'Projected Monthly Spending'}
             itemAmount={PROJECTED_MONTHLY_SPEND}
           />
+          <View style={styles.borderBottom}></View>
           <BulletPoint
             textItem={'Projected Monthly Savings'}
             itemAmount={PROJECTED_MONTHLY_SAVINGS}
@@ -51,3 +56,21 @@ export default ({ item }) => {
     </SafeAreaView>
   );
 };
+
+const center = {
+  marginRight: 'auto',
+  marginLeft: 'auto',
+};
+
+const styles = StyleSheet.create({
+  container: {
+    height: 500,
+  },
+  borderBottom: {
+    height: 5,
+    width: '100%',
+    backgroundColor: 'green',
+    ...center,
+    marginTop: 0,
+  },
+});

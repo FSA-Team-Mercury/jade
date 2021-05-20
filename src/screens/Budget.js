@@ -9,6 +9,7 @@ import {
   SafeAreaView,
   ScrollView,
   FlatList,
+
 } from 'react-native';
 import { client } from '../../App';
 import { FETCH_PLAID } from '../queries/plaid';
@@ -40,7 +41,6 @@ export default function Budget(props) {
   }, [isFocused]);
 
   useEffect(() => {
-
     const { plaid } = client.readQuery({
       query: FETCH_PLAID,
     });
@@ -54,8 +54,6 @@ export default function Budget(props) {
 
     GRAPH_DATA = graphData;
   }, [graphData]);
-
-
 
   if (!allBudgets || !transactions) {
     return (
@@ -115,31 +113,31 @@ export default function Budget(props) {
                 </TouchableOpacity>
               )}
             />
-
             {/* ADD BUDGET BUTTON */}
             <TouchableOpacity
               onPress={() => props.navigation.navigate('Add Budget')}
             >
-
-              {allBudgets.length === 6 ? (
-                <View></View>
-              ) : (
-                <View style={style.addBudget}>
-                  <MaterialCommunityIcons
-                    name='plus-circle'
-                    color={'#00A86B'}
-                    size={70}
-                  />
-                </View>
-              )}
+              <View style= {style.addButtonContainer}>
+                {allBudgets.length === 6 ? (
+                  <View></View>
+                ) : (
+                  <View style={style.addBudget}>
+                    <MaterialCommunityIcons
+                      name='plus-circle'
+                      color={'#00A86B'}
+                      size={70}
+                    />
+                  </View>
+                )}
+              </View>
             </TouchableOpacity>
+
           </View>
         </View>
       </ScrollView>
     </SafeAreaView>
   );
 }
-
 
 
 // STYLING
@@ -211,6 +209,10 @@ const style = StyleSheet.create({
   },
   addBudgetText: {
     fontSize: 20,
+  },
+  addButtonContainer:{
+    backgroundColor: 'blue',
+    marginHorizontal: 150,
   },
   chartContainer: {
     height: 320,
