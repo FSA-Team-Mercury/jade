@@ -55,7 +55,7 @@ export default function Budget(props) {
     GRAPH_DATA = graphData;
   }, [graphData]);
 
-  
+
 
   if (!allBudgets || !transactions) {
     return (
@@ -120,13 +120,18 @@ export default function Budget(props) {
             <TouchableOpacity
               onPress={() => props.navigation.navigate('Add Budget')}
             >
-              <View style={style.addBudget}>
-                <MaterialCommunityIcons
-                  name='plus-circle'
-                  color={'#00A86B'}
-                  size={70}
-                />
-              </View>
+
+              {allBudgets.length === 6 ? (
+                <View></View>
+              ) : (
+                <View style={style.addBudget}>
+                  <MaterialCommunityIcons
+                    name='plus-circle'
+                    color={'#00A86B'}
+                    size={70}
+                  />
+                </View>
+              )}
             </TouchableOpacity>
           </View>
         </View>
@@ -134,6 +139,8 @@ export default function Budget(props) {
     </SafeAreaView>
   );
 }
+
+
 
 // STYLING
 const center = {
