@@ -11,7 +11,7 @@ import {
   FlatList,
 } from 'react-native';
 import { client } from '../../App';
-import { FETCH_PLAID } from '../queries/plaid';
+import { FETCH_PLAID, TRANSACTIONS } from '../queries/plaid';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import BudgetChart from './BudgetChart';
@@ -28,6 +28,7 @@ const CURRENT_MONTH = TODAY.toLocaleString('default', { month: 'long' })
 export default function Budget(props) {
   const isFocused = useIsFocused();
   const [allBudgets, setAllBudgets] = useState(null);
+  const [currentExpenses, setCurrentExpenses] = useState(null)
   const [transactions, setTransactions] = useState(null);
   const [graphData, setGraphData] = useState(null);
 
@@ -35,14 +36,44 @@ export default function Budget(props) {
     const { budgets } = client.readQuery({
       query: GET_BUDGETS,
     });
-
+    console.log('GETTING BUDGES\n', budgets);
+    //GETTING BUDGES
+    // [
+    //   {
+    //     __typename: 'Budget',
+    //     category: 'Entertainment',
+    //     currentAmount: 7000,
+    //     goalAmount: 4000,
+    //     id: '7',
+    //   },
+    //   {
+    //     __typename: 'Budget',
+    //     category: 'Food and Drink',
+    //     currentAmount: 110573,
+    //     goalAmount: 20000,
+    //     id: '1',
+    //   },
+    //   {
+    //     __typename: 'Budget',
+    //     category: 'Shops',
+    //     currentAmount: 50000,
+    //     goalAmount: 2200,
+    //     id: '5',
+    //   },
+    // ];
     setAllBudgets(budgets);
   }, [isFocused]);
 
+
   useEffect(() => {
     const { plaid } = client.readQuery({
-      query: FETCH_PLAID,
+      query: TRANSACTIONS,
     });
+
+    // console.log('SEEING PLAID FETCH \n', Object.keys(plaid));
+    //transactions from beginning of year
+    // console.log('CURR MONTHLY TRANSACTIONS', plaid.transactions)
+    //transactions from current month
 
     let currMonthlytransactions = currentMonth(plaid.transactions);
     setTransactions(currMonthlytransactions || [{}]);
@@ -53,6 +84,8 @@ export default function Budget(props) {
 
     GRAPH_DATA = graphData;
   }, [graphData]);
+
+  console.log('IN BUDGET\n', GRAPH_DATA)
 
   if (!allBudgets || !transactions) {
     return (
