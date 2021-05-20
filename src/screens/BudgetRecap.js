@@ -31,7 +31,7 @@ export default ({ item }) => {
           <View style={styles.borderBottom}></View>
           <BulletPoint
             textItem={'Amount spent so far'}
-            itemAmount={CURRENT_SPEND}
+            itemAmount={(CURRENT_SPEND/100).toFixed(2)}
           />
           <View style={styles.borderBottom}></View>
           <BulletPoint textItem={'Daily Budget'} itemAmount={DAILY_BUDGET} />

@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { useIsFocused } from "@react-navigation/native";
+import React, { useState, useEffect } from 'react';
+import { useIsFocused } from '@react-navigation/native';
 import {
   View,
   Text,
@@ -9,21 +9,21 @@ import {
   SafeAreaView,
   ScrollView,
   FlatList,
-} from "react-native";
-import { client } from "../../App";
-import { FETCH_PLAID } from "../queries/plaid";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+} from 'react-native';
+import { client } from '../../App';
+import { FETCH_PLAID } from '../queries/plaid';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import BudgetChart from "./BudgetChart";
-import BudgetCard from "./BudgetCard";
-import { GET_BUDGETS } from "../queries/budget";
-import getGraphData, { CurrentSpend } from "./MonthlySpentCalc";
-import currentMonth from "../calculations/currentMonth";
+import BudgetChart from './BudgetChart';
+import BudgetCard from './BudgetCard';
+import { GET_BUDGETS } from '../queries/budget';
+import getGraphData, { CurrentSpend } from './MonthlySpentCalc';
+import currentMonth from '../calculations/currentMonth';
 
-const TODAY = new Date();
-const CURRENT_MONTH = TODAY.toLocaleString("default", { month: "long" });
 
 export let GRAPH_DATA;
+const TODAY = new Date();
+const CURRENT_MONTH = TODAY.toLocaleString('default', { month: 'long' })
 
 export default function Budget(props) {
   const isFocused = useIsFocused();
@@ -57,7 +57,7 @@ export default function Budget(props) {
   if (!allBudgets || !transactions) {
     return (
       <View>
-        <ActivityIndicator size="large" color="#00A86B" />
+        <ActivityIndicator size='large' color='#00A86B' />
       </View>
     );
   }
@@ -75,7 +75,7 @@ export default function Budget(props) {
           <View style={style.budgets}>
             <View style={style.budgetsHeader}>
               <Text style={style.budgetHeaderText}>
-                Budget for {CURRENT_MONTH}{" "}
+                Budget for {CURRENT_MONTH}{' '}
               </Text>
             </View>
             <FlatList
@@ -84,21 +84,21 @@ export default function Budget(props) {
               renderItem={({ item }) => (
                 <TouchableOpacity
                   onPress={() =>
-                    props.navigation.navigate("Single Budget", item)
+                    props.navigation.navigate('Single Budget', item)
                   }
                 >
                   <BudgetCard item={item}>
                     <View style={style.categoryAndGoal}>
                       <Text
                         style={style.categoryName}
-                        ellipsizeMode="tail"
+                        ellipsizeMode='tail'
                         numberOfLines={2}
                       >
                         {item.category}
                       </Text>
                       <Text
                         style={style.goalText}
-                        ellipsizeMode="tail"
+                        ellipsizeMode='tail'
                         numberOfLines={2}
                       >
                         Goal: ${item.goalAmount / 100}/mo.
@@ -114,18 +114,18 @@ export default function Budget(props) {
             />
             {/* ADD BUDGET BUTTON */}
             <TouchableOpacity
-              style={{ backgroundColor: "blue" }}
-              onPress={() => props.navigation.navigate("Add Budget")}
+              style={style.addButtonContainer}
+              onPress={() => props.navigation.navigate('Add Budget')}
             >
-              <View style={style.addButtonContainer}>
-                {allBudgets.length === 6 ? (
+              <View>
+                {allBudgets.length >= 6 ? (
                   <View></View>
                 ) : (
                   <View style={style.addBudget}>
                     <MaterialCommunityIcons
-                      name="plus-circle"
-                      color={"#00A86B"}
-                      size={70}
+                      name='plus-circle'
+                      color={'#00A86B'}
+                      size={60}
                     />
                   </View>
                 )}
@@ -140,8 +140,8 @@ export default function Budget(props) {
 
 // STYLING
 const center = {
-  marginRight: "auto",
-  marginLeft: "auto",
+  marginRight: 'auto',
+  marginLeft: 'auto',
 };
 
 const shadow = {
@@ -156,38 +156,38 @@ const shadow = {
 const style = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "flex-start",
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
     marginTop: 20,
   },
   budgets: {
-    width: "95%",
+    width: '95%',
     ...center,
     ...shadow,
   },
   budgetsHeader: {
     height: 50,
-    width: "100%",
-    display: "flex",
-    alignItems: "center",
-    flexDirection: "row",
-    justifyContent: "space-around",
-    backgroundColor: "#00A86B",
+    width: '100%',
+    display: 'flex',
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    backgroundColor: '#00A86B',
     borderTopLeftRadius: 6,
     borderTopRightRadius: 6,
   },
   budgetHeaderText: {
     fontSize: 22,
-    color: "white",
+    color: 'white',
   },
 
   categoryAndGoal: {
-    height: "42%",
-    width: "50%",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
+    height: '42%',
+    width: '50%',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 
   categoryName: {
@@ -202,25 +202,25 @@ const style = StyleSheet.create({
   },
 
   addBudget: {
-    display: "flex",
-    alignItems: "center",
+    display: 'flex',
+    alignItems: 'center',
   },
   addBudgetText: {
     fontSize: 20,
   },
   addButtonContainer: {
-    backgroundColor: "blue",
-    marginHorizontal: 150,
+    marginHorizontal: 160,
+    borderRadius: 100,
   },
   chartContainer: {
     height: 320,
-    width: "95%",
-    backgroundColor: "white",
+    width: '95%',
+    backgroundColor: 'white',
     marginBottom: 20,
     borderRadius: 10,
     paddingLeft: 20,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     shadowOpacity: 0.2,
     shadowRadius: 5,
     shadowOffset: {

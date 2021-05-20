@@ -61,9 +61,6 @@ export default function SingleBudget({ navigation, route }) {
       <TouchableWithoutFeedback onPress={Keyboard.dismiss()}>
         <View style={styles.container}>
           <View style={styles.header}>
-            <Text style={styles.headerText}>
-              {route.params.category} Budget
-            </Text>
           </View>
           <Formik
             initialValues={{
@@ -125,8 +122,7 @@ export default function SingleBudget({ navigation, route }) {
                     text='Save Changes'
                   />
                 </View>
-                {/* <View style={styles.borderBottom}></View>
-              <BudgetRecap item={budget} /> */}
+
               </View>
             )}
           </Formik>
@@ -155,7 +151,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'flex-start',
+    justifyContent: 'flex-end',
     marginBottom: -50,
     backgroundColor: '#E0FFE8',
   },
