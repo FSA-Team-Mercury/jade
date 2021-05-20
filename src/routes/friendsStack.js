@@ -8,6 +8,7 @@ import FriendsHeader from "../shared/friendsHeader";
 import SearchUsers from "../screens/SearchUsers";
 import Badges from "../screens/Badges";
 import Challenges from "../screens/Challenges";
+import AddChallenge from "../screens/AddChallenge";
 
 const Stack = createStackNavigator();
 
@@ -52,7 +53,15 @@ export default function FriendsStack() {
         name="Challenges"
         component={Challenges}
         options={({ navigation }) => ({
-          title: "challenges",
+          title: "Challenges",
+          headerTintColor: "#00A86B",
+        })}
+      />
+      <Stack.Screen
+        name="Add Challenge"
+        component={AddChallenge}
+        options={({ navigation }) => ({
+          title: "Add Challenge",
           headerTintColor: "#00A86B",
         })}
       />
