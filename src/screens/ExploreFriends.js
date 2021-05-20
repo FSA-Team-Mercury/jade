@@ -65,7 +65,6 @@ export default function ExploreFriends() {
         console.log("in for loop!!!!-->>", user);
         return friendId !== user.id;
       })
-
     );
     // alert('fried',friendId,'is deleted')
   }
@@ -93,22 +92,23 @@ export default function ExploreFriends() {
         friends.map((user) => {
           return (
             <View style={friend.container} key={user.id}>
-              <View style={friend.levelOne}>
-                <View style={friend.profileImageContainer}>
-                  <Image
-                    source={images.avatar[user.profileImage]}
-                    style={friend.profilePic}
-                  />
-                </View>
-                <View>
-                  <Text style={friend.name}>{user.username}</Text>
-                  {/* <Text style={friend.userName}>UserName</Text> */}
+              <View>
+                <View style={friend.levelOne}>
+                  <View style={friend.profileImageContainer}>
+                    <Image
+                      source={images.avatar[user.profileImage]}
+                      style={friend.profilePic}
+                    />
+                  </View>
+                  <View>
+                    <Text style={friend.name}>{user.username}</Text>
+                    {/* <Text style={friend.userName}>UserName</Text> */}
                   </View>
                   <TouchableOpacity
                     style={friend.unfollow}
-                    onPress={()=>unfollowUser(user.id)}
-                    >
-                    <Text style={{color:'white'}}>Unfollow</Text>
+                    onPress={() => unfollowUser(user.id)}
+                  >
+                    <Text style={{ color: "white" }}>Unfollow</Text>
                   </TouchableOpacity>
                 </View>
                 <TouchableOpacity
@@ -118,9 +118,6 @@ export default function ExploreFriends() {
                   <Text style={{ color: "white" }}>Unfollow</Text>
                 </TouchableOpacity>
               </View>
-              {/* <View style={friend.levelTwo}>
-                <Text>Badges</Text>
-              </View> */}
 
               <View style={friend.levelThree}>
                 {!user.badges.length ? (

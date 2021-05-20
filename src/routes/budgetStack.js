@@ -21,7 +21,8 @@ export default function BudgetStack() {
         name="Budget"
         component={Budget}
         options={{
-          headerShown: false,
+          title: "Budgets",
+          headerTintColor: "#00A86B",
         }}
       />
       <Stack.Screen
@@ -36,7 +37,7 @@ export default function BudgetStack() {
         name="Add Budget"
         component={AddBudget}
         options={({ navigation }) => ({
-          title: "",
+          title: "Add Budget",
           headerTintColor: "#00A86B",
         })}
       />
