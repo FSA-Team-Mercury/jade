@@ -11,41 +11,59 @@ import {
   FlatList,
 } from 'react-native';
 import { client } from '../../App';
+import { FETCH_PLAID } from '../queries/plaid';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import BudgetChart from './BudgetChart';
 import BudgetCard from './BudgetCard';
-import { FETCH_PLAID } from '../queries/plaid';
 import { GET_BUDGETS } from '../queries/budget';
+import getGraphData, { CurrentSpend } from './MonthlySpentCalc';
 import currentMonth from '../calculations/currentMonth';
-import MonthlySpentCalc from './MonthlySpentCalc';
+
+const TODAY = new Date();
+const CURRENT_MONTH = TODAY.toLocaleString('default', { month: 'long' });
+
+export let GRAPH_DATA;
 
 export default function Budget(props) {
-  console.log('IN BUDGETS', props)
   const isFocused = useIsFocused();
   const [allBudgets, setAllBudgets] = useState(null);
+  const [transactions, setTransactions] = useState(null);
+  const [graphData, setGraphData] = useState(null);
 
   useEffect(() => {
     const { budgets } = client.readQuery({
       query: GET_BUDGETS,
     });
-    const { plaid } = client.readQuery({
-      query: FETCH_PLAID,
-    });
-    //const currBudget = currentMonth(plaid.transactions);
+
     setAllBudgets(budgets);
   }, [isFocused]);
 
-  if (!allBudgets) {
+  useEffect(() => {
+
+    const { plaid } = client.readQuery({
+      query: FETCH_PLAID,
+    });
+
+    let currMonthlytransactions = currentMonth(plaid.transactions);
+    setTransactions(currMonthlytransactions || [{}]);
+
+    const data = getGraphData(currMonthlytransactions);
+
+    setGraphData(data);
+
+    GRAPH_DATA = graphData;
+  }, [graphData]);
+
+  console.log('BUDGET GRAPH_DATA ------------>', GRAPH_DATA);
+
+  if (!allBudgets || !transactions) {
     return (
       <View>
         <ActivityIndicator size='large' color='#00A86B' />
       </View>
     );
   }
-
-  const TODAY = new Date();
-  const CURRENT_MONTH = TODAY.toLocaleString('default', { month: 'long' });
 
   return (
     <SafeAreaView>
@@ -56,8 +74,7 @@ export default function Budget(props) {
             <BudgetChart budgets={allBudgets} />
           </View>
 
-          {/* Budgets List */}
-
+          {/* BUDGET LIST*/}
           <View style={style.budgets}>
             <View style={style.budgetsHeader}>
               <Text style={style.budgetHeaderText}>
@@ -91,7 +108,7 @@ export default function Budget(props) {
                       </Text>
                     </View>
                     <Text style={style.goalTextAmount}>
-                      <MonthlySpentCalc item={item} />
+                      <CurrentSpend item={item} />
                       /${item.goalAmount / 100}
                     </Text>
                   </BudgetCard>
@@ -99,8 +116,7 @@ export default function Budget(props) {
               )}
             />
 
-            {/* buttons */}
-
+            {/* ADD BUDGET BUTTON */}
             <TouchableOpacity
               onPress={() => props.navigation.navigate('Add Budget')}
             >

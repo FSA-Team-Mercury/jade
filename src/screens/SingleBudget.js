@@ -8,7 +8,6 @@ import { gql, useMutation } from '@apollo/client';
 import { Snackbar } from 'react-native-paper';
 import { client } from '../../App';
 import { UPDATE_AMOUNT, DELETE_BUDGET } from '../queries/budget';
-import { GET_BUDGETS } from '../queries/budget';
 import BudgetRecap from './BudgetRecap';
 import { useIsFocused } from '@react-navigation/native';
 
@@ -18,21 +17,12 @@ const budgetSchema = yup.object({
 
 export default function SingleBudget({ navigation, route }) {
   const [budget, setBudget] = useState(route.params)
-  console.log(Object.keys(route));
-  console.log('IN SINGLE BUDGET ----->', route.params);
   const [updateAmount] = useMutation(UPDATE_AMOUNT);
   const [deleteBudget] = useMutation(DELETE_BUDGET);
-  // const [allBudgets, setAllBudgets] = useState(null);
   const isFocused = useIsFocused();
 
  useEffect(() => {
-   console.log('FIRST RENDER');
-   // const { budgets } = client.readQuery({
-   //   query: GET_BUDGETS,
-   // });
 
-   // setAllBudgets(budgets);
-   // console.log("BUDGETS IN SINGLE VIEW", allBudgets )
  }, [isFocused]);
 
   const handleRemoveItem = async (budgetId) => {
@@ -61,13 +51,13 @@ export default function SingleBudget({ navigation, route }) {
   const onDismissSnackBar = () => setVisible(false);
   return (
     <View style={styles.container}>
+      <View style={styles.header}><Text styles={styles.headerText}>{route.params.category}</Text></View>
       <Formik
         initialValues={{
           amount: (route.params.goalAmount / 100).toString() || '0',
         }}
         validationSchema={budgetSchema}
         onSubmit={async (values) => {
-          //update budget here?
           try {
             const { data: budgetData } = await updateAmount({
               variables: {
@@ -89,7 +79,6 @@ export default function SingleBudget({ navigation, route }) {
                 goalAmount: +budgetData.updateBudget.goalAmount,
               },
             });
-            console.log("IN SUBMIT ------->", budgetData)
             setBudget(budgetData.updateBudget);
             setVisible(true);
           } catch (err) {
@@ -150,6 +139,13 @@ const styles = StyleSheet.create({
     marginTop: 100,
     alignItems: 'center',
     justifyContent: 'space-between',
+  },
+  header:{
+    backgroundColor: 'red',
+    paddingTop: 10,
+  },
+  headerText:{
+    fontSize: 20,
   },
   formikView: {
     width: '100%',
