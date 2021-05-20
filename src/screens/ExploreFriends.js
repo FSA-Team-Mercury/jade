@@ -65,6 +65,7 @@ export default function ExploreFriends() {
         console.log("in for loop!!!!-->>", user);
         return friendId !== user.id;
       })
+
     );
     // alert('fried',friendId,'is deleted')
   }
@@ -101,7 +102,14 @@ export default function ExploreFriends() {
                 </View>
                 <View>
                   <Text style={friend.name}>{user.username}</Text>
-                  <Text style={friend.userName}>UserName</Text>
+                  {/* <Text style={friend.userName}>UserName</Text> */}
+                  </View>
+                  <TouchableOpacity
+                    style={friend.unfollow}
+                    onPress={()=>unfollowUser(user.id)}
+                    >
+                    <Text style={{color:'white'}}>Unfollow</Text>
+                  </TouchableOpacity>
                 </View>
                 <TouchableOpacity
                   style={friend.unfollow}

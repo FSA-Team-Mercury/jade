@@ -16,15 +16,22 @@ import ExploreFriends from "./ExploreFriends";
 import { client } from "../../App";
 import { gql, useQuery } from "@apollo/client";
 import { useNavigation } from "@react-navigation/native";
+import { useIsFocused } from "@react-navigation/native";
 
-const display = {
-  MUTUAL_FRIENDS: <MutualFriends />,
-  FRIENDS: <ExploreFriends />,
-};
+import FriendRequests from "./FriendRequests";
+import Badges from "./Badges";
+import CreateMultiUserChallenge from "./CreateMultiUserChallenge";
 
-export default function ExplorePage() {
-  const [selected, setSelected] = useState("FRIENDS");
+export default function ExplorePage(props) {
+  const [selected, setSelected] = useState('CHALLENGES')//"FRIENDS");
   const navigation = useNavigation();
+  const isFocused = useIsFocused();
+
+  const display = {
+    PENDING_FRIENDS: <FriendRequests />,
+    FRIENDS: <ExploreFriends />,
+    CHALLENGES: <Badges {...props} />,
+  };
 
   function handlePress(pageName) {
     setSelected(pageName);
@@ -35,19 +42,20 @@ export default function ExplorePage() {
       search,
     });
   }
+  
+  // return <CreateMultiUserChallenge />;
   return (
     <SafeAreaView>
-      {/* <SafeAreaView style={styles.scrollView}> */}
-      <ScrollView style>
+      <ScrollView style={styles.scrollView}>
         <View style={styles.searchBox}>
           <Image
-            source={require(`../../assets/icons/search.png`)}
+            source={require("../../assets/icons/search.png")}
             style={styles.searchIcon}
           />
           <TextInput
             style={styles.searchField}
             placeholder="Search..."
-            onSubmitEditing={(event) => {
+            onSubmitEditing={event => {
               let search = event.nativeEvent.text;
               return searchUsers(search);
             }}
@@ -76,6 +84,25 @@ export default function ExplorePage() {
 
           <TouchableOpacity
             style={
+              selected === "PENDING_FRIENDS"
+                ? styles.selectedViewBtn
+                : styles.nonSelectViewBtn
+            }
+            onPress={() => handlePress("PENDING_FRIENDS")}
+          >
+            <Text
+              style={
+                selected === "PENDING_FRIENDS"
+                  ? styles.selectedText
+                  : styles.nonSelectedText
+              }
+            >
+              Friend Request
+            </Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={
               selected === "CHALLENGES"
                 ? styles.selectedViewBtn
                 : styles.nonSelectViewBtn
@@ -92,28 +119,16 @@ export default function ExplorePage() {
               Challenges
             </Text>
           </TouchableOpacity>
-
-          <TouchableOpacity
-            style={
-              selected === "BADGES"
-                ? styles.selectedViewBtn
-                : styles.nonSelectViewBtn
-            }
-            onPress={() => handlePress("BADGES")}
-          >
-            <Text
-              style={
-                selected === "BADGES"
-                  ? styles.selectedText
-                  : styles.nonSelectedText
-              }
-            >
-              Badges
-            </Text>
-          </TouchableOpacity>
         </View>
         {display[selected]}
       </ScrollView>
+      <TouchableOpacity style={styles.createChallengeBtn}
+      onPress={()=>{
+        navigation.navigate("Add Challenge");
+      }}
+      >
+        <Text style={styles.btnText}>+</Text>
+      </TouchableOpacity>
     </SafeAreaView>
   );
 }
@@ -137,7 +152,8 @@ const styles = StyleSheet.create({
     height: "100%",
     width: "100%",
     backgroundColor: "white",
-    alignItems: "center",
+    position: "relative",
+    // alignItems: "center",
   },
   searchBox: {
     height: 50,
@@ -180,7 +196,7 @@ const styles = StyleSheet.create({
   },
   selectedViewBtn: {
     height: 35,
-    width: 100,
+    width: 110,
     backgroundColor: "white",
     borderRadius: 20,
     justifyContent: "center",
@@ -202,5 +218,20 @@ const styles = StyleSheet.create({
   nonSelectedText: {
     fontSize: 12,
     color: "black",
+  },
+  createChallengeBtn: {
+    position: "absolute",
+    bottom: 30,
+    right: 30,
+    height: 70,
+    width: 70,
+    borderRadius: 100,
+    backgroundColor: "#00A86B",
+    ...shadow,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  btnText: {
+    fontSize: 30,
   },
 });
