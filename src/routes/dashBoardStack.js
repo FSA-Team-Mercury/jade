@@ -19,7 +19,6 @@ export default function DashboardStack() {
       </View>
     );
   }
-
   return (
     <Stack.Navigator initialRouteName={"Dashboard"}>
       <Stack.Screen

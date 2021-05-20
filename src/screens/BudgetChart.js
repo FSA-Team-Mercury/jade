@@ -6,8 +6,9 @@ import {
   VictoryChart,
   VictoryAxis,
   VictoryTheme,
-  VictoryStack,
+  VictoryGroup,
   VictoryLegend,
+  VictoryZoomContainer,
 } from "victory-native";
 import createBudgetBars from "../calculations/budgetChart";
 
@@ -15,6 +16,7 @@ export default function BudgetChart({ budgets }) {
   const isFocused = useIsFocused();
   const [chartData, setChartData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [zoomDomain, setZoomDomain] = useState(null);
 
   useEffect(() => {
     const budgetBars = createBudgetBars(budgets);
@@ -42,8 +44,8 @@ export default function BudgetChart({ budgets }) {
         gutter={20}
         style={{ border: { stroke: "black" }, title: { fontSize: 10 } }}
         data={[
-          { name: "Current", symbol: { fill: "#00A86B" } },
-          { name: "Goal", symbol: { fill: "#fffb85" } },
+          { name: "Current", symbol: { fill: "tomato" } },
+          { name: "Goal", symbol: { fill: "#00A86B" } },
         ]}
       />
       <VictoryAxis
@@ -56,11 +58,10 @@ export default function BudgetChart({ budgets }) {
         }}
       />
       <VictoryAxis dependentAxis tickFormat={(x) => `$${x / 100}`} />
-      <VictoryStack colorScale={["#00A86B", "#fffb85"]}>
+      <VictoryGroup offset={12} colorScale={["#00A86B", "tomato"]}>
         <VictoryBar
           padding={{ left: 20, right: 80 }}
-          alignment="middle"
-          barRatio={0.7}
+          cornerRadius={6}
           data={chartData.goalAmount}
           animate={{
             onLoad: {
@@ -70,9 +71,7 @@ export default function BudgetChart({ budgets }) {
         />
         <VictoryBar
           padding={{ left: 20, right: 60 }}
-          alignment="middle"
-          barRatio={0.7}
-          cornerRadius={8}
+          cornerRadius={6}
           data={chartData.currentAmount}
           animate={{
             onLoad: {
@@ -80,7 +79,7 @@ export default function BudgetChart({ budgets }) {
             },
           }}
         />
-      </VictoryStack>
+      </VictoryGroup>
     </VictoryChart>
   );
 }
