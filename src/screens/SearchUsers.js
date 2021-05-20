@@ -8,7 +8,7 @@ const SEARCH_USERS = gql`
       result{
         username
         id
-        profileImage
+        imageUrl
         relationship
       }
     }
@@ -68,7 +68,7 @@ export default function SearchUsers({route}){
           result.map(user=>{
             return (
               <View style={styles.user}>
-                <View style={styles.profileImageContainer}>
+                <View style={styles.imageUrlContainer}>
                   {/* <Image source={require(`../../assets/images/icons8-rihanna-96.png`)} style={styles.profilePic}/> */}
                 </View>
                   <View>
@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     ...shadow
   },
-  profileImageContainer:{
+  imageUrlContainer:{
     height: 65,
     width: 65,
     backgroundColor: 'black',

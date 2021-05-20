@@ -41,7 +41,9 @@ export default function Badges(props) {
 
     return (
         <SafeAreaView>
-            <MultiPlayerChallenges />
+            <View style={style.multiChallenges}>
+                <MultiPlayerChallenges />
+            </View>
             <View style={style.container}>
                 <View style={style.badges}>
                     <FlatList
@@ -78,6 +80,10 @@ const center = {
   };
 
 const style = StyleSheet.create({
+    multiChallenges:{
+        width: '100%',
+        alignItems: 'center'
+    },
     container: {
         flex: 1,
         flexDirection: 'row',

@@ -4,7 +4,7 @@ import {View} from 'react-native'
 
 export default ({date, setDate})=>{
   return(
-  <View>
+  <View style={{marginLeft:'auto', marginRight:'auto'}}>
     <DatePicker
         date={date}
         onDateChange={setDate}

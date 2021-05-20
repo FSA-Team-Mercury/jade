@@ -9,7 +9,7 @@ query FetchFriends{
   friends{
     id
     username
-    profileImage
+    imageUrl
     friends{
       userId
     }
@@ -21,7 +21,7 @@ const FETCH_FRIENDS = gql`
     friends{
       id
       username
-      profileImage
+      imageUrl
       badges{
         type
         imageUrl
@@ -68,7 +68,7 @@ export default function MutualFriends(props){
           return (
             <View style={friend.container} key={index}>
               <View style={friend.levelOne}>
-                <View style={friend.profileImageContainer}>
+                <View style={friend.imageUrlContainer}>
                   <Image source={require('../../assets/images/icons8-rihanna-96.png')} style={friend.profilePic}/>
                 </View>
                 <View >
@@ -142,7 +142,7 @@ const friend = StyleSheet.create({
     alignItems: 'center'
 
   },
-  profileImageContainer:{
+  imageUrlContainer:{
     height: 65,
     width: 65,
     backgroundColor: 'black',

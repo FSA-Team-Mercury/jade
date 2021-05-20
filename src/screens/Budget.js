@@ -17,8 +17,7 @@ import BudgetChart from "./BudgetChart";
 import BudgetCard from "./BudgetCard";
 import { FETCH_PLAID } from "../queries/plaid";
 import { GET_BUDGETS } from "../queries/budget";
-import currentMonth from "../calculations/currentMonth";
-import MonthlySpentCalc from  './MonthlySpentCalc'
+import MonthlySpentCalc from "./MonthlySpentCalc";
 
 export default function Budget(props) {
   const isFocused = useIsFocused();
@@ -31,21 +30,19 @@ export default function Budget(props) {
     const { plaid } = client.readQuery({
       query: FETCH_PLAID,
     });
-    //const currBudget = currentMonth(plaid.transactions);
     setAllBudgets(budgets);
   }, [isFocused]);
 
   if (!allBudgets) {
     return (
       <View>
-        <ActivityIndicator size='large' color='#00A86B' />
+        <ActivityIndicator size="large" color="#00A86B" />
       </View>
     );
   }
 
   const TODAY = new Date();
-  const CURRENT_MONTH = TODAY.toLocaleString('default', { month: 'long' });
-
+  const CURRENT_MONTH = TODAY.toLocaleString("default", { month: "long" });
 
   return (
     <SafeAreaView>
@@ -60,7 +57,9 @@ export default function Budget(props) {
 
           <View style={style.budgets}>
             <View style={style.budgetsHeader}>
-              <Text style={style.budgetHeaderText}>Budget for {CURRENT_MONTH}{' '}</Text>
+              <Text style={style.budgetHeaderText}>
+                Budget for {CURRENT_MONTH}{" "}
+              </Text>
             </View>
             <FlatList
               data={allBudgets}
@@ -68,21 +67,21 @@ export default function Budget(props) {
               renderItem={({ item }) => (
                 <TouchableOpacity
                   onPress={() =>
-                    props.navigation.navigate('Single Budget', item)
+                    props.navigation.navigate("Single Budget", item)
                   }
                 >
                   <BudgetCard item={item}>
                     <View style={style.categoryAndGoal}>
                       <Text
                         style={style.categoryName}
-                        ellipsizeMode='tail'
+                        ellipsizeMode="tail"
                         numberOfLines={2}
                       >
                         {item.category}
                       </Text>
                       <Text
                         style={style.goalText}
-                        ellipsizeMode='tail'
+                        ellipsizeMode="tail"
                         numberOfLines={2}
                       >
                         Goal: ${item.goalAmount / 100}/mo.
@@ -152,21 +151,20 @@ const style = StyleSheet.create({
     display: "flex",
     alignItems: "center",
     flexDirection: "row",
-    alignItems: "center",
     justifyContent: "space-around",
     backgroundColor: "#00A86B",
   },
   budgetHeaderText: {
     fontSize: 22,
-    color: 'white',
+    color: "white",
   },
 
   categoryAndGoal: {
-    height: '42%',
-    width: '50%',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
+    height: "42%",
+    width: "50%",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
   },
 
   categoryName: {
@@ -181,8 +179,8 @@ const style = StyleSheet.create({
   },
 
   addBudget: {
-    display: 'flex',
-    alignItems: 'center',
+    display: "flex",
+    alignItems: "center",
   },
   addBudgetText: {
     fontSize: 20,
@@ -193,7 +191,7 @@ const style = StyleSheet.create({
     backgroundColor: "white",
     marginBottom: 20,
     borderRadius: 10,
-    paddingLeft: 20,
+    paddingLeft: 35,
     justifyContent: "center",
     alignItems: "center",
     shadowOpacity: 0.2,

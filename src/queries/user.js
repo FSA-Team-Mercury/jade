@@ -9,8 +9,16 @@ export const LOGIN = gql`
 `;
 
 export const SIGNUP = gql`
-  mutation Signup($username: String!, $password: String!) {
-    signUp(username: $username, password: $password) {
+  mutation Signup(
+    $username: String!
+    $password: String!
+    $imageUrl: String!
+  ) {
+    signUp(
+      username: $username
+      password: $password
+      imageUrl: $imageUrl
+    ) {
       token
     }
   }
@@ -20,6 +28,7 @@ export const GET_USER = gql`
     user {
       id
       username
+      imageUrl
     }
   }
 `;
@@ -28,6 +37,7 @@ export const GET_USER_DATA = gql`
     user {
       id
       username
+      imageUrl
       accounts {
         auth_token
       }

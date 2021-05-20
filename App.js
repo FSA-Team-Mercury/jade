@@ -20,7 +20,7 @@ import Signup from "./src/screens/signup";
 const Stack = createStackNavigator();
 
 const httpLink = createHttpLink({
-  uri: "http://localhost:3000/graphql",
+  uri: "http://localhost:3000/graphql", //JADE_SERVER,
   credentials: "same-origin",
 });
 
@@ -38,7 +38,7 @@ const authLink = new ApolloLink(async (operation, forward) => {
 });
 
 export const client = new ApolloClient({
-  uri: "http://localhost:3000/graphql",
+  uri: "http://localhost:3000/graphql", //JADE_SERVER,
   link: authLink.concat(httpLink),
   cache: new InMemoryCache(),
 });
@@ -61,7 +61,6 @@ export default function App() {
       setUser(res.user);
     }
   }, []);
-
   return (
     <ApolloProvider client={client}>
       <NavigationContainer>
@@ -75,13 +74,13 @@ export default function App() {
             {props => <Login {...props} />}
           </Stack.Screen>
           <Stack.Screen name="Signup">
-            {props => <Signup {...props} />}
+            {(props) => <Signup {...props} />}
           </Stack.Screen>
           <Stack.Screen name="Nav">
             {props => <TabNav {...props} client={client} />}
           </Stack.Screen>
           <Stack.Screen name="Home">
-            {props => <Home {...props} client={client} />}
+            {(props) => <Home {...props} client={client} />}
           </Stack.Screen>
         </Stack.Navigator>
       </NavigationContainer>

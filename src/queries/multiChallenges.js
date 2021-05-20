@@ -31,10 +31,11 @@ export const FETCH_ALL_CHALLENGES = gql`
       id
       winCondition
       completed
+      name
       users {
         id
         username
-        profileImage
+        imageUrl
         user_challenge {
           currentAmout
           leftChallenge
@@ -56,7 +57,7 @@ export const FETCH_CURENT_CHALLENGES = gql`
       users {
         id
         username
-        profileImage
+        imageUrl
         user_challenge {
           currentAmout
           leftChallenge

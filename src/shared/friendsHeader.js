@@ -18,7 +18,7 @@ export default function FriendsHeader({ navigation }){
         style={ styles.profileButton}
         onPress={openProfile}
         >
-        <Image style={styles.profileImage} source={require('../../assets/images/icons8-salah-96.png')}/>
+        <Image style={styles.imageUrl} source={require('../../assets/images/icons8-salah-96.png')}/>
       </TouchableOpacity>
 
       <View style={styles.actionButtons}>
@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
     justifyContent:'center',
     alignItems: 'center'
   },
-  profileImage:{
+  imageUrl:{
     height: 50,
     width: 50,
     borderRadius: 100,

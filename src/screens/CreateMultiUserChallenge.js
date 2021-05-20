@@ -15,7 +15,6 @@ import moment from "moment";
 import { Formik } from "formik";
 import * as yup from "yup";
 import { useIsFocused } from "@react-navigation/native";
-
 import DatePicker from './DatePicker'
 
 const reviewSchema = yup.object({
@@ -28,13 +27,23 @@ const reviewSchema = yup.object({
 
 
 
-import { useQuery, useMutation } from "@apollo/client";
+import {gql, useQuery, useMutation } from "@apollo/client";
 import {
   CREATE_MULTI_PLAYER_CHALLENGE,
   FETCH_ALL_CHALLENGES,
   FETCH_CURENT_CHALLENGES,
   LEAVE_CHALLENGE,
 } from "../queries/multiChallenges";
+
+const FETCH_FRIENDS = gql`
+  query FetchFriends {
+    friends {
+      id
+      username
+      imageUrl
+    }
+  }
+`;
 
 /*
 
@@ -44,18 +53,18 @@ have fields for
   adding users -> get friend Ids (MAP THROUGH CATCH AND GET USERIDS)
   start date -> default to now
   end date -> default to a month
-  winning condition -> chose catagories (plaid categories)
+  winning condition -> choose catagories (plaid categories)
   winning amount -> convert to pennies
   name of challenge
   badge image
 
 */
 
-export default function CreateMultiUserChallenge({friends}) {
+export default function CreateMultiUserChallenge() {
   // console.log('string date-->', JSON.stringify(startTime))
   const [pendingFriends, setPendingFriends] = useState([]);
   const [createChallenge] = useMutation(CREATE_MULTI_PLAYER_CHALLENGE)
-  const { data, loading, error } = useQuery(FETCH_ALL_CHALLENGES);
+  const { data, loading, error } = useQuery(FETCH_FRIENDS);
   const [startDate, setStartDate] = useState(new Date())
   const [endDate, setEndDate] = useState(new Date())
   const [viewDate, setViewDate] = useState('NONE')
@@ -94,16 +103,24 @@ export default function CreateMultiUserChallenge({friends}) {
           endDate: values.endDate,
           completed: false,
           winAmount: Number(values.winAmount) * 100,
-          friendId: 4
+          friendId: values.friendId
         }
       })
   }
-  console.log("data form all challenges--->", data);
+  console.log("data form all challenges FRIENDS--->", data);
+  let friends
+
+  try {
+    friends = data.friends
+  } catch (error) {
+    friends = [{id: undefined}]
+  }
+
   return (
   <ScrollView style={{backgroundColor:'white'}}>
     <View style={styles.screen}>
       <Formik
-      initialValues={{ startDate: new Date(), endDate: new Date(),friendId: undefined, name: '', winCondition: '',winAmount: undefined }}
+      initialValues={{ startDate: new Date(), endDate: new Date(),friendId: friends[0].id, name: '', winCondition: 'LESS_THAN',winAmount: undefined,category: '' }}
       // validationSchema={reviewSchema}
       onSubmit={(values)=>{
         values.startDate = startDate
@@ -164,7 +181,7 @@ export default function CreateMultiUserChallenge({friends}) {
                   style={styles.friendBtn}
                   onPress={()=>tobbleDatePicker('CHOOSE_FRIEND')}
                 >
-                  <Text style={styles.dateTitle}>Chose A friend</Text>
+                  <Text style={styles.dateTitle}>Choose A friend</Text>
                 </TouchableOpacity>
               <Picker
                   autoCapitalize="none"
@@ -173,9 +190,37 @@ export default function CreateMultiUserChallenge({friends}) {
                   onValueChange={formikProps.handleChange("friendId")}
                   selectedValue={formikProps.values.friendId}
                   >
-                  <Picker.Item label="Murphy" value="Murphy" />
-                  <Picker.Item label="Cody" value="Cody" />
+                  {
+                    friends.map(friend=>{
+                      return <Picker.Item label={friend.username} value={friend.id} />
+                    })
+                  }
+
+                  {/* <Picker.Item label="Cody" value="Cody" /> */}
                 </Picker>
+            </View>
+
+            <View style={styles.friendsContainer}>
+                <TouchableOpacity
+                  style={styles.friendBtn}
+                  onPress={()=>tobbleDatePicker('WIN_CONDITON')}
+                >
+                  <Text style={styles.dateTitle}>What categories are you competing in</Text>
+                </TouchableOpacity>
+              <View style={viewDate === 'WIN_CONDITON' ? styles.friendsPicker : styles.hideDate}>
+                <Picker
+                    autoCapitalize="none"
+                    name="category"
+
+                    onValueChange={formikProps.handleChange("category")}
+                    selectedValue={formikProps.values.category}
+                    >
+                    <Picker.Item label="Travel" value="Travel" />
+                    <Picker.Item label="Payment" value="Payment" />
+                    <Picker.Item label="Transfer" value="Transfer" />
+                    <Picker.Item label="Other" value="Other" />
+                  </Picker>
+                </View>
             </View>
 
             <View style={styles.friendsContainer}>
@@ -185,16 +230,18 @@ export default function CreateMultiUserChallenge({friends}) {
                 >
                   <Text style={styles.dateTitle}>How Will You win this Challenge</Text>
                 </TouchableOpacity>
-              <Picker
-                  autoCapitalize="none"
-                  name="winCondition"
-                  style={viewDate === 'WIN_CONDITON' ? styles.friendsPicker : styles.hideDate}
-                  onValueChange={formikProps.handleChange("winCondition")}
-                  selectedValue={formikProps.values.winCondition}
-                  >
-                  <Picker.Item label="Having the highest spending" value="GREATER_THAN" />
-                  <Picker.Item label="Having the lowest spending" value="LESS_THAN" />
-                </Picker>
+              <View style={viewDate === 'WIN_CONDITON' ? styles.friendsPicker : styles.hideDate}>
+                <Picker
+                    autoCapitalize="none"
+                    name="winCondition"
+
+                    onValueChange={formikProps.handleChange("winCondition")}
+                    selectedValue={formikProps.values.winCondition}
+                    >
+                    <Picker.Item label="Having the highest spending" value="GREATER_THAN" />
+                    <Picker.Item label="Having the lowest spending" value="LESS_THAN" />
+                  </Picker>
+                </View>
             </View>
 
             <Text style={styles.dateTitle, {marginTop: 100}}>Badge Image Here</Text>
@@ -219,14 +266,16 @@ const center = {
   marginRight: 'auto'
 }
 
-const shadow = {
+const shadow = (height, width)=>{
+  return {
   shadowOffset: {
-    width: 2,
-    height: 2,
+    width: width  || 2,
+    height: height || 2,
   },
   shadowOpacity: 0.2,
   shadowRadius: 5,
 };
+}
 
 const styles = StyleSheet.create({
   screen:{
@@ -249,6 +298,7 @@ const styles = StyleSheet.create({
   datePickerContainer:{
     width: '90%',
     // ...center,
+    justifyContent: 'center',
     alignItems: 'center'
   },
   datePickerBtn:{
@@ -258,11 +308,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-evenly',
     marginTop: 20,
-    backgroundColor: 'lightgrey',
-    borderRadius: 10
+    backgroundColor: 'white',
+    // borderRadius: 10
+    ...shadow(),
+
   },
   viewDate:{
-    display:'flex'
+    display:'flex',
+    backgroundColor: 'white',
+    ...shadow(5,0),
+    width: '100%'
   },
   dateTitle:{
     fontSize: 18,
@@ -276,15 +331,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-evenly',
     marginTop: 20,
-    backgroundColor: 'lightgrey',
+    backgroundColor: 'white',
     borderRadius: 10
    },
    friendsPicker:{
      borderWidth: 1,
     borderColor: "#ddd",
     fontSize: 18,
-    borderRadius: 6,
-    marginTop: 20,
+    // borderRadius: 6,
+    // marginTop: 20,
     width: '90%',
     backgroundColor: "white",
    },
@@ -292,15 +347,16 @@ const styles = StyleSheet.create({
      width: '100%',
      alignItems: 'center',
      marginTop: 20,
-    justifyContent:'center'
+    justifyContent:'center',
+    ...shadow(2,0)
    },
    friendBtn:{
      width:'90%',
      height: 80,
-     backgroundColor: 'lightgrey',
+     backgroundColor: 'white',
      alignItems: 'center',
      justifyContent:'center',
-     borderRadius: 10
+    //  borderRadius: 10
    },
    addChallenge:{
      height: 50,
@@ -308,7 +364,7 @@ const styles = StyleSheet.create({
      marginTop: 50,
      borderRadius: 5,
      backgroundColor: "#00A86B",
-     ...shadow,
+     ...shadow(),
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom:20

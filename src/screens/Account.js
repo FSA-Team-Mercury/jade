@@ -6,38 +6,17 @@ import {
   Text,
   AsyncStorage,
   TouchableOpacity,
-  Button,
+  ActivityIndicator,
+  Image,
 } from "react-native";
 import { client } from "../../App";
 import { accountStyles } from "../styles/account_screen";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { GET_USER } from "../queries/user";
-
-//import { gql, useMutation } from "@apollo/client";
-
-// const SET_EXPO_TOKEN = gql`
-//   mutation SetExpoToken($token: String!) {
-//     addPushToken(token: $token) {
-//       notification_token
-//       username
-//     }
-//   }
-// `;
+import { images } from "../styles/global";
 
 export default function Account(props) {
-  // const [setTokenDB] = useMutation(SET_EXPO_TOKEN);
-  // const [expoPushToken, setExpoPushToken] = useState("");
   const [user, setUser] = useState(null);
-
-  // const tokenEvent = async () => {
-  //   const token = await registerForPushNotificationsAsync();
-  //   setExpoPushToken(token);
-  //   const db_token = await setTokenDB({
-  //     variables: {
-  //       token,
-  //     },
-  //   });
-  // };
 
   useEffect(() => {
     const data = client.readQuery({
@@ -55,12 +34,21 @@ export default function Account(props) {
       routes: [{ name: "Login" }],
     });
   };
-
+  console.log('user-->',user);
+  if (!user) {
+    return (
+      <View style={{ flex: 1, alignItems: "center" }}>
+        <ActivityIndicator size="large" color="#00A86B" />
+      </View>
+    );
+  }
   return (
     <View style={accountStyles.container}>
-      <Text style={accountStyles.userName}>
-        Hello {user ? user.username : ""}!
-      </Text>
+      <Image
+        source={images.avatar[user.imageUrl]}
+        style={{ width: 60, height: 60 }}
+      />
+      <Text style={accountStyles.userName}>{user ? user.username : ""}</Text>
       <View style={accountStyles.sectionContainer}>
         <TouchableOpacity
           onPress={() => props.navigation.navigate("All Accounts")}
@@ -85,27 +73,3 @@ export default function Account(props) {
     </View>
   );
 }
-
-// async function registerForPushNotificationsAsync() {
-//   let token;
-//   if (Constants.isDevice) {
-//     const { status: existingStatus } =
-//       await Notifications.getPermissionsAsync();
-//     let finalStatus = existingStatus;
-//     if (existingStatus !== "granted") {
-//       const { status } = await Notifications.requestPermissionsAsync();
-//       finalStatus = status;
-//     }
-//     if (finalStatus !== "granted") {
-//       alert("Failed to get push token for push notification!");
-//       return;
-//     }
-//     token = (await Notifications.getExpoPushTokenAsync()).data;
-
-//     console.log("my push token --->", token);
-//   } else {
-//     alert("Must use physical device for Push Notifications");
-//   }
-
-//   return token;
-// }

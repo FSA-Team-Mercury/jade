@@ -54,7 +54,7 @@ export default function FriendsStack() {
         name="Add Challenge"
         component={CreateMultiUserChallenge}
         options={({ navigation }) => ({
-          title: "Add a Challenge",
+          title: "Create A Challenge",
           headerTintColor: "#00A86B",
         })}
       />

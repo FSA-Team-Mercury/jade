@@ -27,7 +27,7 @@ const GET_USERS = gql`
     }
 `;
 
-// add in accepted profileImage id after testing
+// add in accepted imageUrl id after testing
 
 export default function UserSearch({navigation, route}) {
 //   const [allFriends, setAllFriends] = useState(null);
