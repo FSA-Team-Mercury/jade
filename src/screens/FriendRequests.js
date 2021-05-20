@@ -105,7 +105,7 @@ export default function FriendRequests(){
               return (
                 <View style={styles.userContainer}>
                   <View style={styles.levelOne}>
-                    <View style={styles.profileImage}></View>
+                    <View style={styles.badgeImage}></View>
                     <Text style={styles.username}>{user.username}</Text>
                   </View>
                   <View style={styles.levelTwo}>
@@ -168,7 +168,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center'
   },
-  profileImage:{
+  badgeImage:{
     height: 70,
     width: 70,
     backgroundColor: 'black',
