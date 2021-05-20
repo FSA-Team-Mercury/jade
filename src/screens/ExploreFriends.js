@@ -51,7 +51,7 @@ export default function ExploreFriends() {
         cache.modify({
           fields: {
             friends(existingFriends, { readField }) {
-              let newFriendList = existingFriends.filter((user) => {
+              let newFriendList = existingFriends.filter(user => {
                 return friendId !== readField("id", user);
               });
               return newFriendList;
@@ -61,7 +61,7 @@ export default function ExploreFriends() {
       },
     });
     setFriends(
-      friends.filter((user) => {
+      friends.filter(user => {
         console.log("in for loop!!!!-->>", user);
         return friendId !== user.id;
       })
@@ -89,7 +89,7 @@ export default function ExploreFriends() {
       {!friends.length ? (
         <Text>No Friends Yet</Text>
       ) : (
-        friends.map((user) => {
+        data.friends.map(user => {
           return (
             <View style={friend.container} key={user.id}>
               <View>
@@ -111,19 +111,13 @@ export default function ExploreFriends() {
                     <Text style={{ color: "white" }}>Unfollow</Text>
                   </TouchableOpacity>
                 </View>
-                <TouchableOpacity
-                  style={friend.unfollow}
-                  onPress={() => unfollowUser(user.id)}
-                >
-                  <Text style={{ color: "white" }}>Unfollow</Text>
-                </TouchableOpacity>
               </View>
 
               <View style={friend.levelThree}>
                 {!user.badges.length ? (
                   <Text>No Badges Yet</Text>
                 ) : (
-                  user.badges.map((badge) => {
+                  user.badges.map(badge => {
                     console.log("\nbadge-->", badge);
                     return (
                       <View style={friend.badge}>
@@ -179,7 +173,7 @@ const friend = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
   },
-  profileImageContainer: {
+  badgeImageContainer: {
     height: 65,
     width: 65,
     backgroundColor: "black",

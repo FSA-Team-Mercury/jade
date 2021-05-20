@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { JADE_SERVER } from "@env";
 import { AsyncStorage, AppRegistry, LogBox } from "react-native";
 LogBox.ignoreAllLogs();
 import { NavigationContainer } from "@react-navigation/native";
-
 import { createStackNavigator } from "@react-navigation/stack";
 import {
   ApolloClient,
@@ -15,6 +13,7 @@ import {
 } from "@apollo/client";
 import Login from "./src/screens/login";
 import Home from "./src/screens/home";
+import Plaid from "./src/screens/Plaid";
 import TabNav from "./src/routes/tabNavigator";
 import Signup from "./src/screens/signup";
 
