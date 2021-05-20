@@ -137,12 +137,11 @@ const style = StyleSheet.create({
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "flex-start",
-    marginTop: 90,
+    marginTop: 20,
   },
   budgets: {
     width: "95%",
     ...center,
-    backgroundColor: "#ededed",
     ...shadow,
   },
   budgetsHeader: {
@@ -153,6 +152,8 @@ const style = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-around",
     backgroundColor: "#00A86B",
+    borderTopLeftRadius: 6,
+    borderTopRightRadius: 6,
   },
   budgetHeaderText: {
     fontSize: 22,

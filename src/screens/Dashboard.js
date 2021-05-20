@@ -147,8 +147,6 @@ const styles = StyleSheet.create({
   dashBoard: {
     height: "100%",
     width: "100%",
-    // backgroundColor: '#adffe1',
-    backgroundColor: "white",
     overflow: "scroll",
   },
   transactionContainer: {
@@ -180,7 +178,7 @@ const styles = StyleSheet.create({
   transactions: {
     width: "95%",
     ...center,
-    // backgroundColor: "lightgrey",
+    backgroundColor: "white",
     marginBottom: 10,
     ...shadow,
   },
@@ -191,6 +189,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     backgroundColor: "#00A86B",
+    borderTopLeftRadius: 6,
+    borderTopRightRadius: 6,
   },
   recentTransactions: {
     fontSize: 18,
