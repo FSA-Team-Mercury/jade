@@ -52,7 +52,7 @@ export default function FriendsStack() {
         name="Challenges"
         component={Challenges}
         options={({ navigation }) => ({
-          title: "challenges",
+          title: "Challenges",
           headerTintColor: "#00A86B",
         })}
       />

@@ -2,6 +2,8 @@ import React, {useState, useEffect} from 'react'
 import {View,Text, SafeAreaView, ScrollView,Image,TextInput,TouchableOpacity,FlatList,ActivityIndicator,StyleSheet} from 'react-native'
 import { client } from "../../App";
 import { gql, useQuery, useMutation } from "@apollo/client";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import SingleChallenge from "./SingleChallenge"
 
 const GET_CHALLENGES = gql`
   query GetChallenges{
@@ -35,15 +37,17 @@ export default function Challenges(props) {
 
     return (
         <SafeAreaView>
+            <View style={style.challengesHeader}>
+                <Text style={style.challengesHeaderText}>Challenges</Text>
+            </View>
             <View style={style.container}>
                 <View style={style.challenges}>
                     <FlatList
-                        data={allChalenges}
+                        data={allChallenges}
                         keyExtractor={(item) => item.id}
                         renderItem={({ item }) => (
                         <View style={style.challengeContainer}>
-                            {/* <Image style={style.badgeImage} source={images[item.badgeImage]}/> //challenge card
-                            <Text style={style.badgeType} >{item.type}</Text> */}
+                            <SingleChallenge props={item}/>
                         </View>
                     )}
                     />
@@ -85,6 +89,24 @@ const style = StyleSheet.create({
         alignItems: 'center',
         // justifyContent: 'flex-start',
     },
+
+    challengesHeader: {
+        height: 50,
+        width: "100%",
+        display: "flex",
+        alignItems: "center",
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-around",
+        backgroundColor: "#00A86B",
+    },
+
+    challengesHeaderText: {
+        fontSize: 22,
+        color: 'white',
+        // color: 'black',
+    },
+
     challenges: {
         width: '95%',
         ...center,
@@ -98,6 +120,11 @@ const style = StyleSheet.create({
     challengeType: {
         fontSize: 18,
         color: '#00A86B',
+    },
+
+    addChallenge: {
+        display: 'flex',
+        alignItems: 'center',
     },
     
     categoryName: {

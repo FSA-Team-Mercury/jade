@@ -20,7 +20,7 @@ import { useNavigation } from "@react-navigation/native";
 import FriendRequests from './FriendRequests'
 import Badges from "./Badges";
 
-export default function ExplorePage() {
+export default function ExplorePage(props) {
   const [selected, setSelected] = useState("FRIENDS");
   const navigation = useNavigation();
 
