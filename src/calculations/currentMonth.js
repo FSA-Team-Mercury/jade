@@ -1,12 +1,13 @@
 import moment from "moment";
 
 const currentMonthExpenses = (data) => {
-  const beginnignOfMonth = moment(new Date())
-    .startOf("month")
-    .format("YYYY-MM-DD");
-  let currMonthData = data.filter((trans) => trans.date < beginnignOfMonth);
+  const beginningOfMonth = moment(new Date())
+    .startOf('month')
+    .format('YYYY-MM-DD');
 
-  console.log(currMonthData);
+  let currMonthData = data.filter((trans) => trans.date >= beginningOfMonth);
+
+  
   return currMonthData;
 };
 
