@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, ActivityIndicator } from 'react-native';
-import { client } from '../../App';
-import { gql } from '@apollo/client';
+import React, { useState, useEffect } from "react";
+import { View, Text, ActivityIndicator } from "react-native";
+import { client } from "../../App";
+import { gql } from "@apollo/client";
 
 const FETCH_PLAID = gql`
   query FetchPlaid {
@@ -25,7 +25,7 @@ const FETCH_PLAID = gql`
 
 const init = {
   Travel: 0,
-  'Food and Drink': 0,
+  "Food and Drink": 0,
   Entertainment: 0,
   Recreation: 0,
   Payment: 0,
@@ -84,32 +84,30 @@ export default ({ item }) => {
   if (!transactions) {
     return (
       <View>
-        <ActivityIndicator size='large' color='#00A86B' />
+        <ActivityIndicator size="large" color="#00A86B" />
       </View>
     );
   }
 
-   DAILY_BUDGET = parseInt(
-    (item.goalAmount / 100 / NUM_DAYS_MONTH).toFixed(2)
-  );
-   DAILY_AVERAGE_SPEND = parseInt(
+  DAILY_BUDGET = parseInt((item.goalAmount / 100 / NUM_DAYS_MONTH).toFixed(2));
+  DAILY_AVERAGE_SPEND = parseInt(
     (graphData[item.category] / CURRENT_DAY).toFixed(2)
   );
 
-    CURRENT_SPEND = parseInt(graphData[item.category].toFixed(0));
+  CURRENT_SPEND = parseInt(graphData[item.category].toFixed(0));
 
-    PROJECTED_MONTHLY_SPEND = parseInt(
+  PROJECTED_MONTHLY_SPEND = parseInt(
     DAILY_AVERAGE_SPEND * NUM_DAYS_MONTH
   ).toFixed(2);
-    PROJECTED_MONTHLY_SAVINGS = parseInt(
+  PROJECTED_MONTHLY_SAVINGS = parseInt(
     item.goalAmount / 100 - PROJECTED_MONTHLY_SPEND
   );
 
   return (
     <Text
-      style={{ color: DAILY_AVERAGE_SPEND > DAILY_BUDGET ? 'red' : 'green'}}
+      style={{ color: DAILY_AVERAGE_SPEND > DAILY_BUDGET ? "red" : "green" }}
     >
-      ${CURRENT_SPEND}
+      ${CURRENT_SPEND / 100}
     </Text>
   );
 };

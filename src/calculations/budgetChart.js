@@ -1,21 +1,18 @@
 const createBudgetBars = (data) => {
-  const categories = data.map((budget) => {
-    return budget.category;
-  });
   const axisPoints = [];
 
   const goalAmount = data.map((budget, idx) => {
     axisPoints.push(idx + 1);
-    return { category: idx + 1, amount: budget.goalAmount };
+    return { x: budget.category, y: budget.goalAmount };
   });
-  const currentAmount = data.map((budget, idx) => {
+  const currentAmount = data.map((budget) => {
     return {
-      category: idx + 1,
-      amount: budget.currentAmount,
+      x: budget.category,
+      y: budget.currentAmount,
     };
   });
 
-  return { goalAmount, currentAmount, categories, axisPoints };
+  return { goalAmount, currentAmount, axisPoints };
 };
 
 export default createBudgetBars;

@@ -14,21 +14,25 @@ import createBudgetBars from "../calculations/budgetChart";
 export default function BudgetChart({ budgets }) {
   const isFocused = useIsFocused();
   const [chartData, setChartData] = useState([]);
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     const budgetBars = createBudgetBars(budgets);
     setChartData(budgetBars);
+    setLoading(false);
   }, [isFocused, budgets]);
 
-  if (!chartData) {
+  if (loading) {
+    console.log("loading");
     return (
-      <View style={{ flex: 1, alignItems: "center" }}>
+      <View style={{ flex: 1, alignItems: "center", paddingTop: 160 }}>
         <ActivityIndicator size="large" color="#00A86B" />
       </View>
     );
   }
 
   return (
-    <VictoryChart domainPadding={10} theme={VictoryTheme.material}>
+    <VictoryChart domainPadding={40} theme={VictoryTheme.material}>
       <VictoryLegend
         x={230}
         y={30}
@@ -43,8 +47,6 @@ export default function BudgetChart({ budgets }) {
         ]}
       />
       <VictoryAxis
-        tickValues={chartData.axisPoints}
-        tickFormat={chartData.categories}
         style={{
           tickLabels: {
             fontSize: 8,
@@ -54,28 +56,28 @@ export default function BudgetChart({ budgets }) {
         }}
       />
       <VictoryAxis dependentAxis tickFormat={(x) => `$${x / 100}`} />
-      <VictoryStack
-        colorScale={["#00A86B", "#fffb85"]}
-        domain={{
-          y: [0, 40000],
-          x: [0, chartData.categories ? chartData.categories.length + 1 : 1],
-        }}
-        domainPadding={{ x: 0, y: 10 }}
-      >
+      <VictoryStack colorScale={["#00A86B", "#fffb85"]}>
         <VictoryBar
+          padding={{ left: 20, right: 80 }}
+          alignment="middle"
+          barRatio={0.7}
           data={chartData.goalAmount}
-          x="category"
-          y="amount"
           animate={{
-            duration: 10,
+            onLoad: {
+              duration: 1000,
+            },
           }}
         />
         <VictoryBar
+          padding={{ left: 20, right: 60 }}
+          alignment="middle"
+          barRatio={0.7}
+          cornerRadius={8}
           data={chartData.currentAmount}
-          x="category"
-          y="amount"
           animate={{
-            duration: 10,
+            onLoad: {
+              duration: 1000,
+            },
           }}
         />
       </VictoryStack>

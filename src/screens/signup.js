@@ -1,18 +1,22 @@
-import React from "react";
+/* eslint-disable react/display-name */
+import React, { useState } from "react";
 import {
   View,
   Text,
   TextInput,
   AsyncStorage,
+  StyleSheet,
   Button,
   Image,
 } from "react-native";
 import { signinStyles } from "../styles/signin";
+import { images } from "../styles/global";
 import { useMutation } from "@apollo/client";
 import FlatButton from "../shared/button";
 import { Formik } from "formik";
 import * as yup from "yup";
 import { SIGNUP } from "../queries/user";
+import DropDownPicker from "react-native-dropdown-picker";
 
 const signupSchema = yup.object({
   username: yup.string().required().min(4),
@@ -20,6 +24,8 @@ const signupSchema = yup.object({
 });
 
 export default function Signup(props) {
+  const [open, setOpen] = useState(false);
+  const [img, setImg] = useState(null);
   const [signup] = useMutation(SIGNUP);
   const handleGoBack = () => {
     props.navigation.reset({
@@ -39,11 +45,19 @@ export default function Signup(props) {
         validationSchema={signupSchema}
         onSubmit={async (text, { setSubmitting, setFieldError }) => {
           //logic to handle signup
+          console.log(img);
+
           try {
+            if (!img) {
+              setFieldError("signupFail", "An avatar choice is required");
+              setSubmitting(false);
+              throw new Error("An avatar choice is required");
+            }
             const { data } = await signup({
               variables: {
                 username: text.username,
                 password: text.password,
+                profileImage: img,
               },
             });
             await AsyncStorage.clear();
@@ -87,12 +101,56 @@ export default function Signup(props) {
             <Text style={signinStyles.errorText}>
               {formikProps.touched.password && formikProps.errors.password}
             </Text>
-
+            <DropDownPicker
+              open={open}
+              setOpen={setOpen}
+              value={img}
+              setValue={setImg}
+              items={[
+                {
+                  label: "Riri",
+                  value: "rihanna",
+                  icon: () => (
+                    <Image
+                      source={images.avatar["rihanna"]}
+                      style={styles.icon}
+                    />
+                  ),
+                },
+                {
+                  label: "Mezut",
+                  value: "ozil",
+                  icon: () => (
+                    <Image source={images.avatar["ozil"]} style={styles.icon} />
+                  ),
+                },
+                {
+                  label: "Moe",
+                  value: "salah",
+                  icon: () => (
+                    <Image
+                      source={images.avatar["salah"]}
+                      style={styles.icon}
+                    />
+                  ),
+                },
+              ]}
+              label="Choose your avatar!"
+              placeholder="Choose an avatar..."
+              style={styles.picker}
+              defaultValue="Rihanna"
+              containerStyle={styles.pickerContainer}
+              itemStyle={styles.item}
+              dropDownStyle={styles.item}
+              textStyle={{
+                fontSize: 15,
+                color: "grey",
+              }}
+            />
             <FlatButton text="Sign up" onPress={formikProps.handleSubmit} />
             <Text style={signinStyles.errorText}>
               {formikProps.errors.signupFail}
             </Text>
-
             <Button title="cancel" onPress={handleGoBack} />
           </View>
         )}
@@ -100,3 +158,22 @@ export default function Signup(props) {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  picker: {
+    backgroundColor: "transparent",
+    borderColor: "lightgrey",
+    marginBottom: 50,
+  },
+  pickerContainer: {
+    backgroundColor: "transparent",
+    textAlign: "center",
+  },
+  item: {
+    backgroundColor: "transparent",
+  },
+  icon: {
+    width: 40,
+    height: 40,
+  },
+});
