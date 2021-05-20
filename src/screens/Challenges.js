@@ -17,7 +17,7 @@ const GET_CHALLENGES = gql`
   }
 `
 
-export default function Challenges(props) {
+export default function Challenges({props}) {
     const [allChallenges, setAllChallenges] = useState(null);
   
     useEffect(() => {
@@ -34,6 +34,8 @@ export default function Challenges(props) {
             </View>
         );
     }
+    // props = props.props
+    console.log('challenge props now--------->', props)
 
     return (
         <SafeAreaView>
@@ -47,12 +49,12 @@ export default function Challenges(props) {
                         keyExtractor={(item) => item.id}
                         renderItem={({ item }) => (
                         <View style={style.challengeContainer}>
-                            <SingleChallenge props={item}/>
+                            <SingleChallenge item={item}/>
                         </View>
                     )}
                     />
                     <TouchableOpacity 
-                    // onPress={() => props.navigation.navigate("Add Challenge")}
+                    onPress={() => props.navigation.navigate("Add Challenge")}
                     >
                         <View style={style.addChallenge}>
                             <MaterialCommunityIcons

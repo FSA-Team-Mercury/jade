@@ -24,7 +24,7 @@ const FETCH_FRIENDS = gql`
       profileImage
       badges{
         type
-        imageUrl
+        badgeImage
         createdAt
       }
     }

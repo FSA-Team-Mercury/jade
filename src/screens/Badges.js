@@ -37,7 +37,6 @@ export default function Badges(props) {
             </View>
         );
     }
-    console.log('allbadges-->', allBadges)
     return (
         <SafeAreaView>
             <View style={style.badgesHeader}>
@@ -67,7 +66,7 @@ export default function Badges(props) {
                     </TouchableOpacity> */}
                 </View>
             </View>
-            <Challenges />
+            <Challenges props={props}/>
         </SafeAreaView>
     );
 }
