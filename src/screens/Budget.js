@@ -28,9 +28,8 @@ const CURRENT_MONTH = TODAY.toLocaleString('default', { month: 'long' })
 export default function Budget(props) {
   const isFocused = useIsFocused();
   const [allBudgets, setAllBudgets] = useState(null);
-  const [currentExpenses, setCurrentExpenses] = useState(null)
-  const [transactions, setTransactions] = useState(null);
-  const [graphData, setGraphData] = useState(null);
+  // const [transactions, setTransactions] = useState(null);
+  // const [graphData, setGraphData] = useState(null);
 
   useEffect(() => {
     const { budgets } = client.readQuery({
@@ -65,27 +64,27 @@ export default function Budget(props) {
   }, [isFocused]);
 
 
-  useEffect(() => {
-    const { plaid } = client.readQuery({
-      query: TRANSACTIONS,
-    });
+  // useEffect(() => {
+  //   const { plaid } = client.readQuery({
+  //     query: TRANSACTIONS,
+  //   });
 
-    // console.log('SEEING PLAID FETCH \n', Object.keys(plaid));
-    //transactions from beginning of year
-    // console.log('CURR MONTHLY TRANSACTIONS', plaid.transactions)
-    //transactions from current month
+  //   // console.log('SEEING PLAID FETCH \n', Object.keys(plaid));
+  //   //transactions from beginning of year
+  //   // console.log('CURR MONTHLY TRANSACTIONS', plaid.transactions)
+  //   //transactions from current month
 
-    let currMonthlytransactions = currentMonth(plaid.transactions);
-    setTransactions(currMonthlytransactions || [{}]);
+  //   let currMonthlytransactions = currentMonth(plaid.transactions);
+  //   setTransactions(currMonthlytransactions || [{}]);
 
-    const data = getGraphData(currMonthlytransactions);
+  //   const data = getGraphData(currMonthlytransactions);
 
-    setGraphData(data);
+  //   setGraphData(data);
 
-    GRAPH_DATA = graphData;
-  }, [graphData]);
+  //   GRAPH_DATA = graphData;
+  // }, [graphData]);
 
-  console.log('IN BUDGET\n', GRAPH_DATA)
+  // console.log('IN BUDGET\n', GRAPH_DATA)
 
   if (!allBudgets || !transactions) {
     return (
