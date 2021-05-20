@@ -1,24 +1,33 @@
-import React, {useState,useEffect} from 'react'
-import {View,Text, SafeAreaView, ScrollView,Image,TextInput,TouchableOpacity,ActivityIndicator, StyleSheet} from 'react-native'
+import React, { useState, useEffect } from "react";
+import {
+  View,
+  Text,
+  SafeAreaView,
+  ScrollView,
+  Image,
+  TextInput,
+  TouchableOpacity,
+  ActivityIndicator,
+  StyleSheet,
+} from "react-native";
 
-import MutualFriends from './MutualFriends'
-import ExploreFriends from './ExploreFriends'
+import MutualFriends from "./MutualFriends";
+import ExploreFriends from "./ExploreFriends";
 import { client } from "../../App";
-import { gql,useQuery } from "@apollo/client";
+import { gql, useQuery } from "@apollo/client";
 import { useNavigation } from "@react-navigation/native";
 
 const display = {
   MUTUAL_FRIENDS: <MutualFriends />,
-  FRIENDS: <ExploreFriends />
-}
+  FRIENDS: <ExploreFriends />,
+};
 
-
-export default function ExplorePage(){
-  const [selected, setSelected]= useState('FRIENDS')
+export default function ExplorePage() {
+  const [selected, setSelected] = useState("FRIENDS");
   const navigation = useNavigation();
 
-  function handlePress(pageName){
-    setSelected(pageName)
+  function handlePress(pageName) {
+    setSelected(pageName);
   }
 
   function searchUsers(search) {
@@ -26,55 +35,88 @@ export default function ExplorePage(){
       search,
     });
   }
-
   return (
-    <SafeAreaView >
-    {/* <SafeAreaView style={styles.scrollView}> */}
-      <ScrollView style >
-      <View style={styles.searchBox}>
-        <Image source={require('../../assets/icons/search.png')} style={styles.searchIcon}/>
-          <TextInput style={styles.searchField} placeholder="Search..."
-          onSubmitEditing={
-            (event)=>{
-              let search = event.nativeEvent.text
-              return searchUsers(search)
-            }
-          }
+    <SafeAreaView>
+      {/* <SafeAreaView style={styles.scrollView}> */}
+      <ScrollView style>
+        <View style={styles.searchBox}>
+          <Image
+            source={require(`../../assets/icons/search.png`)}
+            style={styles.searchIcon}
           />
-      </View>
-      <Text style={styles.pageTitle}>
-        Explore Jade
-      </Text>
-      <View style={styles.selectView}>
-        <TouchableOpacity
-        style={selected === 'FRIENDS' ? styles.selectedViewBtn : styles.nonSelectViewBtn}
-        onPress={()=>handlePress('FRIENDS')}
-        >
-          <Text style={ selected === 'FRIENDS' ? styles.selectedText : styles.nonSelectedText}>Friends</Text>
-        </TouchableOpacity>
+          <TextInput
+            style={styles.searchField}
+            placeholder="Search..."
+            onSubmitEditing={(event) => {
+              let search = event.nativeEvent.text;
+              return searchUsers(search);
+            }}
+          />
+        </View>
+        <Text style={styles.pageTitle}>Explore Jade</Text>
+        <View style={styles.selectView}>
+          <TouchableOpacity
+            style={
+              selected === "FRIENDS"
+                ? styles.selectedViewBtn
+                : styles.nonSelectViewBtn
+            }
+            onPress={() => handlePress("FRIENDS")}
+          >
+            <Text
+              style={
+                selected === "FRIENDS"
+                  ? styles.selectedText
+                  : styles.nonSelectedText
+              }
+            >
+              Friends
+            </Text>
+          </TouchableOpacity>
 
-        <TouchableOpacity
-        style={selected === 'CHALLENGES' ? styles.selectedViewBtn : styles.nonSelectViewBtn}
-        onPress={()=>handlePress('CHALLENGES')}
-        >
-          <Text style={ selected === 'CHALLENGES' ? styles.selectedText : styles.nonSelectedText}>Challenges</Text>
-        </TouchableOpacity>
+          <TouchableOpacity
+            style={
+              selected === "CHALLENGES"
+                ? styles.selectedViewBtn
+                : styles.nonSelectViewBtn
+            }
+            onPress={() => handlePress("CHALLENGES")}
+          >
+            <Text
+              style={
+                selected === "CHALLENGES"
+                  ? styles.selectedText
+                  : styles.nonSelectedText
+              }
+            >
+              Challenges
+            </Text>
+          </TouchableOpacity>
 
-        <TouchableOpacity
-        style={selected === 'BADGES' ? styles.selectedViewBtn : styles.nonSelectViewBtn}
-        onPress={()=>handlePress('BADGES')}
-        >
-          <Text style={ selected === 'BADGES' ? styles.selectedText : styles.nonSelectedText}>Badges</Text>
-        </TouchableOpacity>
-      </View >
-      {
-        display[selected]
-      }
+          <TouchableOpacity
+            style={
+              selected === "BADGES"
+                ? styles.selectedViewBtn
+                : styles.nonSelectViewBtn
+            }
+            onPress={() => handlePress("BADGES")}
+          >
+            <Text
+              style={
+                selected === "BADGES"
+                  ? styles.selectedText
+                  : styles.nonSelectedText
+              }
+            >
+              Badges
+            </Text>
+          </TouchableOpacity>
+        </View>
+        {display[selected]}
       </ScrollView>
     </SafeAreaView>
-  )
+  );
 }
-
 
 const shadow = {
   shadowOffset: {
@@ -86,79 +128,79 @@ const shadow = {
 };
 
 const center = {
-  marginLeft:'auto',
-  marginRight: 'auto'
-}
+  marginLeft: "auto",
+  marginRight: "auto",
+};
 
 const styles = StyleSheet.create({
-  scrollView:{
-    height:'100%',
-    width: '100%',
-    backgroundColor: 'white',
-    alignItems: 'center'
+  scrollView: {
+    height: "100%",
+    width: "100%",
+    backgroundColor: "white",
+    alignItems: "center",
   },
-  searchBox:{
+  searchBox: {
     height: 50,
-    width: '90%',
+    width: "90%",
     borderWidth: 1,
     marginTop: 20,
     marginBottom: 20,
     borderRadius: 30,
-    borderColor: 'lightgrey',
-    flexDirection: 'row',
-    alignItems: 'center',
-    ...center
+    borderColor: "lightgrey",
+    flexDirection: "row",
+    alignItems: "center",
+    ...center,
   },
-  searchIcon:{
+  searchIcon: {
     height: 20,
     width: 20,
-    marginLeft: 15
+    marginLeft: 15,
   },
-  searchField:{
+  searchField: {
     height: 30,
-    width: '60%',
+    width: "60%",
     marginLeft: 10,
   },
-  pageTitle:{
+  pageTitle: {
     fontSize: 30,
     marginBottom: 20,
-    ...center
+    ...center,
   },
-  selectView:{
+  selectView: {
     height: 50,
-    width: '90%',
-    backgroundColor: '#f4f6f8',
+    width: "90%",
+    backgroundColor: "#f4f6f8",
     // backgroundColor: 'lightgrey',
     borderRadius: 30,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent:'space-evenly',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-evenly",
     marginBottom: 20,
-    ...center
+    ...center,
   },
-  selectedViewBtn:{
+  selectedViewBtn: {
     height: 35,
     width: 100,
-    backgroundColor:'white',
+    backgroundColor: "white",
     borderRadius: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
-    ...shadow
+    justifyContent: "center",
+    alignItems: "center",
+    ...shadow,
   },
-  nonSelectViewBtn:{
+  nonSelectViewBtn: {
     height: 35,
     width: 100,
     // backgroundColor:'white',
     borderRadius: 20,
-    justifyContent: 'center',
-    alignItems: 'center'
+    justifyContent: "center",
+    alignItems: "center",
   },
-  selectedText:{
+  selectedText: {
     fontSize: 12,
-    color: 'green'
+    color: "green",
   },
-  nonSelectedText:{
+  nonSelectedText: {
     fontSize: 12,
-    color: 'black'
-  }
-})
+    color: "black",
+  },
+});

@@ -51,7 +51,7 @@ export default function Dashboard() {
     const account = client.readQuery({
       query: TRANSACTIONS,
     });
-
+    console.log("Plaid data --->", account);
     let transactions = account.plaid.transactions;
     setTransactions(transactions || [{}]);
     const data = getGraphData(transactions);
@@ -78,6 +78,14 @@ export default function Dashboard() {
             <VictoryPie
               data={graphData}
               innerRadius={80}
+              animate={{
+                duration: 500,
+                onLoad: {
+                  duration: 1000,
+                  before: () => ({ _y: -1500, label: "" }),
+                  after: (datum) => ({ _y: datum._y }),
+                },
+              }}
               padAngle={({ datum }) => 1}
               theme={VictoryTheme.material}
               width={340}
