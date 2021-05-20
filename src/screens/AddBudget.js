@@ -68,7 +68,6 @@ export default function AddBudget({ navigation }) {
               <Picker.Item label="Shops" value="Shops" />
               <Picker.Item label="Entertainment" value="Entertainment" />
               <Picker.Item label="Recreation" value="Recreation" />
-              <Picker.Item label="Transfer" value="Transfer" />
               <Picker.Item label="Payment" value="Payment" />
               <Picker.Item label="Travel" value="Travel" />
               <Picker.Item label="Other" value="Other" />
