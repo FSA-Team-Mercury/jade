@@ -34,7 +34,7 @@ export default function Account(props) {
       routes: [{ name: "Login" }],
     });
   };
-  console.log(user);
+  console.log('user-->',user);
   if (!user) {
     return (
       <View style={{ flex: 1, alignItems: "center" }}>
