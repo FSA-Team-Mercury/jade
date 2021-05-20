@@ -58,7 +58,7 @@ export default function Budget(props) {
   if (!allBudgets || !transactions) {
     return (
       <View>
-        <ActivityIndicator size='large' color='#00A86B' />
+        <ActivityIndicator size="large" color="#00A86B" />
       </View>
     );
   }
@@ -85,21 +85,21 @@ export default function Budget(props) {
               renderItem={({ item }) => (
                 <TouchableOpacity
                   onPress={() =>
-                    props.navigation.navigate('Single Budget', item)
+                    props.navigation.navigate("Single Budget", item)
                   }
                 >
                   <BudgetCard item={item}>
                     <View style={style.categoryAndGoal}>
                       <Text
                         style={style.categoryName}
-                        ellipsizeMode='tail'
+                        ellipsizeMode="tail"
                         numberOfLines={2}
                       >
                         {item.category}
                       </Text>
                       <Text
                         style={style.goalText}
-                        ellipsizeMode='tail'
+                        ellipsizeMode="tail"
                         numberOfLines={2}
                       >
                         Goal: ${item.goalAmount / 100}/mo.
@@ -181,15 +181,15 @@ const style = StyleSheet.create({
   },
   budgetHeaderText: {
     fontSize: 22,
-    color: 'white',
+    color: "white",
   },
 
   categoryAndGoal: {
-    height: '42%',
-    width: '50%',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
+    height: "42%",
+    width: "50%",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
   },
 
   categoryName: {
@@ -204,8 +204,8 @@ const style = StyleSheet.create({
   },
 
   addBudget: {
-    display: 'flex',
-    alignItems: 'center',
+    display: "flex",
+    alignItems: "center",
   },
   addBudgetText: {
     fontSize: 20,

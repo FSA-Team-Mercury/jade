@@ -13,7 +13,7 @@ let GRAPH_DATA;
 
 const init = {
   Travel: 0,
-  'Food and Drink': 0,
+  "Food and Drink": 0,
   Entertainment: 0,
   Recreation: 0,
   Payment: 0,
@@ -53,7 +53,7 @@ export const CurrentSpend = ({ item }) => {
     <Text
       style={{ color: DAILY_AVERAGE_SPEND > DAILY_BUDGET ? 'red' : 'green' }}
     >
-      ${CURRENT_SPEND}
+      ${CURRENT_SPEND / 100}
     </Text>
   );
 };

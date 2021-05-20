@@ -7,10 +7,11 @@ import {
   StyleSheet,
   Button,
   TextInput,
-  Picker, //depracated, but works better than the alternative
+  //depracated, but works better than the alternative
   Alert,
 } from "react-native";
 import * as yup from "yup";
+import { Picker } from "@react-native-picker/picker";
 import { GET_USER_DATA } from "../queries/user";
 import { Snackbar } from "react-native-paper";
 import { ADD_BUDGET } from "../queries/budget";

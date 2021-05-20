@@ -9,8 +9,16 @@ export const LOGIN = gql`
 `;
 
 export const SIGNUP = gql`
-  mutation Signup($username: String!, $password: String!) {
-    signUp(username: $username, password: $password) {
+  mutation Signup(
+    $username: String!
+    $password: String!
+    $profileImage: String!
+  ) {
+    signUp(
+      username: $username
+      password: $password
+      profileImage: $profileImage
+    ) {
       token
     }
   }
@@ -20,6 +28,7 @@ export const GET_USER = gql`
     user {
       id
       username
+      profileImage
     }
   }
 `;
@@ -28,6 +37,7 @@ export const GET_USER_DATA = gql`
     user {
       id
       username
+      profileImage
       accounts {
         auth_token
       }
@@ -37,6 +47,18 @@ export const GET_USER_DATA = gql`
       category
       goalAmount
       currentAmount
+    }
+    userBadges {
+      id
+      type
+      badgeImage
+    }
+    userChallenges{
+      id
+      type
+      endDate
+      startDate
+      completed
     }
   }
 `;
