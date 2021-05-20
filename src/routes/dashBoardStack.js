@@ -22,11 +22,23 @@ export default function DashboardStack() {
 
   return (
     <Stack.Navigator initialRouteName={"Dashboard"}>
-      <Stack.Screen name="Dashboard">
+      <Stack.Screen
+        name="Dashboard"
+        options={({ navigation }) => ({
+          title: "Dashboard",
+          headerTintColor: "#00A86B",
+        })}
+      >
         {(props) => <Dashboard {...props} />}
       </Stack.Screen>
 
-      <Stack.Screen name="All Transactions">
+      <Stack.Screen
+        name="All Transactions"
+        options={({ navigation }) => ({
+          title: "All Transactions",
+          headerTintColor: "#00A86B",
+        })}
+      >
         {(props) => <AllTransactions {...props} />}
       </Stack.Screen>
     </Stack.Navigator>

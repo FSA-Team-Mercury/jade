@@ -65,7 +65,6 @@ export default function ExploreFriends() {
         console.log("in for loop!!!!-->>", user);
         return friendId !== user.id;
       })
-
     );
     // alert('fried',friendId,'is deleted')
   }
@@ -92,8 +91,8 @@ export default function ExploreFriends() {
       ) : (
         friends.map((user) => {
           return (
-            <View>
-              <View style={friend.container} key={user.id}>
+            <View style={friend.container} key={user.id}>
+              <View>
                 <View style={friend.levelOne}>
                   <View style={friend.profileImageContainer}>
                     <Image
@@ -107,9 +106,9 @@ export default function ExploreFriends() {
                   </View>
                   <TouchableOpacity
                     style={friend.unfollow}
-                    onPress={()=>unfollowUser(user.id)}
-                    >
-                    <Text style={{color:'white'}}>Unfollow</Text>
+                    onPress={() => unfollowUser(user.id)}
+                  >
+                    <Text style={{ color: "white" }}>Unfollow</Text>
                   </TouchableOpacity>
                 </View>
                 <TouchableOpacity
@@ -119,9 +118,6 @@ export default function ExploreFriends() {
                   <Text style={{ color: "white" }}>Unfollow</Text>
                 </TouchableOpacity>
               </View>
-              {/* <View style={friend.levelTwo}>
-                 <Text>Badges</Text>
-               </View> */}
 
               <View style={friend.levelThree}>
                 {!user.badges.length ? (

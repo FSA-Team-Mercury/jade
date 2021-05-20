@@ -13,7 +13,7 @@ import { client } from "../../App";
 import { accountStyles } from "../styles/account_screen";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { GET_USER } from "../queries/user";
-import { images } from "../styles/global";
+import { images, globalStyles } from "../styles/global";
 
 export default function Account(props) {
   const [user, setUser] = useState(null);
@@ -44,10 +44,13 @@ export default function Account(props) {
   }
   return (
     <View style={accountStyles.container}>
-      <Image
-        source={images.avatar[user.profileImage]}
-        style={{ width: 60, height: 60 }}
-      />
+      <View style={globalStyles.profilePic}>
+        <Image
+          source={images.avatar[user.profileImage]}
+          style={{ width: 60, height: 60 }}
+        />
+      </View>
+
       <Text style={accountStyles.userName}>{user ? user.username : ""}</Text>
       <View style={accountStyles.sectionContainer}>
         <TouchableOpacity
