@@ -30,8 +30,6 @@ export default function Badges(props) {
         setAllBadges(data.userBadges);
     });
 
-    console.log('badge props----->', props)
-
     if (!allBadges) {
         return (
             <View>
@@ -39,26 +37,36 @@ export default function Badges(props) {
             </View>
         );
     }
-
     return (
         <SafeAreaView>
+            <View style={style.badgesHeader}>
+                <Text style={style.badgesHeaderText}>Your Badges</Text>
+            </View>
             <View style={style.container}>
                 <View style={style.badges}>
-                    <FlatList
-                        data={allBadges}
-                        keyExtractor={(item) => item.id}
-                        renderItem={({ item }) => (
-                        <View style={style.badgeContainer}>
-                            <Image style={style.badgeImage} source={images[item.badgeImage]}/> 
-                            <Text style={style.badgeType} >{item.type}</Text>
-                        </View>
-                    )}
-                    />
-                    <TouchableOpacity onPress={() => props.navigation.navigate("Challenges")}>
+                    {allBadges.length < 1 ? 
+                    <View style={style.noBadgesContainer}>
+                        <Text style={style.noBadges}>No Badges Yet!</Text>
+                    </View>  : 
+                        <FlatList
+                            data={allBadges}
+                            keyExtractor={(item) => item.id}
+                            renderItem={({ item }) => (
+                                <View style={style.badgeContainer}>
+                                    <Image style={style.badgeImage} source={images[item.badgeImage]}/> 
+                                    <Text style={style.badgeType} >{item.type}</Text>
+                                </View>
+                            )}
+                        />
+                    }
+
+
+                    {/* <TouchableOpacity onPress={() => props.navigation.navigate("Challenges")}>
                         <Text>Challenges</Text>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
                 </View>
-                </View>
+            </View>
+            <Challenges props={props}/>
         </SafeAreaView>
     );
 }
@@ -84,6 +92,40 @@ const style = StyleSheet.create({
         alignItems: 'center',
         // justifyContent: 'flex-start',
     },
+
+    badgesHeader: {
+        height: 50,
+        width: "100%",
+        display: "flex",
+        alignItems: "center",
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-around",
+        backgroundColor: "#00A86B",
+    },
+
+    noBadgesContainer: {
+        height: 50,
+        width: "100%",
+        display: "flex",
+        alignItems: "center",
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-around",
+        // backgroundColor: "#00A86B",
+    },
+
+    noBadges: {
+        fontSize: 18,
+        color: 'black',
+    },
+
+    badgesHeaderText: {
+        fontSize: 22,
+        color: 'white',
+        // color: 'black',
+    },
+
     badges: {
         width: '95%',
         ...center,
