@@ -55,7 +55,7 @@ export default function Budget(props) {
     GRAPH_DATA = graphData;
   }, [graphData]);
 
-  console.log('BUDGET GRAPH_DATA ------------>', GRAPH_DATA);
+  
 
   if (!allBudgets || !transactions) {
     return (
