@@ -92,8 +92,13 @@ export default function AddBudget({ navigation }) {
               <Text style={globalStyles.errorText}>
                 {formikProps.touched.amount && formikProps.errors.amount}
               </Text>
+              <View style={styles.submitButton}>
+                <SubmitButton
+                  onPress={formikProps.handleSubmit}
+                  text='Submit'
+                />
+              </View>
 
-              <SubmitButton onPress={formikProps.handleSubmit} text='Submit' />
               <Snackbar
                 visible={visible}
                 onDismiss={onDismissSnackBar}
@@ -146,6 +151,9 @@ const styles = StyleSheet.create({
     fontSize: 30,
     color: '#333',
     padding: 30,
+  },
+  submitButton:{
+    marginTop: 20,
   },
   snack: {
     backgroundColor: 'green',

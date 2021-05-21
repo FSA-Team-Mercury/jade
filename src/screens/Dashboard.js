@@ -51,7 +51,7 @@ export default function Dashboard() {
     const account = client.readQuery({
       query: TRANSACTIONS,
     });
-    console.log("Plaid data --->", account);
+    
     let transactions = account.plaid.transactions;
     setTransactions(transactions || [{}]);
     const data = getGraphData(transactions);
