@@ -20,7 +20,7 @@ export default function FriendsStack() {
         name="Friends"
         component={Friends}
         options={({ navigation }) => ({
-          title: "",
+          title: "Friends",
           headerTintColor: "#00A86B",
         })}
       />
@@ -50,15 +50,6 @@ export default function FriendsStack() {
           headerTintColor: "#00A86B",
         })}
       />
-
-      {/* <Stack.Screen
-        name="Add Challenge"
-        component={CreateMultiUserChallenge}
-        options={({ navigation }) => ({
-          title: "Create A Challenge",
-          headerTintColor: "#00A86B",
-        })}
-      /> */}
 
       <Stack.Screen
         name="Challenges"

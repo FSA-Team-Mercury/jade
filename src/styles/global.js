@@ -43,4 +43,10 @@ export const images = {
     beyonce: require("../../assets/images/icons8-beyonce-48.png"),
     "bad-bunny": require("../../assets/images/icons8-bad-bunny-48.png"),
   },
+  badges: {
+    rainbow: require("../../assets/badges/rainbow.png"),
+    earth: require("../../assets/badges/earth.png"),
+    thunder: require("../../assets/badges/thunder.png"),
+    cascade: require("../../assets/badges/cascade.png"),
+  },
 };
