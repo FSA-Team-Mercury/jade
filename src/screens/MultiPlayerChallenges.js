@@ -109,11 +109,9 @@ const center = {
 
 const styles = StyleSheet.create({
   page: {
-    flex: 1,
-    marginRight: "auto",
-    marginLeft: "auto",
-    // backgroundColor:'yellow',
+    width: '100%',
     alignItems: "center",
+    backgroundColor:'black'
   },
   title: {
     fontSize: 20,
@@ -134,6 +132,7 @@ const styles = StyleSheet.create({
     paddingTop: "3%",
     paddingBottom: "3%",
     ...shadow,
+    ...center
   },
   levelOne: {
     height: 70,
