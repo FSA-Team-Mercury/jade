@@ -92,15 +92,13 @@ export default function CreateMultiUserChallenge({friendIdPicker, friends}) {
             category: "",
           }}
           // validationSchema={reviewSchema}
-          onSubmit={values => {
-            console.log('SUBMITING--->', values)
-            values.startDate = startDate.toString();
-            values.endDate = endDate.toString();
-            console.log(values)
-            if (friendId === 0){
-              addChallenge()//fill this out for solo challenge
-            } else {
-              createChallenge({
+          onSubmit={async (values) => {
+            try {
+              console.log('SUBMITING--->', values)
+              values.startDate = startDate.toString();
+              values.endDate = endDate.toString();
+              console.log(values)
+              const challenge = await createChallenge({
                 variables: {
                   name: values.name,
                   startDate: values.startDate,
@@ -112,8 +110,16 @@ export default function CreateMultiUserChallenge({friendIdPicker, friends}) {
                   friendId: friendsPicker,
                 },
               });
+            } catch (error) {
+              console.log('error submiting challenge', error)
             }
-            console.log(values);
+
+            // if (friendsPicker === 0){
+            //   addChallenge()//fill this out for solo challenge
+            // } else {
+
+            // }
+            // console.log(values);
           }}
         >
           {formikProps => (

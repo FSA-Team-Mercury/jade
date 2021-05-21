@@ -21,7 +21,7 @@ import Signup from "./src/screens/signup";
 const Stack = createStackNavigator();
 
 const httpLink = createHttpLink({
-  uri: JADE_SERVER, // "http://localhost:3000/graphql"
+  uri:  "http://localhost:3000/graphql",//JADE_SERVER, //
   credentials: "same-origin",
 });
 
@@ -39,7 +39,7 @@ const authLink = new ApolloLink(async (operation, forward) => {
 });
 
 export const client = new ApolloClient({
-  uri: JADE_SERVER, // "http://localhost:3000/graphql",
+  uri:  "http://localhost:3000/graphql",//,JADE_SERVER, //,
   link: authLink.concat(httpLink),
   cache: new InMemoryCache(),
 });

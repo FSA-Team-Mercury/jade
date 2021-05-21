@@ -25,6 +25,7 @@ export default function Challenges({props}) {
             query: GET_CHALLENGES,
         });
         setAllChallenges(data.userChallenges);
+        console.log(data.userChallenges)
     });
 
     if (!allChallenges) {

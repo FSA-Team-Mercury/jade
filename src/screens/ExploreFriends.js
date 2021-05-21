@@ -20,6 +20,9 @@ const badgeImages = {
   cascade: require("../../assets/badges/cascade.png"),
 };
 
+
+
+
 export default function ExploreFriends() {
   const [friends, setFriends] = useState(null);
   const [unfollower] = useMutation(UNFOLLOW_USER);
@@ -77,7 +80,7 @@ export default function ExploreFriends() {
                 <View style={friend.levelOne}>
                   <View style={friend.profileImageContainer}>
                     <Image
-                      source={images.avatar[user.profileImage]}
+                      // source={images.badges[user.profileImage]}
                       style={friend.profilePic}
                     />
                   </View>
@@ -97,15 +100,11 @@ export default function ExploreFriends() {
                 {!user.badges.length ? (
                   <Text>No Badges Yet</Text>
                 ) : (
-                  user.badges.map((badge) => {
+                  user.badges.slice(0,5).map(badge => {
+                    console.log(badge)
                     return (
-                      <View style={friend.badge} key={friend.id}>
-                        <View style={friend.badgeImage}>
-                          <Image
-                            style={friend.badgeImage}
-                            source={badgeImages[badge.badgeImage]}
-                          />
-                        </View>
+                      <View style={friend.badge}>
+                        <Image style={friend.badgeImage} source={images.badges[badge.badgeImage]} />
                         <Text style={friend.badgeName}>{badge.type}</Text>
                       </View>
                     );
