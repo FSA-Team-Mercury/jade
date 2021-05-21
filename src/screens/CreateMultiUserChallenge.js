@@ -14,7 +14,6 @@ import {
 import moment from "moment";
 import { Formik } from "formik";
 import * as yup from "yup";
-import { useIsFocused } from "@react-navigation/native";
 import DatePicker from "./DatePicker";
 
 const reviewSchema = yup.object({
@@ -24,7 +23,7 @@ const reviewSchema = yup.object({
   winAmount: yup.number().required(),
 });
 
-import { gql, useQuery, useMutation } from "@apollo/client";
+import { gql, useMutation } from "@apollo/client";
 import {
   CREATE_MULTI_PLAYER_CHALLENGE,
   FETCH_ALL_CHALLENGES,
@@ -57,13 +56,17 @@ have fields for
 
 */
 
-export default function CreateMultiUserChallenge({friendIdPicker, friends}) {
+export default function CreateMultiUserChallenge({
+  friendIdPicker,
+  friends,
+  navigation,
+}) {
   const [createChallenge] = useMutation(CREATE_MULTI_PLAYER_CHALLENGE);
-  const [friendsPicker, setFriendsPicker] = useState(friends[0].id)
+  const [friendsPicker, setFriendsPicker] = useState(0);
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [viewDate, setViewDate] = useState("NONE");
-
+  console.log("navigation --->", navigation);
   function tobbleDatePicker(dateType) {
     if (dateType === viewDate) {
       setViewDate("NONE");
@@ -72,12 +75,11 @@ export default function CreateMultiUserChallenge({friendIdPicker, friends}) {
     }
   }
 
-  const myFriends = friends.map(friend => {
+  const myFriends = friends.map((friend) => {
     return (
-      <Picker.Item label={friend.username} value={friend.id} key={friend.id}/>
+      <Picker.Item label={friend.username} value={friend.id} key={friend.id} />
     );
-  })
-
+  });
 
   return (
     <ScrollView style={{ backgroundColor: "white" }}>
@@ -88,31 +90,42 @@ export default function CreateMultiUserChallenge({friendIdPicker, friends}) {
             endDate: new Date(),
             name: "",
             winCondition: "LESS_THAN",
-            winAmount: '',
+            winAmount: "",
             category: "",
           }}
           // validationSchema={reviewSchema}
-          onSubmit={values => {
-            console.log('SUBMITING--->', values)
-            values.startDate = startDate.toString();
-            values.endDate = endDate.toString();
-            console.log(values)
-            createChallenge({
-              variables: {
-                name: values.name,
-                startDate: values.startDate,
-                winCondition: values.winCondition,
-                endDate: values.endDate,
-                completed: false,
-                winAmount: Number(values.winAmount) * 100,
-                category: values.category,
-                friendId: friendsPicker,
-              },
-            });
-            console.log(values);
+          onSubmit={async (values) => {
+            try {
+              values.startDate = startDate.toString();
+              values.endDate = endDate.toString();
+              await createChallenge({
+                variables: {
+                  name: values.name,
+                  startDate: values.startDate,
+                  winCondition: values.winCondition,
+                  endDate: values.endDate,
+                  completed: false,
+                  winAmount: Number(values.winAmount) * 100,
+                  category: values.category,
+                  friendId: friendsPicker,
+                },
+                update: (cache, { data: { createChallenge } }) => {
+                  const data = cache.readQuery({ query: FETCH_ALL_CHALLENGES });
+                  cache.writeQuery({
+                    query: FETCH_ALL_CHALLENGES,
+                    data: {
+                      budgets: [...data.multiPlayerChallenges, createChallenge],
+                    },
+                  });
+                },
+              });
+              navigation.goBack();
+            } catch (error) {
+              console.log("error submiting challenge", error);
+            }
           }}
         >
-          {formikProps => (
+          {(formikProps) => (
             <>
               <TextInput
                 placeholder=" Name of Challenge"
@@ -186,11 +199,8 @@ export default function CreateMultiUserChallenge({friendIdPicker, friends}) {
                   onValueChange={setFriendsPicker}
                   selectedValue={friendsPicker}
                 >
-
-                  {
-                    myFriends
-                  }
-
+                  <Picker.Item label={"Solo Challenge"} value={0} />
+                  {myFriends}
                 </Picker>
               </View>
 

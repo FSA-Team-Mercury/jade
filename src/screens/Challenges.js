@@ -9,6 +9,7 @@ import {
   StyleSheet,
 } from "react-native";
 import { client } from "../../App";
+import { useIsFocused } from "@react-navigation/native";
 import { gql, useQuery, useMutation } from "@apollo/client";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import SingleChallenge from "./SingleChallenge";
@@ -25,16 +26,16 @@ const GET_CHALLENGES = gql`
   }
 `;
 
-export default function Challenges({ props }) {
+export default function Challenges(props) {
   const [allChallenges, setAllChallenges] = useState(null);
-
+  const isFocused = useIsFocused();
+  console.log("challenges props ", props.route);
   useEffect(() => {
     const data = client.readQuery({
       query: GET_CHALLENGES,
     });
-    console.log("challenges --->", data);
     setAllChallenges(data.userChallenges);
-  });
+  }, [isFocused, allChallenges]);
 
   if (!allChallenges) {
     return (
@@ -43,13 +44,13 @@ export default function Challenges({ props }) {
       </View>
     );
   }
-
+  console.log("challenges --->", allChallenges);
   return (
     <SafeAreaView>
       <View style={style.challengesHeader}>
         <Text style={style.challengesHeaderText}>Challenges</Text>
       </View>
-      <MultiPlayerChallenges />
+      <MultiPlayerChallenges {...props} />
       <View style={style.container}>
         <View style={style.challenges}>
           <FlatList
@@ -97,24 +98,37 @@ const style = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     alignItems: "center",
-    // justifyContent: 'flex-start',
   },
-
+  noChallenges: {
+    height: 50,
+    width: "90%",
+    alignItems: "center",
+    justifyContent: "center",
+    alignSelf: "center",
+    backgroundColor: "white",
+    borderRadius: 8,
+  },
+  emptyChallengeText: {
+    fontSize: 18,
+    color: "black",
+  },
   challengesHeader: {
     height: 50,
-    width: "100%",
+    width: "90%",
     display: "flex",
-    alignItems: "center",
-    flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-around",
     backgroundColor: "#00A86B",
+    borderTopLeftRadius: 8,
+    borderTopRightRadius: 8,
+    alignSelf: "center",
+    marginBottom: 10,
+    marginTop: 10,
   },
 
   challengesHeaderText: {
     fontSize: 22,
     color: "white",
-    // color: 'black',
   },
 
   challenges: {

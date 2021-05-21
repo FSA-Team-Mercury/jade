@@ -57,18 +57,13 @@ export default function AddChallenge({navigation}) {
     );
   }
   console.log("FRIENDS--->", data.friends)
-  
-  const display ={
-  SOLO: < SoloChallenge />,
-  MULTI: < CreateMultiUserChallenge  friends={data.friends} />,
-  }
 
   return (
     <SafeAreaView>
       <ScrollView style={styles.scrollView}>
         <Text style={styles.pageTitle}>Choose a Challenge Type</Text>
-        <View style={styles.selectView}>
-          <TouchableOpacity
+        {/* <View style={styles.selectView}> */}
+          {/* <TouchableOpacity
             style={
               selected === "SOLO"
                 ? styles.selectedViewBtn
@@ -104,9 +99,9 @@ export default function AddChallenge({navigation}) {
             >
               Friends
             </Text>
-          </TouchableOpacity>
-        </View>
-          {display[selected]}
+          </TouchableOpacity> */}
+        {/* </View> */}
+        < CreateMultiUserChallenge  friends={data.friends} />
       </ScrollView>
     </SafeAreaView>
   );

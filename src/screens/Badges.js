@@ -9,10 +9,10 @@ import {
   StyleSheet,
 } from "react-native";
 import { client } from "../../App";
-import { gql, useMutation } from "@apollo/client";
+import { gql } from "@apollo/client";
 import Challenges from "./Challenges";
-import MultiPlayerChallenges from "./MultiPlayerChallenges";
 import { images } from "../styles/global";
+import { useIsFocused } from "@react-navigation/native";
 
 const GET_BADGES = gql`
   query GetBadges {
@@ -26,13 +26,14 @@ const GET_BADGES = gql`
 
 export default function Badges(props) {
   const [allBadges, setAllBadges] = useState(null);
-
+  const isFocused = useIsFocused();
+  console.log("badegs props --->", props.route);
   useEffect(() => {
     const data = client.readQuery({
       query: GET_BADGES,
     });
     setAllBadges(data.userBadges);
-  });
+  }, [isFocused]);
 
   if (!allBadges) {
     return (
@@ -70,7 +71,7 @@ export default function Badges(props) {
           />
         )}
       </View>
-      <Challenges props={props} />
+      <Challenges {...props} />
     </SafeAreaView>
   );
 }
@@ -132,6 +133,7 @@ const style = StyleSheet.create({
     borderTopLeftRadius: 8,
     borderTopRightRadius: 8,
     alignSelf: "center",
+    marginBottom: 5,
   },
 
   noBadgesContainer: {

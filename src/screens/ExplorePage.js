@@ -18,7 +18,6 @@ import { gql, useQuery } from "@apollo/client";
 
 import FriendRequests from "./FriendRequests";
 import Badges from "./Badges";
-//import CreateMultiUserChallenge from "./CreateMultiUserChallenge";
 
 export default function ExplorePage(props) {
   const [selected, setSelected] = useState("FRIENDS"); //"FRIENDS");
@@ -39,7 +38,6 @@ export default function ExplorePage(props) {
     });
   }
 
-  // return <CreateMultiUserChallenge />;
   return (
     <SafeAreaView>
       <ScrollView style={styles.scrollView}>
@@ -118,14 +116,6 @@ export default function ExplorePage(props) {
         </View>
         {display[selected]}
       </ScrollView>
-      {/* <TouchableOpacity
-        style={styles.createChallengeBtn}
-        onPress={() => {
-          props.navigation.navigate("Add Challenge");
-        }}
-      >
-        <Text style={styles.btnText}>+</Text>
-      </TouchableOpacity> */}
     </SafeAreaView>
   );
 }
