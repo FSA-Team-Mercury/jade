@@ -38,6 +38,9 @@ const UNFOLLOW_USER = gql`
   }
 `;
 
+
+
+
 export default function ExploreFriends() {
   const [friends, setFriends] = useState(false);
   const [unfollower] = useMutation(UNFOLLOW_USER);
@@ -96,7 +99,7 @@ export default function ExploreFriends() {
                 <View style={friend.levelOne}>
                   <View style={friend.profileImageContainer}>
                     <Image
-                      source={images.avatar[user.profileImage]}
+                      // source={images.badges[user.profileImage]}
                       style={friend.profilePic}
                     />
                   </View>
@@ -117,11 +120,11 @@ export default function ExploreFriends() {
                 {!user.badges.length ? (
                   <Text>No Badges Yet</Text>
                 ) : (
-                  user.badges.map(badge => {
-                    console.log("\nbadge-->", badge);
+                  user.badges.slice(0,5).map(badge => {
+                    console.log(badge)
                     return (
                       <View style={friend.badge}>
-                        <View style={friend.badgeImage}></View>
+                        <Image style={friend.badgeImage} source={images.badges[badge.badgeImage]} />
                         <Text style={friend.badgeName}>{badge.type}</Text>
                       </View>
                     );

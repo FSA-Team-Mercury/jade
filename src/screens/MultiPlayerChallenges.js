@@ -13,7 +13,7 @@ import {
 } from "react-native";
 
 import { useIsFocused } from "@react-navigation/native";
-
+import {images} from '../styles/global'
 import { useQuery, useMutation } from "@apollo/client";
 import {
   CREATE_MULTI_PLAYER_CHALLENGE,
@@ -46,8 +46,6 @@ export default () => {
   }
 
   const { multiPlayerChallenges } = data.allMultiPlayerChallenges;
-  // const userId = multiPlayerChallenges.id
-  console.log("multiPlayerChallenges---->", data);
   if (!multiPlayerChallenges.length) {
     return <Text>No Challenges</Text>;
   }
@@ -55,7 +53,6 @@ export default () => {
     <View style={styles.challengePage}>
       <Text style={styles.title}>Challenges Against Friends</Text>
       {multiPlayerChallenges.map(challenge => {
-        // console.log("cahllenge--->", challenge)
         const contenders = challenge.users;
         return (
           <View style={styles.container}>
@@ -63,7 +60,7 @@ export default () => {
               <View style={styles.levelOne}>
                 <View style={styles.badgeImageContainer}>
                   <Image
-                    // source={images.avatar[user.badgeImage]}
+                    source={images.badges[challenge.badgeImage]}
                     style={styles.profilePic}
                   />
                 </View>
@@ -81,7 +78,7 @@ export default () => {
               {contenders.map(user => {
                 return (
                   <View style={styles.badge}>
-                    <View style={styles.badgeImage}></View>
+                    <Image style={styles.badgeImage} source={images.avatar[user.profileImage]} />
                   </View>
                 );
               })}
