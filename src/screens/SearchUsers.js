@@ -18,7 +18,7 @@ const SEARCH_USERS = gql`
       result {
         username
         id
-        badgeImage
+        profileImage
         relationship
       }
     }
