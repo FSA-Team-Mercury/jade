@@ -59,7 +59,7 @@ have fields for
 
 export default function CreateMultiUserChallenge({friendIdPicker, friends}) {
   const [createChallenge] = useMutation(CREATE_MULTI_PLAYER_CHALLENGE);
-  const [friendsPicker, setFriendsPicker] = useState(friends[0].id)
+  const [friendsPicker, setFriendsPicker] = useState(0)
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [viewDate, setViewDate] = useState("NONE");
@@ -97,18 +97,22 @@ export default function CreateMultiUserChallenge({friendIdPicker, friends}) {
             values.startDate = startDate.toString();
             values.endDate = endDate.toString();
             console.log(values)
-            createChallenge({
-              variables: {
-                name: values.name,
-                startDate: values.startDate,
-                winCondition: values.winCondition,
-                endDate: values.endDate,
-                completed: false,
-                winAmount: Number(values.winAmount) * 100,
-                category: values.category,
-                friendId: friendsPicker,
-              },
-            });
+            if (friendId === 0){
+              addChallenge()//fill this out for solo challenge
+            } else {
+              createChallenge({
+                variables: {
+                  name: values.name,
+                  startDate: values.startDate,
+                  winCondition: values.winCondition,
+                  endDate: values.endDate,
+                  completed: false,
+                  winAmount: Number(values.winAmount) * 100,
+                  category: values.category,
+                  friendId: friendsPicker,
+                },
+              });
+            }
             console.log(values);
           }}
         >
@@ -186,7 +190,7 @@ export default function CreateMultiUserChallenge({friendIdPicker, friends}) {
                   onValueChange={setFriendsPicker}
                   selectedValue={friendsPicker}
                 >
-
+                  <Picker.Item label={"Solo Challenge"} value={0}/>
                   {
                     myFriends
                   }
