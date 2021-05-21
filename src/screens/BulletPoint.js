@@ -1,11 +1,13 @@
-import React from 'react';
+ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
 
 export default ({ textItem, itemAmount, colorText }) => {
   return (
     <View style={styles.container}>
-      <View style={styles.dot}></View>
+      <View style={styles.dot}>
+        <View style={styles.dot2}></View>
+      </View>
 
       <View style={styles.category}>
         <Text style={styles.analysis}>{textItem}</Text>
@@ -16,22 +18,21 @@ export default ({ textItem, itemAmount, colorText }) => {
 };
 
 //STYLES
+
 const styles = StyleSheet.create({
   container: {
-    height: 100,
-    width: '130%',
+    height: 90,
+    width: '100%',
     display: 'flex',
-    // flexDirection: 'column',
     flexDirection: 'row',
     flex: 1,
     alignItems: 'center',
-    backgroundColor: 'white',
   },
   //#E0FFE8
   // #00A86B
   category: {
     height: '70%',
-    width: '60%',
+    width: '85%',
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -44,20 +45,28 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     backgroundColor: '#00A86B',
     marginLeft: 20,
-    marginRight: 20,
+    marginRight: 10,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
   },
-
+  dot2: {
+    height: 20,
+    width: 20,
+    borderRadius: 100,
+    backgroundColor: '#E0FFE8',
+    marginLeft: 10,
+    marginRight: 10,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   analysis: {
-    fontSize: 16,
+    fontSize: 17,
     height: 30,
-    padding: 0,
-    margin: 0,
   },
   amount: {
-    fontSize: 20,
+    fontSize: 25,
     height: 30,
   },
 });

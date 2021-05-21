@@ -23,14 +23,15 @@ const budgetSchema = yup.object({
 });
 
 export default function SingleBudget({ navigation, route }) {
-  const [budget, setBudget] = useState(route.params)
+  const [budget, setBudget] = useState(route.params);
   const [updateAmount] = useMutation(UPDATE_AMOUNT);
   const [deleteBudget] = useMutation(DELETE_BUDGET);
   const isFocused = useIsFocused();
 
- useEffect(() => {
+  useEffect(() => {}, [isFocused, budget]);
 
- }, [isFocused]);
+  const BUDGET_CURRENT_AMOUNT = route.params.currentAmount;
+
 
   const handleRemoveItem = async (budgetId) => {
     try {
@@ -60,11 +61,7 @@ export default function SingleBudget({ navigation, route }) {
     <View style={styles.test}>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss()}>
         <View style={styles.container}>
-          <View style={styles.header}>
-            <Text style={styles.headerText}>
-              {route.params.category} Budget
-            </Text>
-          </View>
+          <View style={styles.header}></View>
           <Formik
             initialValues={{
               amount: (route.params.goalAmount / 100).toString() || '0',
@@ -92,6 +89,7 @@ export default function SingleBudget({ navigation, route }) {
                     goalAmount: +budgetData.updateBudget.goalAmount,
                   },
                 });
+
                 setBudget(budgetData.updateBudget);
 
                 setVisible(true);
@@ -112,9 +110,12 @@ export default function SingleBudget({ navigation, route }) {
                   value={formikProps.values.amount}
                   onBlur={formikProps.handleBlur('amount')}
                 />
-                <Text>
-                  {formikProps.touched.amount && formikProps.errors.amount}
-                </Text>
+                <View style={styles.errorContainer}>
+                  <Text style={styles.errorText}>
+                    {formikProps.touched.amount && formikProps.errors.amount}
+                  </Text>
+                </View>
+
                 <View style={styles.buttons}>
                   <DeleteButton
                     text='Delete'
@@ -125,23 +126,23 @@ export default function SingleBudget({ navigation, route }) {
                     text='Save Changes'
                   />
                 </View>
-                {/* <View style={styles.borderBottom}></View>
-              <BudgetRecap item={budget} /> */}
+                <Snackbar
+                  visible={visible}
+                  onDismiss={onDismissSnackBar}
+                  duration={2000}
+                  style={styles.snack}
+                >
+                  Your {route.params.category} budget was updated!
+                </Snackbar>
               </View>
             )}
           </Formik>
-          <Snackbar
-            visible={visible}
-            onDismiss={onDismissSnackBar}
-            duration={2000}
-            style={styles.snack}
-          >
-            Your {route.params.category} budget was updated!
-          </Snackbar>
         </View>
       </TouchableWithoutFeedback>
-      <View style={styles.borderBottom}></View>
-      <BudgetRecap item={budget} />
+      <View style={styles.borderBottom}>
+        <Text style={styles.recapHeader}> Your Budget At A Glance</Text>
+      </View>
+      <BudgetRecap item={budget} currentAmount={BUDGET_CURRENT_AMOUNT} />
     </View>
   );
 }
@@ -155,9 +156,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'flex-start',
-    marginBottom: -50,
-    backgroundColor: '#E0FFE8',
+    justifyContent: 'flex-end',
+    marginBottom: -70,
   },
   test: {
     flex: 1,
@@ -172,6 +172,17 @@ const styles = StyleSheet.create({
   formikView: {
     width: '100%',
     height: '90%',
+    // backgroundColor: 'blue',
+  },
+  errorContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 20,
+  },
+  errorText: {
+    color: 'red',
+    fontSize: 14,
+    fontWeight: 'bold'
   },
   input: {
     borderWidth: 1,
@@ -195,11 +206,19 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
     marginTop: 300,
   },
+  recapHeader: {
+    color: 'white',
+    fontSize: 20,
+  },
   borderBottom: {
-    height: 5,
-    width: '100%',
-    backgroundColor: 'green',
+    height: 52,
+    width: '95%',
+    backgroundColor: '#00A86B',
     ...center,
-    marginTop: 50,
+    marginTop: 70,
+    borderTopLeftRadius: 25,
+    borderTopRightRadius: 25,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
