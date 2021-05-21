@@ -9,7 +9,6 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   StyleSheet,
-  // Picker,
 } from "react-native";
 import { Picker } from '@react-native-picker/picker';
 import moment from "moment";
@@ -44,20 +43,6 @@ const FETCH_FRIENDS = gql`
   }
 `;
 
-/*
-
-gring in friendsId -> to add to challenge
-
-have fields for
-  adding users -> get friend Ids (MAP THROUGH CATCH AND GET USERIDS)
-  start date -> default to now
-  end date -> default to a month
-  winning condition -> choose catagories (plaid categories)
-  winning amount -> convert to pennies
-  name of challenge
-  badge image
-
-*/
 
 const badgeArray = ['rainbow', 'thunder', 'earth', 'cascade', 'soul', 'marsh', 'volcano', 'boulder'];
 let thisBadge = badgeArray[Math.floor(Math.random()*8)];
@@ -97,12 +82,14 @@ export default function CreateMultiUserChallenge({friendIdPicker, friends}) {
             category: "",
           }}
           // validationSchema={reviewSchema}
-          onSubmit={values => {
-            console.log('SUBMITING--->', values)
-            values.startDate = startDate.toString();
-            values.endDate = endDate.toString();
-            console.log(values)
-              createChallenge({
+
+          onSubmit={async (values) => {
+            try {
+              console.log('SUBMITING--->', values)
+              values.startDate = startDate.toString();
+              values.endDate = endDate.toString();
+              console.log(values)
+              const challenge = await createChallenge({
                 variables: {
                   name: values.name,
                   startDate: values.startDate,
@@ -115,7 +102,9 @@ export default function CreateMultiUserChallenge({friendIdPicker, friends}) {
                   badgeImage: thisBadge,
                 },
               });
-            console.log(values);
+            } catch (error) {
+              console.log('error submiting challenge', error)
+            }
           }}
         >
           {formikProps => (

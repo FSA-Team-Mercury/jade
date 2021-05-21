@@ -7,13 +7,14 @@ import {
   ActivityIndicator,
   StyleSheet,
 } from "react-native";
-
 import { useIsFocused } from "@react-navigation/native";
+import {images} from '../styles/global'
 import { client } from "../../App";
 import { FETCH_ALL_CHALLENGES } from "../queries/multiChallenges";
 
+
 export default function MultiPlayerChallenges() {
-  const [challenges, setChallenges] = useState([]);
+  const [challenges, setChallenges] = useState(null);
   const isFocused = useIsFocused();
 
   useEffect(() => {
@@ -21,15 +22,15 @@ export default function MultiPlayerChallenges() {
       query: FETCH_ALL_CHALLENGES,
     });
 
-    console.log(res);
-    setChallenges(res.allMultiPlayerChallenges);
+    console.log('effect res---->',res.allMultiPlayerChallenges.multiPlayerChallenges);
+    setChallenges(res.allMultiPlayerChallenges.multiPlayerChallenges);
     return () => {
       console.log("unmounting multi user challenges");
     };
   }, [isFocused]);
 
   // const userId = multiPlayerChallenges.id
-  if (!challenges.length) {
+  if (!challenges) {
     return <Text>No Challenges</Text>;
   }
   return (
@@ -43,7 +44,7 @@ export default function MultiPlayerChallenges() {
               <View style={styles.levelOne}>
                 <View style={styles.badgeImageContainer}>
                   <Image
-                    // source={images.avatar[user.badgeImage]}
+                    source={images.badges[challenge.badgeImage]}
                     style={styles.profilePic}
                   />
                 </View>
@@ -60,8 +61,8 @@ export default function MultiPlayerChallenges() {
             <View style={styles.levelThree}>
               {contenders.map((user) => {
                 return (
-                  <View style={styles.badge} key={user.id}>
-                    <View style={styles.badgeImage}></View>
+                  <View style={styles.badge}>
+                    <Image style={styles.badgeImage} source={images.avatar[user.profileImage]} />
                   </View>
                 );
               })}
