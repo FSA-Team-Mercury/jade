@@ -8,6 +8,7 @@ export const CREATE_MULTI_PLAYER_CHALLENGE = gql`
     $endDate: String
     $winCondition: String
     $winAmount: Int
+    $category: String
   ) {
     createMultiplayerChallenge(
       friendId: $friendId
@@ -16,12 +17,26 @@ export const CREATE_MULTI_PLAYER_CHALLENGE = gql`
       endDate: $endDate
       winCondition: $winCondition
       winAmount: $winAmount
+      category: $category
     ) {
       id
       friendId
     }
   }
 `;
+
+// export const UPDATE_CHALLENGE_SPENDINGS = gql`
+//   mutation UpdateChallenge(
+//     $challengeId: ID
+//   ) {
+//     updateChallenge(
+//       challengeId: $challengeId
+//     ) {
+//       id
+//       friendId
+//     }
+//   }
+// `;
 
 export const FETCH_ALL_CHALLENGES = gql`
   query AllMultiPlayerChallenges{

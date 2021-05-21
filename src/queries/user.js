@@ -53,7 +53,7 @@ export const GET_USER_DATA = gql`
       type
       badgeImage
     }
-    userChallenges{
+    userChallenges {
       id
       type
       endDate
@@ -68,6 +68,24 @@ export const GET_USER_DATA = gql`
         type
         badgeImage
         createdAt
+      }
+    }
+    allMultiPlayerChallenges {
+      id
+      multiPlayerChallenges {
+        id
+        winCondition
+        completed
+        name
+        users {
+          id
+          username
+          profileImage
+          user_challenge {
+            currentAmout
+            leftChallenge
+          }
+        }
       }
     }
   }

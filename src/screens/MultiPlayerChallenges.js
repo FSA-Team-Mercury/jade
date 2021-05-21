@@ -2,63 +2,43 @@ import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
-  SafeAreaView,
-  ScrollView,
   Image,
-  TextInput,
   TouchableOpacity,
   ActivityIndicator,
   StyleSheet,
-  Picker,
 } from "react-native";
 
 import { useIsFocused } from "@react-navigation/native";
+import { client } from "../../App";
+import { FETCH_ALL_CHALLENGES } from "../queries/multiChallenges";
 
-import { useQuery, useMutation } from "@apollo/client";
-import {
-  CREATE_MULTI_PLAYER_CHALLENGE,
-  FETCH_ALL_CHALLENGES,
-  FETCH_CURENT_CHALLENGES,
-  LEAVE_CHALLENGE,
-} from "../queries/multiChallenges";
-
-export default () => {
-  const { data, loading, error } = useQuery(FETCH_ALL_CHALLENGES);
+export default function MultiPlayerChallenges() {
+  const [challenges, setChallenges] = useState([]);
   const isFocused = useIsFocused();
 
   useEffect(() => {
-    // console.log('endDate-->', endDate)
+    const res = client.readQuery({
+      query: FETCH_ALL_CHALLENGES,
+    });
+
+    console.log(res);
+    setChallenges(res.allMultiPlayerChallenges);
     return () => {
       console.log("unmounting multi user challenges");
     };
   }, [isFocused]);
-  function getUsersCompeting(users) {
-    const newObj = users.reduce((accum, user) => {
-      accum.push();
-    }, []);
-  }
-  if (loading) {
-    return (
-      <View>
-        <ActivityIndicator size="large" color="#00A86B" />
-      </View>
-    );
-  }
 
-  const { multiPlayerChallenges } = data.allMultiPlayerChallenges;
   // const userId = multiPlayerChallenges.id
-  console.log("multiPlayerChallenges---->", data);
-  if (!multiPlayerChallenges.length) {
+  if (!challenges.length) {
     return <Text>No Challenges</Text>;
   }
   return (
     <View style={styles.challengePage}>
       <Text style={styles.title}>Challenges Against Friends</Text>
-      {multiPlayerChallenges.map(challenge => {
-        // console.log("cahllenge--->", challenge)
+      {challenges.map((challenge) => {
         const contenders = challenge.users;
         return (
-          <View style={styles.container}>
+          <View style={styles.container} key={challenge.id}>
             <View>
               <View style={styles.levelOne}>
                 <View style={styles.badgeImageContainer}>
@@ -78,9 +58,9 @@ export default () => {
             </View>
             <Text style={{ marginRight: "auto", marginLeft: "auto" }}>Vs.</Text>
             <View style={styles.levelThree}>
-              {contenders.map(user => {
+              {contenders.map((user) => {
                 return (
-                  <View style={styles.badge}>
+                  <View style={styles.badge} key={user.id}>
                     <View style={styles.badgeImage}></View>
                   </View>
                 );
@@ -91,7 +71,7 @@ export default () => {
       })}
     </View>
   );
-};
+}
 
 const shadow = {
   shadowOffset: {
@@ -109,11 +89,9 @@ const center = {
 
 const styles = StyleSheet.create({
   page: {
-    flex: 1,
-    marginRight: "auto",
-    marginLeft: "auto",
-    // backgroundColor:'yellow',
+    width: "100%",
     alignItems: "center",
+    backgroundColor: "black",
   },
   title: {
     fontSize: 20,
@@ -134,6 +112,7 @@ const styles = StyleSheet.create({
     paddingTop: "3%",
     paddingBottom: "3%",
     ...shadow,
+    ...center,
   },
   levelOne: {
     height: 70,

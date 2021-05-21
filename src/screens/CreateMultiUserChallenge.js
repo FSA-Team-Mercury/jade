@@ -21,7 +21,6 @@ const reviewSchema = yup.object({
   name: yup.string().required(),
   winCondition: yup.string().required(),
   startDate: yup.string().required(),
-  friendId: yup.number().required(),
   winAmount: yup.number().required(),
 });
 
@@ -58,11 +57,9 @@ have fields for
 
 */
 
-export default function CreateMultiUserChallenge() {
-  // console.log('string date-->', JSON.stringify(startTime))
-  const [pendingFriends, setPendingFriends] = useState([]);
+export default function CreateMultiUserChallenge({friendIdPicker, friends}) {
   const [createChallenge] = useMutation(CREATE_MULTI_PLAYER_CHALLENGE);
-  const { data, loading, error } = useQuery(FETCH_FRIENDS);
+  const [friendsPicker, setFriendsPicker] = useState(friends[0].id)
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [viewDate, setViewDate] = useState("NONE");
@@ -74,32 +71,13 @@ export default function CreateMultiUserChallenge() {
       setViewDate(dateType);
     }
   }
-  
-  // const isFocused = useIsFocused();
-  // useEffect(() => {
-  //   console.log("startDate-->", startDate);
-  //   // console.log('endDate-->', endDate)
-  //   return () => {
-  //     console.log("unmounting create challenge");
-  //   };
-  // }, [isFocused]);
 
-  if (loading) {
+  const myFriends = friends.map(friend => {
     return (
-      <View>
-        <ActivityIndicator size="large" color="#00A86B" />
-      </View>
+      <Picker.Item label={friend.username} value={friend.id} key={friend.id}/>
     );
-  }
-  function handleSubmit(values) {}
-  console.log("data form all challenges FRIENDS--->", data);
-  let friends;
+  })
 
-  try {
-    friends = data.friends;
-  } catch (error) {
-    friends = [{ id: undefined }];
-  }
 
   return (
     <ScrollView style={{ backgroundColor: "white" }}>
@@ -108,16 +86,17 @@ export default function CreateMultiUserChallenge() {
           initialValues={{
             startDate: new Date(),
             endDate: new Date(),
-            friendId: friends[0].id,
             name: "",
             winCondition: "LESS_THAN",
-            winAmount: undefined,
+            winAmount: '',
             category: "",
           }}
           // validationSchema={reviewSchema}
           onSubmit={values => {
+            console.log('SUBMITING--->', values)
             values.startDate = startDate.toString();
             values.endDate = endDate.toString();
+            console.log(values)
             createChallenge({
               variables: {
                 name: values.name,
@@ -126,7 +105,8 @@ export default function CreateMultiUserChallenge() {
                 endDate: values.endDate,
                 completed: false,
                 winAmount: Number(values.winAmount) * 100,
-                friendId: values.friendId,
+                category: values.category,
+                friendId: friendsPicker,
               },
             });
             console.log(values);
@@ -203,16 +183,14 @@ export default function CreateMultiUserChallenge() {
                       ? styles.friendsPicker
                       : styles.hideDate
                   }
-                  onValueChange={formikProps.handleChange("friendId")}
-                  selectedValue={formikProps.values.friendId}
+                  onValueChange={setFriendsPicker}
+                  selectedValue={friendsPicker}
                 >
-                  {friends.map(friend => {
-                    return (
-                      <Picker.Item label={friend.username} value={friend.id} />
-                    );
-                  })}
 
-                  {/* <Picker.Item label="Cody" value="Cody" /> */}
+                  {
+                    myFriends
+                  }
+
                 </Picker>
               </View>
 

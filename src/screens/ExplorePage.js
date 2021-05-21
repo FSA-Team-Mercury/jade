@@ -118,14 +118,14 @@ export default function ExplorePage(props) {
         </View>
         {display[selected]}
       </ScrollView>
-      <TouchableOpacity
+      {/* <TouchableOpacity
         style={styles.createChallengeBtn}
         onPress={() => {
           props.navigation.navigate("Add Challenge");
         }}
       >
         <Text style={styles.btnText}>+</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </SafeAreaView>
   );
 }

@@ -4,7 +4,7 @@ import { client } from "../../App";
 import { gql, useQuery, useMutation } from "@apollo/client";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import SingleChallenge from "./SingleChallenge"
-
+import MultiPlayerChallenges from './MultiPlayerChallenges'
 const GET_CHALLENGES = gql`
   query GetChallenges{
     userChallenges{
@@ -19,14 +19,14 @@ const GET_CHALLENGES = gql`
 
 export default function Challenges({props}) {
     const [allChallenges, setAllChallenges] = useState(null);
-  
+
     useEffect(() => {
         const data = client.readQuery({
             query: GET_CHALLENGES,
         });
         setAllChallenges(data.userChallenges);
     });
-  
+
     if (!allChallenges) {
         return (
             <View>
@@ -34,14 +34,13 @@ export default function Challenges({props}) {
             </View>
         );
     }
-    // props = props.props
-    console.log('challenge props now--------->', props)
 
     return (
         <SafeAreaView>
             <View style={style.challengesHeader}>
                 <Text style={style.challengesHeaderText}>Challenges</Text>
             </View>
+            <MultiPlayerChallenges />
             <View style={style.container}>
                 <View style={style.challenges}>
                     <FlatList
@@ -53,7 +52,7 @@ export default function Challenges({props}) {
                         </View>
                     )}
                     />
-                    <TouchableOpacity 
+                    <TouchableOpacity
                     onPress={() => props.navigation.navigate("Add Challenge")}
                     >
                         <View style={style.addChallenge}>
@@ -74,7 +73,7 @@ const center = {
     marginRight: "auto",
     marginLeft: "auto",
   };
-  
+
   const shadow = {
     shadowOffset: {
       width: 2,
@@ -115,7 +114,7 @@ const style = StyleSheet.create({
     },
 
     challengeContainer: {
-        flex: 1, 
+        flex: 1,
         flexDirection: 'column',
     },
 
@@ -128,11 +127,11 @@ const style = StyleSheet.create({
         display: 'flex',
         alignItems: 'center',
     },
-    
+
     categoryName: {
         fontSize: 20,
     },
-    
+
     goalText: {
         fontSize: 20,
     },
