@@ -43,10 +43,14 @@ export const images = {
     beyonce: require("../../assets/images/icons8-beyonce-48.png"),
     "bad-bunny": require("../../assets/images/icons8-bad-bunny-48.png"),
   },
-  badges:{
-  rainbow: require("../../assets/badges/rainbow.png"),
-  earth: require("../../assets/badges/earth.png"),
-  thunder: require("../../assets/badges/thunder.png"),
-  cascade: require("../../assets/badges/cascade.png"),
-  }
+  badges: {
+    rainbow: require("../../assets/badges/rainbow.png"),
+    earth: require("../../assets/badges/earth.png"),
+    thunder: require("../../assets/badges/thunder.png"),
+    cascade: require("../../assets/badges/cascade.png"),
+    boulder: require("../../assets/badges/boulder.png"),
+    marsh: require("../../assets/badges/marsh.png"),
+    soul: require("../../assets/badges/soul.png"),
+    volcano: require("../../assets/badges/volcano.png"),
+  },
 };

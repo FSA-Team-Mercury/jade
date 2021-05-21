@@ -9,13 +9,14 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   StyleSheet,
-  Picker,
 } from "react-native";
+import { Picker } from '@react-native-picker/picker';
 import moment from "moment";
 import { Formik } from "formik";
 import * as yup from "yup";
 import { useIsFocused } from "@react-navigation/native";
 import DatePicker from "./DatePicker";
+import { images } from '../styles/global';
 
 const reviewSchema = yup.object({
   name: yup.string().required(),
@@ -42,20 +43,10 @@ const FETCH_FRIENDS = gql`
   }
 `;
 
-/*
 
-gring in friendsId -> to add to challenge
-
-have fields for
-  adding users -> get friend Ids (MAP THROUGH CATCH AND GET USERIDS)
-  start date -> default to now
-  end date -> default to a month
-  winning condition -> choose catagories (plaid categories)
-  winning amount -> convert to pennies
-  name of challenge
-  badge image
-
-*/
+const badgeArray = ['rainbow', 'thunder', 'earth', 'cascade', 'soul', 'marsh', 'volcano', 'boulder'];
+let thisBadge = badgeArray[Math.floor(Math.random()*8)];
+let thisBadgeImage = images.badgeImages[thisBadge];
 
 export default function CreateMultiUserChallenge({friendIdPicker, friends}) {
   const [createChallenge] = useMutation(CREATE_MULTI_PLAYER_CHALLENGE);
@@ -78,7 +69,6 @@ export default function CreateMultiUserChallenge({friendIdPicker, friends}) {
     );
   })
 
-
   return (
     <ScrollView style={{ backgroundColor: "white" }}>
       <View style={styles.screen}>
@@ -92,6 +82,7 @@ export default function CreateMultiUserChallenge({friendIdPicker, friends}) {
             category: "",
           }}
           // validationSchema={reviewSchema}
+
           onSubmit={async (values) => {
             try {
               console.log('SUBMITING--->', values)
@@ -108,18 +99,12 @@ export default function CreateMultiUserChallenge({friendIdPicker, friends}) {
                   winAmount: Number(values.winAmount) * 100,
                   category: values.category,
                   friendId: friendsPicker,
+                  badgeImage: thisBadge,
                 },
               });
             } catch (error) {
               console.log('error submiting challenge', error)
             }
-
-            // if (friendsPicker === 0){
-            //   addChallenge()//fill this out for solo challenge
-            // } else {
-
-            // }
-            // console.log(values);
           }}
         >
           {formikProps => (
@@ -268,9 +253,15 @@ export default function CreateMultiUserChallenge({friendIdPicker, friends}) {
                 </View>
               </View>
 
-              <Text style={(styles.dateTitle, { marginTop: 100 })}>
-                Badge Image Here
-              </Text>
+              <View style={(styles.badgeImageContainer, { marginTop: 30 })}>
+                <Image
+                  style={styles.badgeImage}
+                  source={thisBadgeImage}
+                />
+                <Text style={styles.dateTitle}>
+                  Earn this badge!
+                </Text>
+              </View>
               <TouchableOpacity
                 style={styles.addChallenge}
                 onPress={formikProps.handleSubmit}
@@ -307,6 +298,15 @@ const styles = StyleSheet.create({
     width: "100%",
     alignItems: "center",
     backgroundColor: "white",
+  },
+  badgeImageContainer: {
+    flex: 1,
+    flexDirection: "column",
+  },
+  badgeImage: {
+    height: 150,
+    width: 150,
+    marginBottom: 30, 
   },
   challengeName: {
     marginTop: 20,
