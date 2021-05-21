@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-// import { PLAID_TOKEN_URL } from "@env";
+import { PLAID_TOKEN_URL } from "@env";
 import { View, Text, StyleSheet, ActivityIndicator } from "react-native";
 import { PlaidLink } from "react-native-plaid-link-sdk";
 import axios from "axios";

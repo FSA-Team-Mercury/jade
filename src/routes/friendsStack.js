@@ -19,10 +19,10 @@ export default function FriendsStack() {
       <Stack.Screen
         name="Friends"
         component={Friends}
-        options={{
-          headerShown: true,
-          title: "Friends",
-        }}
+        options={({ navigation }) => ({
+          title: "",
+          headerTintColor: "#00A86B",
+        })}
       />
 
       <Stack.Screen

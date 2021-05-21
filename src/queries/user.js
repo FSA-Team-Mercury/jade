@@ -60,6 +60,16 @@ export const GET_USER_DATA = gql`
       startDate
       completed
     }
+    friends {
+      id
+      username
+      profileImage
+      badges {
+        type
+        badgeImage
+        createdAt
+      }
+    }
   }
 `;
 
