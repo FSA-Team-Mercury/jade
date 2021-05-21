@@ -15,6 +15,8 @@ import { client } from "../../App";
 import { gql, useQuery, useMutation } from "@apollo/client";
 import Challenges from "./Challenges";
 import MultiPlayerChallenges from "./MultiPlayerChallenges";
+import { images } from '../styles/global';
+
 const GET_BADGES = gql`
   query GetBadges {
     userBadges {
@@ -24,12 +26,6 @@ const GET_BADGES = gql`
     }
   }
 `;
-const images = {
-  rainbow: require("../../assets/badges/rainbow.png"),
-  earth: require("../../assets/badges/earth.png"),
-  thunder: require("../../assets/badges/thunder.png"),
-  cascade: require("../../assets/badges/cascade.png"),
-};
 
 export default function Badges(props) {
   const [allBadges, setAllBadges] = useState(null);
@@ -67,7 +63,7 @@ export default function Badges(props) {
                 <View style={style.badgeContainer}>
                   <Image
                     style={style.badgeImage}
-                    source={images[item.badgeImage]}
+                    source={images.badgeImages[item.badgeImage]}
                   />
                   <Text style={style.badgeType}>{item.type}</Text>
                 </View>

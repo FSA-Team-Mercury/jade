@@ -13,13 +13,6 @@ import { useMutation } from "@apollo/client";
 import { images } from "../styles/global";
 import { FETCH_FRIENDS, UNFOLLOW_USER } from "../queries/friends";
 
-const badgeImages = {
-  rainbow: require("../../assets/badges/rainbow.png"),
-  earth: require("../../assets/badges/earth.png"),
-  thunder: require("../../assets/badges/thunder.png"),
-  cascade: require("../../assets/badges/cascade.png"),
-};
-
 export default function ExploreFriends() {
   const [friends, setFriends] = useState(null);
   const [unfollower] = useMutation(UNFOLLOW_USER);
@@ -103,7 +96,7 @@ export default function ExploreFriends() {
                         <View style={friend.badgeImage}>
                           <Image
                             style={friend.badgeImage}
-                            source={badgeImages[badge.badgeImage]}
+                            source={images.badgeImages[badge.badgeImage]}
                           />
                         </View>
                         <Text style={friend.badgeName}>{badge.type}</Text>
