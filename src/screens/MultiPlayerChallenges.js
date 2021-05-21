@@ -8,7 +8,7 @@ import { FETCH_ALL_CHALLENGES } from "../queries/multiChallenges";
 export default function MultiPlayerChallenges(props) {
   const [challenges, setChallenges] = useState([]);
   const isFocused = useIsFocused();
-  console.log("props -->", props.route);
+
   useEffect(() => {
     const { allMultiPlayerChallenges } = client.readQuery({
       query: FETCH_ALL_CHALLENGES,

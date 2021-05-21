@@ -48,5 +48,9 @@ export const images = {
     earth: require("../../assets/badges/earth.png"),
     thunder: require("../../assets/badges/thunder.png"),
     cascade: require("../../assets/badges/cascade.png"),
+    boulder: require("../../assets/badges/boulder.png"),
+    marsh: require("../../assets/badges/marsh.png"),
+    soul: require("../../assets/badges/soul.png"),
+    volcano: require("../../assets/badges/volcano.png"),
   },
 };

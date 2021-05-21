@@ -13,6 +13,7 @@ import { gql } from "@apollo/client";
 import Challenges from "./Challenges";
 import { images } from "../styles/global";
 import { useIsFocused } from "@react-navigation/native";
+import MultiPlayerChallenges from "./MultiPlayerChallenges";
 
 const GET_BADGES = gql`
   query GetBadges {
@@ -27,7 +28,7 @@ const GET_BADGES = gql`
 export default function Badges(props) {
   const [allBadges, setAllBadges] = useState(null);
   const isFocused = useIsFocused();
-  console.log("badegs props --->", props.route);
+
   useEffect(() => {
     const data = client.readQuery({
       query: GET_BADGES,
@@ -75,11 +76,6 @@ export default function Badges(props) {
     </SafeAreaView>
   );
 }
-
-const center = {
-  marginRight: "auto",
-  marginLeft: "auto",
-};
 
 const shadow = {
   shadowOffset: {

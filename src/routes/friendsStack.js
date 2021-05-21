@@ -61,7 +61,7 @@ export default function FriendsStack() {
       />
       <Stack.Screen
         name="Add Challenge"
-        component={AddChallenge}
+        component={CreateMultiUserChallenge}
         options={({ navigation }) => ({
           title: "Add Challenge",
           headerTintColor: "#00A86B",
