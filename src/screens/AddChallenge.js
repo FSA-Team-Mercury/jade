@@ -39,9 +39,6 @@ const FETCH_FRIENDS = gql`
   }
 `;
 
-
-
-
 export default function AddChallenge({navigation}) {
   const [selected, setSelected] = useState('SOLO')
   const { data, loading, error } = useQuery(FETCH_FRIENDS);

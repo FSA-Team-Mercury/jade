@@ -23,8 +23,8 @@ export default function ExplorePage(props) {
   const [selected, setSelected] = useState("FRIENDS"); //"FRIENDS");
 
   const display = {
-    PENDING_FRIENDS: <FriendRequests {...props}/>,
-    FRIENDS: <ExploreFriends {...props}/>,
+    PENDING_FRIENDS: <FriendRequests {...props} />,
+    FRIENDS: <ExploreFriends {...props} />,
     CHALLENGES: <Badges {...props} />,
   };
 
@@ -38,7 +38,6 @@ export default function ExplorePage(props) {
     });
   }
 
-  // return <CreateMultiUserChallenge />;
   return (
     <SafeAreaView>
       <ScrollView style={styles.scrollView}>
@@ -139,9 +138,7 @@ const styles = StyleSheet.create({
   scrollView: {
     height: "100%",
     width: "100%",
-    backgroundColor: "white",
     position: "relative",
-    // alignItems: "center",
   },
   searchBox: {
     height: 50,
@@ -173,8 +170,7 @@ const styles = StyleSheet.create({
   selectView: {
     height: 50,
     width: "90%",
-    backgroundColor: "#f4f6f8",
-    // backgroundColor: 'lightgrey',
+    backgroundColor: "#E0E0E0",
     borderRadius: 30,
     flexDirection: "row",
     alignItems: "center",

@@ -1,41 +1,34 @@
 import React, { useState, useEffect } from "react";
-import {
-  View,
-  Text,
-  Image,
-  TouchableOpacity,
-  ActivityIndicator,
-  StyleSheet,
-} from "react-native";
+import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
 import { useIsFocused } from "@react-navigation/native";
-import {images} from '../styles/global'
+import { images } from "../styles/global";
 import { client } from "../../App";
 import { FETCH_ALL_CHALLENGES } from "../queries/multiChallenges";
 
-
-export default function MultiPlayerChallenges() {
-  const [challenges, setChallenges] = useState(null);
+export default function MultiPlayerChallenges(props) {
+  const [challenges, setChallenges] = useState([]);
   const isFocused = useIsFocused();
 
   useEffect(() => {
-    const res = client.readQuery({
+    const { allMultiPlayerChallenges } = client.readQuery({
       query: FETCH_ALL_CHALLENGES,
     });
 
-    console.log('effect res---->',res.allMultiPlayerChallenges.multiPlayerChallenges);
-    setChallenges(res.allMultiPlayerChallenges.multiPlayerChallenges);
+    setChallenges(allMultiPlayerChallenges.multiPlayerChallenges);
     return () => {
       console.log("unmounting multi user challenges");
     };
-  }, [isFocused]);
+  }, [isFocused, challenges]);
 
-  // const userId = multiPlayerChallenges.id
-  if (!challenges) {
-    return <Text>No Challenges</Text>;
+  if (!challenges.length) {
+    return (
+      <View style={styles.noChallenges}>
+        <Text style={styles.noChallengeText}>No Challenges</Text>
+      </View>
+    );
   }
   return (
     <View style={styles.challengePage}>
-      <Text style={styles.title}>Challenges Against Friends</Text>
       {challenges.map((challenge) => {
         const contenders = challenge.users;
         return (
@@ -50,7 +43,6 @@ export default function MultiPlayerChallenges() {
                 </View>
                 <View>
                   <Text style={styles.name}> {challenge.name}</Text>
-                  {/* <Text style={styles.userName}>UserName</Text> */}
                 </View>
                 <TouchableOpacity style={styles.view}>
                   <Text style={{ color: "white" }}>View Status</Text>
@@ -61,8 +53,11 @@ export default function MultiPlayerChallenges() {
             <View style={styles.levelThree}>
               {contenders.map((user) => {
                 return (
-                  <View style={styles.badge}>
-                    <Image style={styles.badgeImage} source={images.avatar[user.profileImage]} />
+                  <View style={styles.badge} key={user.id}>
+                    <Image
+                      style={styles.badgeImage}
+                      source={images.avatar[user.profileImage]}
+                    />
                   </View>
                 );
               })}
@@ -89,6 +84,21 @@ const center = {
 };
 
 const styles = StyleSheet.create({
+  noChallenges: {
+    height: 80,
+    width: "90%",
+    alignSelf: "center",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "white",
+    borderRadius: 8,
+    marginBottom: 10,
+    ...shadow,
+  },
+  noChallengeText: {
+    fontSize: 18,
+    color: "black",
+  },
   page: {
     width: "100%",
     alignItems: "center",
@@ -104,7 +114,6 @@ const styles = StyleSheet.create({
   container: {
     height: 180,
     width: "90%",
-    // backgroundColor: '#f4f6f8',
     backgroundColor: "white",
     borderRadius: 10,
     marginBottom: 20,

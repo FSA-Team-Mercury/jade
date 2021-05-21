@@ -90,11 +90,14 @@ export default function ExploreFriends() {
                 {!user.badges.length ? (
                   <Text>No Badges Yet</Text>
                 ) : (
-                  user.badges.slice(0,5).map(badge => {
-                    console.log(badge)
+                  user.badges.slice(0, 5).map((badge) => {
+                    console.log(badge);
                     return (
-                      <View style={friend.badge}>
-                        <Image style={friend.badgeImage} source={images.badges[badge.badgeImage]} />
+                      <View style={friend.badge} key={badge.id}>
+                        <Image
+                          style={friend.badgeImage}
+                          source={images.badges[badge.badgeImage]}
+                        />
                         <Text style={friend.badgeName}>{badge.type}</Text>
                       </View>
                     );
@@ -123,13 +126,11 @@ const friend = StyleSheet.create({
     flex: 1,
     marginRight: "auto",
     marginLeft: "auto",
-    // backgroundColor:'yellow',
     alignItems: "center",
   },
   container: {
     height: 190,
     width: "90%",
-    // backgroundColor: '#f4f6f8',
     backgroundColor: "white",
     borderRadius: 10,
     marginBottom: 20,
@@ -142,7 +143,6 @@ const friend = StyleSheet.create({
   levelOne: {
     height: 70,
     width: "100%",
-    // backgroundColor: 'lightgrey',
     flexDirection: "row",
     alignItems: "center",
   },

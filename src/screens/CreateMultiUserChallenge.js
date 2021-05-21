@@ -10,13 +10,12 @@ import {
   ActivityIndicator,
   StyleSheet,
 } from "react-native";
-import { Picker } from '@react-native-picker/picker';
+import { Picker } from "@react-native-picker/picker";
 import moment from "moment";
 import { Formik } from "formik";
 import * as yup from "yup";
-import { useIsFocused } from "@react-navigation/native";
 import DatePicker from "./DatePicker";
-import { images } from '../styles/global';
+import { images } from "../styles/global";
 
 const reviewSchema = yup.object({
   name: yup.string().required(),
@@ -25,7 +24,7 @@ const reviewSchema = yup.object({
   winAmount: yup.number().required(),
 });
 
-import { gql, useQuery, useMutation } from "@apollo/client";
+import { gql, useMutation } from "@apollo/client";
 import {
   CREATE_MULTI_PLAYER_CHALLENGE,
   FETCH_ALL_CHALLENGES,
@@ -43,14 +42,22 @@ const FETCH_FRIENDS = gql`
   }
 `;
 
+const badgeArray = [
+  "rainbow",
+  "thunder",
+  "earth",
+  "cascade",
+  "soul",
+  "marsh",
+  "volcano",
+  "boulder",
+];
+let thisBadge = badgeArray[Math.floor(Math.random() * 8)];
+let thisBadgeImage = images.badges[thisBadge];
 
-const badgeArray = ['rainbow', 'thunder', 'earth', 'cascade', 'soul', 'marsh', 'volcano', 'boulder'];
-let thisBadge = badgeArray[Math.floor(Math.random()*8)];
-let thisBadgeImage = images.badgeImages[thisBadge];
-
-export default function CreateMultiUserChallenge({friendIdPicker, friends}) {
+export default function CreateMultiUserChallenge(props) {
   const [createChallenge] = useMutation(CREATE_MULTI_PLAYER_CHALLENGE);
-  const [friendsPicker, setFriendsPicker] = useState(0)
+  const [friendsPicker, setFriendsPicker] = useState(0);
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [viewDate, setViewDate] = useState("NONE");
@@ -63,11 +70,11 @@ export default function CreateMultiUserChallenge({friendIdPicker, friends}) {
     }
   }
 
-  const myFriends = friends.map(friend => {
+  const myFriends = props.friends.map((friend) => {
     return (
-      <Picker.Item label={friend.username} value={friend.id} key={friend.id}/>
+      <Picker.Item label={friend.username} value={friend.id} key={friend.id} />
     );
-  })
+  });
 
   return (
     <ScrollView style={{ backgroundColor: "white" }}>
@@ -78,18 +85,16 @@ export default function CreateMultiUserChallenge({friendIdPicker, friends}) {
             endDate: new Date(),
             name: "",
             winCondition: "LESS_THAN",
-            winAmount: '',
+            winAmount: "",
             category: "",
           }}
           // validationSchema={reviewSchema}
 
           onSubmit={async (values) => {
             try {
-              console.log('SUBMITING--->', values)
               values.startDate = startDate.toString();
               values.endDate = endDate.toString();
-              console.log(values)
-              const challenge = await createChallenge({
+              await createChallenge({
                 variables: {
                   name: values.name,
                   startDate: values.startDate,
@@ -101,13 +106,23 @@ export default function CreateMultiUserChallenge({friendIdPicker, friends}) {
                   friendId: friendsPicker,
                   badgeImage: thisBadge,
                 },
+                update: (cache, { data: { createChallenge } }) => {
+                  const data = cache.readQuery({ query: FETCH_ALL_CHALLENGES });
+                  cache.writeQuery({
+                    query: FETCH_ALL_CHALLENGES,
+                    data: {
+                      budgets: [...data.multiPlayerChallenges, createChallenge],
+                    },
+                  });
+                },
               });
+              props.navigation.goBack();
             } catch (error) {
-              console.log('error submiting challenge', error)
+              console.log("error submiting challenge", error);
             }
           }}
         >
-          {formikProps => (
+          {(formikProps) => (
             <>
               <TextInput
                 placeholder=" Name of Challenge"
@@ -181,11 +196,8 @@ export default function CreateMultiUserChallenge({friendIdPicker, friends}) {
                   onValueChange={setFriendsPicker}
                   selectedValue={friendsPicker}
                 >
-                  <Picker.Item label={"Solo Challenge"} value={0}/>
-                  {
-                    myFriends
-                  }
-
+                  <Picker.Item label={"Solo Challenge"} value={0} />
+                  {myFriends}
                 </Picker>
               </View>
 
@@ -254,13 +266,8 @@ export default function CreateMultiUserChallenge({friendIdPicker, friends}) {
               </View>
 
               <View style={(styles.badgeImageContainer, { marginTop: 30 })}>
-                <Image
-                  style={styles.badgeImage}
-                  source={thisBadgeImage}
-                />
-                <Text style={styles.dateTitle}>
-                  Earn this badge!
-                </Text>
+                <Image style={styles.badgeImage} source={thisBadgeImage} />
+                <Text style={styles.dateTitle}>Earn this badge!</Text>
               </View>
               <TouchableOpacity
                 style={styles.addChallenge}
@@ -306,7 +313,7 @@ const styles = StyleSheet.create({
   badgeImage: {
     height: 150,
     width: 150,
-    marginBottom: 30, 
+    marginBottom: 30,
   },
   challengeName: {
     marginTop: 20,
