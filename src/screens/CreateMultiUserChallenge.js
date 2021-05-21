@@ -32,31 +32,6 @@ import {
   LEAVE_CHALLENGE,
 } from "../queries/multiChallenges";
 
-const FETCH_FRIENDS = gql`
-  query FetchFriends {
-    friends {
-      id
-      username
-      profileImage
-    }
-  }
-`;
-
-/*
-
-gring in friendsId -> to add to challenge
-
-have fields for
-  adding users -> get friend Ids (MAP THROUGH CATCH AND GET USERIDS)
-  start date -> default to now
-  end date -> default to a month
-  winning condition -> choose catagories (plaid categories)
-  winning amount -> convert to pennies
-  name of challenge
-  badge image
-
-*/
-
 export default function CreateMultiUserChallenge({friendIdPicker, friends}) {
   const [createChallenge] = useMutation(CREATE_MULTI_PLAYER_CHALLENGE);
   const [friendsPicker, setFriendsPicker] = useState(0)
@@ -90,8 +65,11 @@ export default function CreateMultiUserChallenge({friendIdPicker, friends}) {
             winCondition: "LESS_THAN",
             winAmount: '',
             category: "",
+            badgeImage: 'rainbow'
           }}
-          // validationSchema={reviewSchema}
+
+          validationSchema={reviewSchema}
+
           onSubmit={async (values) => {
             try {
               console.log('SUBMITING--->', values)
@@ -108,6 +86,7 @@ export default function CreateMultiUserChallenge({friendIdPicker, friends}) {
                   winAmount: Number(values.winAmount) * 100,
                   category: values.category,
                   friendId: friendsPicker,
+                  badgeImage: values.badgeImage
                 },
               });
             } catch (error) {

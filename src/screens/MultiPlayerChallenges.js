@@ -10,6 +10,7 @@ import {
 import { useIsFocused } from "@react-navigation/native";
 import {images} from '../styles/global'
 import { client } from "../../App";
+import moment from 'moment'
 import { FETCH_ALL_CHALLENGES } from "../queries/multiChallenges";
 
 
@@ -22,7 +23,6 @@ export default function MultiPlayerChallenges() {
       query: FETCH_ALL_CHALLENGES,
     });
 
-    console.log('effect res---->',res.allMultiPlayerChallenges.multiPlayerChallenges);
     setChallenges(res.allMultiPlayerChallenges.multiPlayerChallenges);
     return () => {
       console.log("unmounting multi user challenges");
@@ -37,6 +37,8 @@ export default function MultiPlayerChallenges() {
     <View style={styles.challengePage}>
       <Text style={styles.title}>Challenges Against Friends</Text>
       {challenges.map((challenge) => {
+        let date = moment(challenge.endDate).format("MM-DD-YYYY");
+        console.log('date--->',date)
         const contenders = challenge.users;
         return (
           <View style={styles.container} key={challenge.id}>
@@ -53,19 +55,22 @@ export default function MultiPlayerChallenges() {
                   {/* <Text style={styles.userName}>UserName</Text> */}
                 </View>
                 <TouchableOpacity style={styles.view}>
-                  <Text style={{ color: "white" }}>View Status</Text>
+                  {/* <Text style={{ color: "white" }}>View Status</Text> */}
+                   <Text style={{ color: "white" }}>{date}</Text>
                 </TouchableOpacity>
               </View>
             </View>
             <Text style={{ marginRight: "auto", marginLeft: "auto" }}>Vs.</Text>
             <View style={styles.levelThree}>
-              {contenders.map((user) => {
-                return (
-                  <View style={styles.badge}>
-                    <Image style={styles.badgeImage} source={images.avatar[user.profileImage]} />
-                  </View>
-                );
-              })}
+              {
+                contenders.map((user) => {
+                  return (
+                    <View style={styles.badge}>
+                      <Image style={styles.badgeImage} source={images.avatar[user.profileImage]} />
+                    </View>
+                  );
+                })
+              }
             </View>
           </View>
         );
