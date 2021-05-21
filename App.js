@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
+import { JADE_SERVER } from "@env";
 import { AsyncStorage, AppRegistry, LogBox } from "react-native";
 LogBox.ignoreAllLogs();
 import { NavigationContainer } from "@react-navigation/native";
+
 import { createStackNavigator } from "@react-navigation/stack";
 import {
   ApolloClient,
@@ -13,14 +15,13 @@ import {
 } from "@apollo/client";
 import Login from "./src/screens/login";
 import Home from "./src/screens/home";
-import Plaid from "./src/screens/Plaid";
 import TabNav from "./src/routes/tabNavigator";
 import Signup from "./src/screens/signup";
 
 const Stack = createStackNavigator();
 
 const httpLink = createHttpLink({
-  uri: "http://localhost:3000/graphql", //JADE_SERVER,
+  uri:  "http://localhost:3000/graphql",//JADE_SERVER, //
   credentials: "same-origin",
 });
 
@@ -38,7 +39,7 @@ const authLink = new ApolloLink(async (operation, forward) => {
 });
 
 export const client = new ApolloClient({
-  uri: "http://localhost:3000/graphql", //JADE_SERVER,
+  uri:  "http://localhost:3000/graphql",//,JADE_SERVER, //,
   link: authLink.concat(httpLink),
   cache: new InMemoryCache(),
 });
@@ -70,13 +71,13 @@ export default function App() {
             headerShown: false,
           }}
         >
-          <Stack.Screen name='Login'>
+          <Stack.Screen name="Login">
             {(props) => <Login {...props} />}
           </Stack.Screen>
           <Stack.Screen name="Signup">
             {(props) => <Signup {...props} />}
           </Stack.Screen>
-          <Stack.Screen name='Nav'>
+          <Stack.Screen name="Nav">
             {(props) => <TabNav {...props} client={client} />}
           </Stack.Screen>
           <Stack.Screen name="Home">

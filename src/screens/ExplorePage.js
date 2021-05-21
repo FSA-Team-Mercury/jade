@@ -15,20 +15,16 @@ import MutualFriends from "./MutualFriends";
 import ExploreFriends from "./ExploreFriends";
 import { client } from "../../App";
 import { gql, useQuery } from "@apollo/client";
-import { useNavigation } from "@react-navigation/native";
-import { useIsFocused } from "@react-navigation/native";
 
 import FriendRequests from "./FriendRequests";
 import Badges from "./Badges";
 
 export default function ExplorePage(props) {
-  const [selected, setSelected] = useState("CHALLENGES"); //"FRIENDS");
-  const navigation = useNavigation();
-  const isFocused = useIsFocused();
+  const [selected, setSelected] = useState("FRIENDS"); //"FRIENDS");
 
   const display = {
-    PENDING_FRIENDS: <FriendRequests />,
-    FRIENDS: <ExploreFriends />,
+    PENDING_FRIENDS: <FriendRequests {...props}/>,
+    FRIENDS: <ExploreFriends {...props}/>,
     CHALLENGES: <Badges {...props} />,
   };
 
@@ -37,7 +33,7 @@ export default function ExplorePage(props) {
   }
 
   function searchUsers(search) {
-    navigation.navigate("Search Users", {
+    props.navigation.navigate("Search Users", {
       search,
     });
   }

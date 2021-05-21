@@ -22,7 +22,6 @@ export default function Account(props) {
     const data = client.readQuery({
       query: GET_USER,
     });
-    //tokenEvent();
     setUser(data.user);
   }, []);
 
@@ -34,7 +33,6 @@ export default function Account(props) {
       routes: [{ name: "Login" }],
     });
   };
-  console.log('user-->',user);
   if (!user) {
     return (
       <View style={{ flex: 1, alignItems: "center" }}>
@@ -66,7 +64,6 @@ export default function Account(props) {
           </View>
         </TouchableOpacity>
       </View>
-      {/* <Button title="Send Notification!" /> */}
       <TouchableOpacity
         style={accountStyles.logoutButton}
         onPress={handleLogout}

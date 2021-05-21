@@ -31,7 +31,7 @@ export default function Challenges({props}) {
     if (!allChallenges) {
         return (
             <View>
-            <ActivityIndicator size="large" color="#00A86B" />
+                <ActivityIndicator size="large" color="#00A86B" />
             </View>
         );
     }

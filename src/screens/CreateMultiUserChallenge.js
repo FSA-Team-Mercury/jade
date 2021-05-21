@@ -59,7 +59,7 @@ have fields for
 
 export default function CreateMultiUserChallenge({friendIdPicker, friends}) {
   const [createChallenge] = useMutation(CREATE_MULTI_PLAYER_CHALLENGE);
-  const [friendsPicker, setFriendsPicker] = useState(friends[0].id)
+  const [friendsPicker, setFriendsPicker] = useState(0)
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [viewDate, setViewDate] = useState("NONE");
@@ -92,24 +92,34 @@ export default function CreateMultiUserChallenge({friendIdPicker, friends}) {
             category: "",
           }}
           // validationSchema={reviewSchema}
-          onSubmit={values => {
-            console.log('SUBMITING--->', values)
-            values.startDate = startDate.toString();
-            values.endDate = endDate.toString();
-            console.log(values)
-            createChallenge({
-              variables: {
-                name: values.name,
-                startDate: values.startDate,
-                winCondition: values.winCondition,
-                endDate: values.endDate,
-                completed: false,
-                winAmount: Number(values.winAmount) * 100,
-                category: values.category,
-                friendId: friendsPicker,
-              },
-            });
-            console.log(values);
+          onSubmit={async (values) => {
+            try {
+              console.log('SUBMITING--->', values)
+              values.startDate = startDate.toString();
+              values.endDate = endDate.toString();
+              console.log(values)
+              const challenge = await createChallenge({
+                variables: {
+                  name: values.name,
+                  startDate: values.startDate,
+                  winCondition: values.winCondition,
+                  endDate: values.endDate,
+                  completed: false,
+                  winAmount: Number(values.winAmount) * 100,
+                  category: values.category,
+                  friendId: friendsPicker,
+                },
+              });
+            } catch (error) {
+              console.log('error submiting challenge', error)
+            }
+
+            // if (friendsPicker === 0){
+            //   addChallenge()//fill this out for solo challenge
+            // } else {
+
+            // }
+            // console.log(values);
           }}
         >
           {formikProps => (
@@ -186,7 +196,7 @@ export default function CreateMultiUserChallenge({friendIdPicker, friends}) {
                   onValueChange={setFriendsPicker}
                   selectedValue={friendsPicker}
                 >
-
+                  <Picker.Item label={"Solo Challenge"} value={0}/>
                   {
                     myFriends
                   }

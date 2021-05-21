@@ -2,49 +2,39 @@ import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
-  SafeAreaView,
-  ScrollView,
   Image,
-  TextInput,
   TouchableOpacity,
   ActivityIndicator,
   StyleSheet,
 } from "react-native";
-
+//import { useIsFocused } from "@react-navigation/native";
 import { client } from "../../App";
-import { gql, useQuery, useMutation } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import { images } from "../styles/global";
+import { FETCH_FRIENDS, UNFOLLOW_USER } from "../queries/friends";
 
-const FETCH_FRIENDS = gql`
-  query FetchFriends {
-    friends {
-      id
-      username
-      profileImage
-      badges {
-        type
-        badgeImage
-        createdAt
-      }
-    }
-  }
-`;
-
-const UNFOLLOW_USER = gql`
-  mutation UnfollowUser($friendId: ID) {
-    unfollowUser(friendId: $friendId) {
-      friendId
-    }
-  }
-`;
+const badgeImages = {
+  rainbow: require("../../assets/badges/rainbow.png"),
+  earth: require("../../assets/badges/earth.png"),
+  thunder: require("../../assets/badges/thunder.png"),
+  cascade: require("../../assets/badges/cascade.png"),
+};
 
 
 
 
 export default function ExploreFriends() {
-  const [friends, setFriends] = useState(false);
+  const [friends, setFriends] = useState(null);
   const [unfollower] = useMutation(UNFOLLOW_USER);
+  //const isFocused = useIsFocused();
 
+  useEffect(() => {
+    const { friends } = client.readQuery({
+      query: FETCH_FRIENDS,
+    });
+
+    setFriends(friends);
+  }, []);
   function unfollowUser(friendId) {
     unfollower({
       variables: {
@@ -54,7 +44,7 @@ export default function ExploreFriends() {
         cache.modify({
           fields: {
             friends(existingFriends, { readField }) {
-              let newFriendList = existingFriends.filter(user => {
+              let newFriendList = existingFriends.filter((user) => {
                 return friendId !== readField("id", user);
               });
               return newFriendList;
@@ -64,35 +54,26 @@ export default function ExploreFriends() {
       },
     });
     setFriends(
-      friends.filter(user => {
-        console.log("in for loop!!!!-->>", user);
+      friends.filter((user) => {
         return friendId !== user.id;
       })
     );
-    // alert('fried',friendId,'is deleted')
   }
 
-  const { data, loading, error } = useQuery(FETCH_FRIENDS);
-  if (loading) {
+  if (!friends) {
     return (
       <View style={friend.container}>
         <ActivityIndicator size="large" color="#00A86B" />
       </View>
     );
   }
-  console.log("SET BYE DB REQUEST", data.friends);
-  if (!friends) {
-    setFriends(data.friends || []);
-  }
 
-  console.log("setFrieds!!!\n\n", friends, "\n\n");
   return (
     <View style={friend.page}>
-      {/* <Text>Hello from friends</Text> */}
       {!friends.length ? (
         <Text>No Friends Yet</Text>
       ) : (
-        data.friends.map(user => {
+        friends.map((user) => {
           return (
             <View style={friend.container} key={user.id}>
               <View>
@@ -105,7 +86,6 @@ export default function ExploreFriends() {
                   </View>
                   <View>
                     <Text style={friend.name}>{user.username}</Text>
-                    {/* <Text style={friend.userName}>UserName</Text> */}
                   </View>
                   <TouchableOpacity
                     style={friend.unfollow}
