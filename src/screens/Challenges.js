@@ -9,7 +9,6 @@ import { FETCH_ALL_CHALLENGES } from "../queries/multiChallenges";
 
 export default function Challenges({challenges}) {
   const isFocused = useIsFocused();
-  // console.log('props!!-->',props)
   if (!challenges.length) {
     return (
         <>

@@ -73,6 +73,7 @@ export const GET_USER_DATA = gql`
     allMultiPlayerChallenges {
     id
     multiPlayerChallenges {
+      badgeImage
       id
       winCondition
       completed

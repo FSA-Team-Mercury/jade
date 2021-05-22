@@ -27,6 +27,7 @@ export const CREATE_MULTI_PLAYER_CHALLENGE = gql`
       winCondition
       completed
       name
+      badgeImage
       users {
         id
         username
@@ -50,6 +51,7 @@ export const FETCH_ALL_CHALLENGES = gql`
       winCondition
       completed
       name
+      badgeImage
       users {
         id
         username
@@ -72,6 +74,7 @@ export const FETCH_CURENT_CHALLENGES = gql`
       id
       winCondition
       completed
+      badgeImage
       users {
         id
         username
