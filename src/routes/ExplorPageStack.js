@@ -13,11 +13,11 @@ import AddChallenge from "../screens/AddChallenge";
 
 const Stack = createStackNavigator();
 
-export default function FriendsStack() {
+export default function ExplorPageStack() {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="Friends"
+        name="ExplorePage"
         component={ExplorePage}
         options={({ navigation }) => ({
           title: "Friends",

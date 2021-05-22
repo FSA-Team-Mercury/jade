@@ -31,6 +31,11 @@ export default function Challenges({challenges}) {
         let date = moment(challenge.endDate).format("MM-DD-YYYY");
         const contenders = challenge.users;
         return (
+          <TouchableOpacity
+          onPress={()=>{
+            console.log('pressed CHallenge-->',challenge.id)
+          }}
+          >
           <View style={styles.container} key={challenge.id}>
             <View>
               <View style={styles.levelOne}>
@@ -63,6 +68,7 @@ export default function Challenges({challenges}) {
               })}
             </View>
           </View>
+          </TouchableOpacity>
         );
       })}
     </View>
