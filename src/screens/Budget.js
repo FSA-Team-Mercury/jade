@@ -11,25 +11,25 @@ import {
   FlatList,
 } from 'react-native';
 import { client } from '../../App';
-import { FETCH_PLAID, TRANSACTIONS } from '../queries/plaid';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import BudgetChart from './BudgetChart';
 import BudgetCard from './BudgetCard';
 import { GET_BUDGETS } from '../queries/budget';
-import getGraphData, { CurrentSpend } from './MonthlySpentCalc';
-import currentMonth from '../calculations/currentMonth';
+import { CurrentSpend } from './MonthlySpentCalc';
+// import moment from 'moment';
+
 
 
 export let GRAPH_DATA;
 const TODAY = new Date();
 const CURRENT_MONTH = TODAY.toLocaleString('default', { month: 'long' })
+// const CURRENT_MONTH = moment().month(TODAY, "MMMM")
+// console.log('CURRENT MONTH', CURRENT_MONTH);
 
 export default function Budget(props) {
   const isFocused = useIsFocused();
   const [allBudgets, setAllBudgets] = useState(null);
-  // const [transactions, setTransactions] = useState(null);
-  // const [graphData, setGraphData] = useState(null);
 
   useEffect(() => {
     const { budgets } = client.readQuery({
