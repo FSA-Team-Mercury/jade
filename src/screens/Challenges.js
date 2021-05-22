@@ -7,31 +7,17 @@ import moment from 'moment'
 import { gql, useQuery } from "@apollo/client";
 import { FETCH_ALL_CHALLENGES } from "../queries/multiChallenges";
 
-export default function Challenges(props) {
- const [challenges, setChallenges] = useState([]);
+export default function Challenges({challenges}) {
   const isFocused = useIsFocused();
-
-  useEffect(() => {
-    const { allMultiPlayerChallenges } = client.readQuery({
-      query: FETCH_ALL_CHALLENGES,
-    });
-
-    setChallenges(allMultiPlayerChallenges.multiPlayerChallenges);
-    return () => {
-      console.log("unmounting multi user challenges");
-    };
-  }, [isFocused, challenges]);
-
+  // console.log('props!!-->',props)
   if (!challenges.length) {
     return (
         <>
           <View style={styles.challengeHeader}>
             <Text style={styles.challengeHeaderText}>Your Challenges</Text>
           </View>
-          <View style={styles.challengesContainer}>
-          <View style={styles.noChallengesContainer}>
-              <Text style={styles.noChallenges}>No Challenges Yet!</Text>
-          </View>
+          <View style={styles.noChallenges}>
+          <Text style={styles.noChallengesTitle}>No Challenges Yet!</Text>
           </View>
         </>
     );
@@ -107,10 +93,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-around",
   },
-  noChallenges: {
-    fontSize: 18,
-    color: "black",
-  },
   challengesContainer: {
     alignSelf: "center",
     backgroundColor: "white",
@@ -133,14 +115,15 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 8,
     alignSelf: "center",
     marginBottom: 5,
-    marginTop: 20
+    marginTop: 20,
+    marginBottom: 10
   },
   challengeHeaderText: {
     fontSize: 22,
     color: "white",
   },
   noChallenges: {
-    height: 80,
+    height: 55,
     width: "90%",
     alignSelf: "center",
     alignItems: "center",
@@ -149,6 +132,10 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     marginBottom: 10,
     ...shadow,
+  },
+  noChallengesTitle:{
+    fontSize: 18
+
   },
   noChallengeText: {
     fontSize: 18,

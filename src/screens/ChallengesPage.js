@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -9,40 +9,40 @@ import {
 
 import { useIsFocused } from "@react-navigation/native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import { client } from "../../App";
 import Challenges from "./Challenges";
 import Badges from "./Badges";
 import { gql, useQuery } from "@apollo/client";
-const FETCH_FRIENDS = gql`
-  query FetchFriends {
-    friends {
-      id
-      username
-      profileImage
-    }
-  }
-`;
+import { FETCH_ALL_CHALLENGES } from "../queries/multiChallenges";
 
 export default function ChallengesPage(props) {
+  const [challenges, setChallenges] = useState([]);
   const isFocused = useIsFocused();
-  const { data, loading, error } = useQuery(FETCH_FRIENDS)
-  if (loading) {
-    return (
-      <View>
-        <ActivityIndicator size="large" color="#00A86B" />
-      </View>
-    );
-  }
-  console.log('DATA!!!!--->', data)
-  useEffect(() => {}, [isFocused]);
+
+  useEffect(() => {
+    const { allMultiPlayerChallenges } = client.readQuery({
+      query: FETCH_ALL_CHALLENGES,
+    });
+
+    setChallenges(allMultiPlayerChallenges.multiPlayerChallenges);
+    return () => {
+      console.log("unmounting multi user challenges");
+    };
+  }, []);
 
   return (
     <SafeAreaView>
-      < Badges />
-      <Challenges {...props} friends={data.friends}/>
+      <Badges />
+      <Challenges {...props} challenges={challenges} />
       <View style={style.container}>
         <View style={style.challenges}>
           <TouchableOpacity
-            onPress={() => props.navigation.navigate("Add Challenge",{friends: data.friends})}
+            onPress={() =>
+              props.navigation.navigate("Add Challenge",{
+                challenges,
+                setChallenges
+              })
+            }
           >
             <View style={style.addChallenge}>
               <MaterialCommunityIcons

@@ -22,8 +22,22 @@ export const CREATE_MULTI_PLAYER_CHALLENGE = gql`
       badgeImage: $badgeImage
     ) {
       id
-      friendId
+    multiPlayerChallenges {
+      id
+      winCondition
+      completed
+      name
+      users {
+        id
+        username
+        profileImage
+        user_challenge {
+          currentAmout
+          leftChallenge
+        }
+      }
     }
+  }
   }
 `;
 

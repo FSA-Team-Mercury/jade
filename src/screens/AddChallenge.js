@@ -24,13 +24,17 @@ const reviewSchema = yup.object({
   winAmount: yup.number().required(),
 });
 
-import { gql, useMutation } from "@apollo/client";
+import { gql, useMutation,useQuery } from "@apollo/client";
 import {
   CREATE_MULTI_PLAYER_CHALLENGE,
   FETCH_ALL_CHALLENGES,
   FETCH_CURENT_CHALLENGES,
   LEAVE_CHALLENGE,
 } from "../queries/multiChallenges";
+import {
+  GET_USER_DATA
+} from '../queries/user'
+import { client } from "../../App";
 
 const FETCH_FRIENDS = gql`
   query FetchFriends {
@@ -55,12 +59,27 @@ const badgeArray = [
 let thisBadge = badgeArray[Math.floor(Math.random() * 8)];
 let thisBadgeImage = images.badges[thisBadge];
 
-export default function AddChallenge({navigate, route}) {
+export default function AddChallenge({navigation, route}) {
   const [createChallenge] = useMutation(CREATE_MULTI_PLAYER_CHALLENGE);
   const [friendId, setFriendId] = useState(0);
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [viewDate, setViewDate] = useState("NONE");
+  const [oldChallenges, setOldChallenges] = useState([])
+  const [friends, setFriends] = useState([])
+
+  const { data, loading, error } = useQuery(FETCH_FRIENDS);
+  if (loading) {
+    return (
+      <View>
+        <ActivityIndicator size="large" color="#00A86B" />
+      </View>
+    );
+  }
+
+  useEffect(()=>{
+    setFriends(data.friends || [])
+  })
 
   function tobbleDataPicker(dateType) {
     if (dateType === viewDate) {
@@ -70,7 +89,7 @@ export default function AddChallenge({navigate, route}) {
     }
   }
 
-  const myFriends = route.params.friends.map((friend) => {
+  const myFriends = friends.map(friend => {
     return (
       <Picker.Item label={friend.username} value={friend.id} key={friend.id} />
     );
@@ -87,15 +106,14 @@ export default function AddChallenge({navigate, route}) {
             winCondition: "LESS_THAN",
             winAmount: "",
             category: "",
-            badgeImage: 'rainbow'
+            badgeImage: "rainbow",
           }}
           validationSchema={reviewSchema}
-
-          onSubmit={async (values) => {
+          onSubmit={async values => {
             try {
               values.startDate = startDate.toString();
               values.endDate = endDate.toString();
-              await createChallenge({
+              createChallenge({
                 variables: {
                   name: values.name,
                   startDate: values.startDate,
@@ -107,23 +125,28 @@ export default function AddChallenge({navigate, route}) {
                   friendId: friendId,
                   badgeImage: thisBadge,
                 },
-                update: (cache, { data: { createChallenge } }) => {
-                  const data = cache.readQuery({ query: FETCH_ALL_CHALLENGES });
-                  cache.writeQuery({
-                    query: FETCH_ALL_CHALLENGES,
-                    data: {
-                      budgets: [...data.multiPlayerChallenges, createChallenge],
-                    },
-                  });
-                },
+              update: (cache, { data:{createMultiplayerChallenge} }) =>{
+              const newChallenge = createMultiplayerChallenge.multiPlayerChallenges
+              const conbined = newChallenge.concat(route.params.challenges)
+              route.params.setChallenges(conbined)
+              cache.writeQuery({
+                query:FETCH_ALL_CHALLENGES,
+                data:{
+                  allMultiPlayerChallenges:{
+                    multiPlayerChallenges: [...conbined]
+                  }
+                }
+              })
+
+              },
               });
-              props.navigation.goBack();
+              navigation.goBack();
             } catch (error) {
               console.log("error submiting challenge", error);
             }
           }}
         >
-          {(formikProps) => (
+          {formikProps => (
             <>
               <TextInput
                 placeholder=" Name of Challenge"
@@ -280,7 +303,6 @@ export default function AddChallenge({navigate, route}) {
           )}
         </Formik>
       </View>
-
     </ScrollView>
   );
 }
