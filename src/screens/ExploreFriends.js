@@ -7,7 +7,7 @@ import {
   ActivityIndicator,
   StyleSheet,
 } from "react-native";
-//import { useIsFocused } from "@react-navigation/native";
+import { useIsFocused } from "@react-navigation/native";
 import { client } from "../../App";
 import { useMutation } from "@apollo/client";
 import { images } from "../styles/global";
@@ -16,7 +16,7 @@ import { FETCH_FRIENDS, UNFOLLOW_USER } from "../queries/friends";
 export default function ExploreFriends() {
   const [friends, setFriends] = useState(null);
   const [unfollower] = useMutation(UNFOLLOW_USER);
-  //const isFocused = useIsFocused();
+  const isFocused = useIsFocused();
 
   useEffect(() => {
     const { friends } = client.readQuery({
@@ -24,7 +24,9 @@ export default function ExploreFriends() {
     });
 
     setFriends(friends);
-  }, []);
+  }, [isFocused]);
+
+  // *** Unfollow function *** \\
   function unfollowUser(friendId) {
     unfollower({
       variables: {

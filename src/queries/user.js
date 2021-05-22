@@ -88,6 +88,11 @@ export const GET_USER_DATA = gql`
         }
       }
     }
+    pendingFriends {
+      id
+      username
+      profileImage
+    }
   }
 `;
 
