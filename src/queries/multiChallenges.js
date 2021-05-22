@@ -9,6 +9,7 @@ export const CREATE_MULTI_PLAYER_CHALLENGE = gql`
     $winCondition: String
     $winAmount: Int
     $category: String
+    $badgeImage: String
   ) {
     createMultiplayerChallenge(
       friendId: $friendId
@@ -18,55 +19,73 @@ export const CREATE_MULTI_PLAYER_CHALLENGE = gql`
       winCondition: $winCondition
       winAmount: $winAmount
       category: $category
+      badgeImage: $badgeImage
     ) {
       id
-      friendId
+    multiPlayerChallenges {
+      id
+      winCondition
+      completed
+      name
+      badgeImage
+      users {
+        id
+        username
+        profileImage
+        user_challenge {
+          currentAmout
+          leftChallenge
+        }
+      }
     }
+  }
   }
 `;
 
 export const FETCH_ALL_CHALLENGES = gql`
-  query AllMultiPlayerChallenges {
-    allMultiPlayerChallenges {
+  query AllMultiPlayerChallenges{
+  allMultiPlayerChallenges {
+    id
+    multiPlayerChallenges {
       id
-      multiPlayerChallenges {
+      winCondition
+      completed
+      name
+      badgeImage
+      users {
         id
-        winCondition
-        completed
-        name
-        users {
-          id
-          username
-          profileImage
-          user_challenge {
-            currentAmout
-            leftChallenge
-          }
+        username
+        profileImage
+        user_challenge {
+          currentAmout
+          leftChallenge
         }
       }
     }
   }
+  }
 `;
 
 export const FETCH_CURENT_CHALLENGES = gql`
-  query CurrentMultiPlayerChallenges {
-    currentMultiPlayerChallenges {
+  query CurrentMultiPlayerChallenges{
+  currentMultiPlayerChallenges {
+    id
+    multiPlayerChallenges {
       id
-      multiPlayerChallenges {
+      winCondition
+      completed
+      badgeImage
+      users {
         id
-        winCondition
-        completed
-        users {
-          id
-          username
-          profileImage
-          user_challenge {
-            currentAmout
-            leftChallenge
-          }
+        username
+        profileImage
+        user_challenge {
+          currentAmout
+          leftChallenge
         }
       }
     }
+  }
   }
 `;
 

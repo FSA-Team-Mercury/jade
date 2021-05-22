@@ -1,24 +1,24 @@
 /* eslint-disable react/display-name */
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import Friends from "../screens/Friends";
+import ExplorePage from "../screens/ExplorePage";
 import SingleFriend from "../screens/SingleFriend";
 import AddFriend from "../screens/AddFriend";
 import FriendsHeader from "../shared/friendsHeader";
 import SearchUsers from "../screens/SearchUsers";
 import Badges from "../screens/Badges";
 import Challenges from "../screens/Challenges";
-import CreateMultiUserChallenge from "../screens/CreateMultiUserChallenge";
+// import AddChallenge from "../screens/AddChallenge-old";
 import AddChallenge from "../screens/AddChallenge";
 
 const Stack = createStackNavigator();
 
-export default function FriendsStack() {
+export default function ExplorPageStack() {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="Friends"
-        component={Friends}
+        name="ExplorePage"
+        component={ExplorePage}
         options={({ navigation }) => ({
           title: "Friends",
           headerTintColor: "#00A86B",
@@ -61,7 +61,7 @@ export default function FriendsStack() {
       />
       <Stack.Screen
         name="Add Challenge"
-        component={CreateMultiUserChallenge}
+        component={AddChallenge}
         options={({ navigation }) => ({
           title: "Add Challenge",
           headerTintColor: "#00A86B",

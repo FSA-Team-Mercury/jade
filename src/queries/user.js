@@ -71,23 +71,24 @@ export const GET_USER_DATA = gql`
       }
     }
     allMultiPlayerChallenges {
+    id
+    multiPlayerChallenges {
+      badgeImage
       id
-      multiPlayerChallenges {
+      winCondition
+      completed
+      name
+      users {
         id
-        winCondition
-        completed
-        name
-        users {
-          id
-          username
-          profileImage
-          user_challenge {
-            currentAmout
-            leftChallenge
-          }
-        }
+        username
+        profileImage
+        user_challenge {
+          currentAmout
+          leftChallenge
       }
     }
+  }
+  }
   }
 `;
 
