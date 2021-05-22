@@ -128,12 +128,14 @@ export default function AddChallenge({navigation, route}) {
               update: (cache, { data:{createMultiplayerChallenge} }) =>{
               const newChallenge = createMultiplayerChallenge.multiPlayerChallenges
               const conbined = newChallenge.concat(route.params.challenges)
+              const res = cache.readQuery({ query: GET_USER_DATA });
               route.params.setChallenges(conbined)
               cache.writeQuery({
-                query:FETCH_ALL_CHALLENGES,
+                query:GET_USER_DATA,
                 data:{
                   allMultiPlayerChallenges:{
-                    multiPlayerChallenges: [...conbined]
+                    ...res.allMultiPlayerChallenges,
+                    multiPlayerChallenges: conbined
                   }
                 }
               })
