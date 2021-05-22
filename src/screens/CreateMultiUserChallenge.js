@@ -9,23 +9,22 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   StyleSheet,
-  Picker,
 } from "react-native";
+import { Picker } from "@react-native-picker/picker";
 import moment from "moment";
 import { Formik } from "formik";
 import * as yup from "yup";
-import { useIsFocused } from "@react-navigation/native";
 import DatePicker from "./DatePicker";
+import { images } from "../styles/global";
 
 const reviewSchema = yup.object({
   name: yup.string().required(),
   winCondition: yup.string().required(),
   startDate: yup.string().required(),
-  friendId: yup.number().required(),
   winAmount: yup.number().required(),
 });
 
-import { gql, useQuery, useMutation } from "@apollo/client";
+import { gql, useMutation } from "@apollo/client";
 import {
   CREATE_MULTI_PLAYER_CHALLENGE,
   FETCH_ALL_CHALLENGES,
@@ -43,26 +42,22 @@ const FETCH_FRIENDS = gql`
   }
 `;
 
-/*
+const badgeArray = [
+  "rainbow",
+  "thunder",
+  "earth",
+  "cascade",
+  "soul",
+  "marsh",
+  "volcano",
+  "boulder",
+];
+let thisBadge = badgeArray[Math.floor(Math.random() * 8)];
+let thisBadgeImage = images.badges[thisBadge];
 
-gring in friendsId -> to add to challenge
-
-have fields for
-  adding users -> get friend Ids (MAP THROUGH CATCH AND GET USERIDS)
-  start date -> default to now
-  end date -> default to a month
-  winning condition -> choose catagories (plaid categories)
-  winning amount -> convert to pennies
-  name of challenge
-  badge image
-
-*/
-
-export default function CreateMultiUserChallenge() {
-  // console.log('string date-->', JSON.stringify(startTime))
-  const [pendingFriends, setPendingFriends] = useState([]);
+export default function CreateMultiUserChallenge(props) {
   const [createChallenge] = useMutation(CREATE_MULTI_PLAYER_CHALLENGE);
-  const { data, loading, error } = useQuery(FETCH_FRIENDS);
+  const [friendsPicker, setFriendsPicker] = useState(0);
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [viewDate, setViewDate] = useState("NONE");
@@ -74,32 +69,12 @@ export default function CreateMultiUserChallenge() {
       setViewDate(dateType);
     }
   }
-  
-  // const isFocused = useIsFocused();
-  // useEffect(() => {
-  //   console.log("startDate-->", startDate);
-  //   // console.log('endDate-->', endDate)
-  //   return () => {
-  //     console.log("unmounting create challenge");
-  //   };
-  // }, [isFocused]);
 
-  if (loading) {
+  const myFriends = props.friends.map((friend) => {
     return (
-      <View>
-        <ActivityIndicator size="large" color="#00A86B" />
-      </View>
+      <Picker.Item label={friend.username} value={friend.id} key={friend.id} />
     );
-  }
-  function handleSubmit(values) {}
-  console.log("data form all challenges FRIENDS--->", data);
-  let friends;
-
-  try {
-    friends = data.friends;
-  } catch (error) {
-    friends = [{ id: undefined }];
-  }
+  });
 
   return (
     <ScrollView style={{ backgroundColor: "white" }}>
@@ -108,31 +83,46 @@ export default function CreateMultiUserChallenge() {
           initialValues={{
             startDate: new Date(),
             endDate: new Date(),
-            friendId: friends[0].id,
             name: "",
             winCondition: "LESS_THAN",
-            winAmount: undefined,
+            winAmount: "",
             category: "",
           }}
           // validationSchema={reviewSchema}
-          onSubmit={values => {
-            values.startDate = startDate.toString();
-            values.endDate = endDate.toString();
-            createChallenge({
-              variables: {
-                name: values.name,
-                startDate: values.startDate,
-                winCondition: values.winCondition,
-                endDate: values.endDate,
-                completed: false,
-                winAmount: Number(values.winAmount) * 100,
-                friendId: values.friendId,
-              },
-            });
-            console.log(values);
+
+          onSubmit={async (values) => {
+            try {
+              values.startDate = startDate.toString();
+              values.endDate = endDate.toString();
+              await createChallenge({
+                variables: {
+                  name: values.name,
+                  startDate: values.startDate,
+                  winCondition: values.winCondition,
+                  endDate: values.endDate,
+                  completed: false,
+                  winAmount: Number(values.winAmount) * 100,
+                  category: values.category,
+                  friendId: friendsPicker,
+                  badgeImage: thisBadge,
+                },
+                update: (cache, { data: { createChallenge } }) => {
+                  const data = cache.readQuery({ query: FETCH_ALL_CHALLENGES });
+                  cache.writeQuery({
+                    query: FETCH_ALL_CHALLENGES,
+                    data: {
+                      budgets: [...data.multiPlayerChallenges, createChallenge],
+                    },
+                  });
+                },
+              });
+              props.navigation.goBack();
+            } catch (error) {
+              console.log("error submiting challenge", error);
+            }
           }}
         >
-          {formikProps => (
+          {(formikProps) => (
             <>
               <TextInput
                 placeholder=" Name of Challenge"
@@ -203,16 +193,11 @@ export default function CreateMultiUserChallenge() {
                       ? styles.friendsPicker
                       : styles.hideDate
                   }
-                  onValueChange={formikProps.handleChange("friendId")}
-                  selectedValue={formikProps.values.friendId}
+                  onValueChange={setFriendsPicker}
+                  selectedValue={friendsPicker}
                 >
-                  {friends.map(friend => {
-                    return (
-                      <Picker.Item label={friend.username} value={friend.id} />
-                    );
-                  })}
-
-                  {/* <Picker.Item label="Cody" value="Cody" /> */}
+                  <Picker.Item label={"Solo Challenge"} value={0} />
+                  {myFriends}
                 </Picker>
               </View>
 
@@ -280,9 +265,10 @@ export default function CreateMultiUserChallenge() {
                 </View>
               </View>
 
-              <Text style={(styles.dateTitle, { marginTop: 100 })}>
-                Badge Image Here
-              </Text>
+              <View style={(styles.badgeImageContainer, { marginTop: 30 })}>
+                <Image style={styles.badgeImage} source={thisBadgeImage} />
+                <Text style={styles.dateTitle}>Earn this badge!</Text>
+              </View>
               <TouchableOpacity
                 style={styles.addChallenge}
                 onPress={formikProps.handleSubmit}
@@ -319,6 +305,15 @@ const styles = StyleSheet.create({
     width: "100%",
     alignItems: "center",
     backgroundColor: "white",
+  },
+  badgeImageContainer: {
+    flex: 1,
+    flexDirection: "column",
+  },
+  badgeImage: {
+    height: 150,
+    width: 150,
+    marginBottom: 30,
   },
   challengeName: {
     marginTop: 20,

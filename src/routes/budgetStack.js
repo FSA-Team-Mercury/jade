@@ -28,10 +28,12 @@ export default function BudgetStack() {
       <Stack.Screen
         name="Single Budget"
         component={SingleBudget}
-        options={({ navigation }) => ({
-          title: "",
-          headerTintColor: "#00A86B",
-        })}
+        options={({ navigation, route }) => {
+          return {
+            title: route.params.category,
+            headerTintColor: "#00A86B",
+          };
+        }}
       />
       <Stack.Screen
         name="Add Budget"

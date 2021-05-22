@@ -1,75 +1,48 @@
 import React, { useState, useEffect } from "react";
-import {
-  View,
-  Text,
-  SafeAreaView,
-  ScrollView,
-  Image,
-  TextInput,
-  TouchableOpacity,
-  ActivityIndicator,
-  StyleSheet,
-  Picker,
-} from "react-native";
-
+import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
 import { useIsFocused } from "@react-navigation/native";
+import { images } from "../styles/global";
+import { client } from "../../App";
+import { FETCH_ALL_CHALLENGES } from "../queries/multiChallenges";
 
-import { useQuery, useMutation } from "@apollo/client";
-import {
-  CREATE_MULTI_PLAYER_CHALLENGE,
-  FETCH_ALL_CHALLENGES,
-  FETCH_CURENT_CHALLENGES,
-  LEAVE_CHALLENGE,
-} from "../queries/multiChallenges";
-
-export default () => {
-  const { data, loading, error } = useQuery(FETCH_ALL_CHALLENGES);
+export default function MultiPlayerChallenges(props) {
+  const [challenges, setChallenges] = useState([]);
   const isFocused = useIsFocused();
 
   useEffect(() => {
-    // console.log('endDate-->', endDate)
+    const { allMultiPlayerChallenges } = client.readQuery({
+      query: FETCH_ALL_CHALLENGES,
+    });
+
+    setChallenges(allMultiPlayerChallenges.multiPlayerChallenges);
     return () => {
       console.log("unmounting multi user challenges");
     };
-  }, [isFocused]);
-  function getUsersCompeting(users) {
-    const newObj = users.reduce((accum, user) => {
-      accum.push();
-    }, []);
-  }
-  if (loading) {
+  }, [isFocused, challenges]);
+
+  if (!challenges.length) {
     return (
-      <View>
-        <ActivityIndicator size="large" color="#00A86B" />
+      <View style={styles.noChallenges}>
+        <Text style={styles.noChallengeText}>No Challenges</Text>
       </View>
     );
   }
-
-  const { multiPlayerChallenges } = data.allMultiPlayerChallenges;
-  // const userId = multiPlayerChallenges.id
-  console.log("multiPlayerChallenges---->", data);
-  if (!multiPlayerChallenges.length) {
-    return <Text>No Challenges</Text>;
-  }
   return (
     <View style={styles.challengePage}>
-      <Text style={styles.title}>Challenges Against Friends</Text>
-      {multiPlayerChallenges.map(challenge => {
-        // console.log("cahllenge--->", challenge)
+      {challenges.map((challenge) => {
         const contenders = challenge.users;
         return (
-          <View style={styles.container}>
+          <View style={styles.container} key={challenge.id}>
             <View>
               <View style={styles.levelOne}>
                 <View style={styles.badgeImageContainer}>
                   <Image
-                    // source={images.avatar[user.badgeImage]}
+                    source={images.badges[challenge.badgeImage]}
                     style={styles.profilePic}
                   />
                 </View>
                 <View>
                   <Text style={styles.name}> {challenge.name}</Text>
-                  {/* <Text style={styles.userName}>UserName</Text> */}
                 </View>
                 <TouchableOpacity style={styles.view}>
                   <Text style={{ color: "white" }}>View Status</Text>
@@ -78,10 +51,13 @@ export default () => {
             </View>
             <Text style={{ marginRight: "auto", marginLeft: "auto" }}>Vs.</Text>
             <View style={styles.levelThree}>
-              {contenders.map(user => {
+              {contenders.map((user) => {
                 return (
-                  <View style={styles.badge}>
-                    <View style={styles.badgeImage}></View>
+                  <View style={styles.badge} key={user.id}>
+                    <Image
+                      style={styles.badgeImage}
+                      source={images.avatar[user.profileImage]}
+                    />
                   </View>
                 );
               })}
@@ -91,7 +67,7 @@ export default () => {
       })}
     </View>
   );
-};
+}
 
 const shadow = {
   shadowOffset: {
@@ -108,12 +84,25 @@ const center = {
 };
 
 const styles = StyleSheet.create({
-  page: {
-    flex: 1,
-    marginRight: "auto",
-    marginLeft: "auto",
-    // backgroundColor:'yellow',
+  noChallenges: {
+    height: 80,
+    width: "90%",
+    alignSelf: "center",
     alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "white",
+    borderRadius: 8,
+    marginBottom: 10,
+    ...shadow,
+  },
+  noChallengeText: {
+    fontSize: 18,
+    color: "black",
+  },
+  page: {
+    width: "100%",
+    alignItems: "center",
+    backgroundColor: "black",
   },
   title: {
     fontSize: 20,
@@ -125,7 +114,6 @@ const styles = StyleSheet.create({
   container: {
     height: 180,
     width: "90%",
-    // backgroundColor: '#f4f6f8',
     backgroundColor: "white",
     borderRadius: 10,
     marginBottom: 20,
@@ -134,6 +122,7 @@ const styles = StyleSheet.create({
     paddingTop: "3%",
     paddingBottom: "3%",
     ...shadow,
+    ...center,
   },
   levelOne: {
     height: 70,

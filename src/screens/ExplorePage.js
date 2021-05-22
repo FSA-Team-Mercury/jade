@@ -15,21 +15,16 @@ import MutualFriends from "./MutualFriends";
 import ExploreFriends from "./ExploreFriends";
 import { client } from "../../App";
 import { gql, useQuery } from "@apollo/client";
-import { useNavigation } from "@react-navigation/native";
-import { useIsFocused } from "@react-navigation/native";
 
 import FriendRequests from "./FriendRequests";
 import Badges from "./Badges";
-//import CreateMultiUserChallenge from "./CreateMultiUserChallenge";
 
 export default function ExplorePage(props) {
-  const [selected, setSelected] = useState("CHALLENGES"); //"FRIENDS");
-  const navigation = useNavigation();
-  const isFocused = useIsFocused();
+  const [selected, setSelected] = useState("FRIENDS"); //"FRIENDS");
 
   const display = {
-    PENDING_FRIENDS: <FriendRequests />,
-    FRIENDS: <ExploreFriends />,
+    PENDING_FRIENDS: <FriendRequests {...props} />,
+    FRIENDS: <ExploreFriends {...props} />,
     CHALLENGES: <Badges {...props} />,
   };
 
@@ -38,12 +33,11 @@ export default function ExplorePage(props) {
   }
 
   function searchUsers(search) {
-    navigation.navigate("Search Users", {
+    props.navigation.navigate("Search Users", {
       search,
     });
   }
 
-  // return <CreateMultiUserChallenge />;
   return (
     <SafeAreaView>
       <ScrollView style={styles.scrollView}>
@@ -122,14 +116,6 @@ export default function ExplorePage(props) {
         </View>
         {display[selected]}
       </ScrollView>
-      <TouchableOpacity
-        style={styles.createChallengeBtn}
-        onPress={() => {
-          navigation.navigate("Add Challenge");
-        }}
-      >
-        <Text style={styles.btnText}>+</Text>
-      </TouchableOpacity>
     </SafeAreaView>
   );
 }
@@ -152,9 +138,7 @@ const styles = StyleSheet.create({
   scrollView: {
     height: "100%",
     width: "100%",
-    backgroundColor: "white",
     position: "relative",
-    // alignItems: "center",
   },
   searchBox: {
     height: 50,
@@ -186,8 +170,7 @@ const styles = StyleSheet.create({
   selectView: {
     height: 50,
     width: "90%",
-    backgroundColor: "#f4f6f8",
-    // backgroundColor: 'lightgrey',
+    backgroundColor: "#E0E0E0",
     borderRadius: 30,
     flexDirection: "row",
     alignItems: "center",

@@ -2,23 +2,20 @@ import React, { useState } from "react";
 import {
   View,
   Text,
-  SafeAreaView,
-  ScrollView,
   Image,
-  TextInput,
   TouchableOpacity,
   ActivityIndicator,
   StyleSheet,
 } from "react-native";
 import { gql, useQuery, useMutation } from "@apollo/client";
-
+import { images } from "../styles/global";
 const SEARCH_USERS = gql`
   query SearchUsers($search: String) {
     searchUsers(search: $search) {
       result {
         username
         id
-        badgeImage
+        profileImage
         relationship
       }
     }
@@ -40,7 +37,8 @@ export default function SearchUsers({ route }) {
   const [oldSearch, setOldSearch] = useState("");
   const [requestFriendship] = useMutation(REQUEST_FRIENDSHIP);
   let search = route.params.search.toLowerCase();
-  const { data, loading, error } = useQuery(SEARCH_USERS, {
+  console.log(search);
+  const { data, loading } = useQuery(SEARCH_USERS, {
     variables: {
       search,
     },
@@ -67,23 +65,21 @@ export default function SearchUsers({ route }) {
     });
   }
 
-  if (data) {
-    console.log(" search result-->", result);
-  }
-
   return (
     <View>
       {!result.length ? (
         <Text>No Reuslts</Text>
       ) : (
-        result.map(user => {
+        result.map((user) => {
           return (
-            <View style={styles.user}>
+            <View style={styles.user} key={user.id}>
               <View style={styles.badgeImageContainer}>
-                {/* <Image source={require(`../../assets/images/icons8-rihanna-96.png`)} style={styles.profilePic}/> */}
+                <Image
+                  source={images.avatar[user.profileImage]}
+                  style={styles.profilePic}
+                />
               </View>
               <View>
-                {/* <Text style={styles.name}></Text> */}
                 <Text style={styles.userName}>{user.username}</Text>
               </View>
               <TouchableOpacity

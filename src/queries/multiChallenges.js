@@ -8,6 +8,7 @@ export const CREATE_MULTI_PLAYER_CHALLENGE = gql`
     $endDate: String
     $winCondition: String
     $winAmount: Int
+    $category: String
   ) {
     createMultiplayerChallenge(
       friendId: $friendId
@@ -16,6 +17,7 @@ export const CREATE_MULTI_PLAYER_CHALLENGE = gql`
       endDate: $endDate
       winCondition: $winCondition
       winAmount: $winAmount
+      category: $category
     ) {
       id
       friendId
@@ -24,47 +26,47 @@ export const CREATE_MULTI_PLAYER_CHALLENGE = gql`
 `;
 
 export const FETCH_ALL_CHALLENGES = gql`
-  query AllMultiPlayerChallenges{
-  allMultiPlayerChallenges {
-    id
-    multiPlayerChallenges {
+  query AllMultiPlayerChallenges {
+    allMultiPlayerChallenges {
       id
-      winCondition
-      completed
-      name
-      users {
+      multiPlayerChallenges {
         id
-        username
-        profileImage
-        user_challenge {
-          currentAmout
-          leftChallenge
+        winCondition
+        completed
+        name
+        users {
+          id
+          username
+          profileImage
+          user_challenge {
+            currentAmout
+            leftChallenge
+          }
         }
       }
     }
-  }
   }
 `;
 
 export const FETCH_CURENT_CHALLENGES = gql`
-  query CurrentMultiPlayerChallenges{
-  currentMultiPlayerChallenges {
-    id
-    multiPlayerChallenges {
+  query CurrentMultiPlayerChallenges {
+    currentMultiPlayerChallenges {
       id
-      winCondition
-      completed
-      users {
+      multiPlayerChallenges {
         id
-        username
-        profileImage
-        user_challenge {
-          currentAmout
-          leftChallenge
+        winCondition
+        completed
+        users {
+          id
+          username
+          profileImage
+          user_challenge {
+            currentAmout
+            leftChallenge
+          }
         }
       }
     }
-  }
   }
 `;
 
