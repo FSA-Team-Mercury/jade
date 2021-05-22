@@ -72,7 +72,7 @@ export default function ExploreFriends() {
                 <View style={friend.levelOne}>
                   <View style={friend.profileImageContainer}>
                     <Image
-                      // source={images.badges[user.profileImage]}
+                      source={images.avatar[user.profileImage]}
                       style={friend.profilePic}
                     />
                   </View>
