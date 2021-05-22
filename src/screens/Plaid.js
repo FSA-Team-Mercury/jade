@@ -18,7 +18,7 @@ export default function Plaid(props) {
         query: USER_PLAID_AUTH,
       });
       const { data } = await axios.post(
-        "http://localhost:3000/plaid/link/token/create",//PLAID_TOKEN_URL, //,
+        "http://localhost:3000/plaid/link/token/create", //PLAID_TOKEN_URL, //,
         {
           client_user_id: user.id,
         }

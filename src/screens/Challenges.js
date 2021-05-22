@@ -1,139 +1,250 @@
-import React, {useState, useEffect} from 'react'
-import {View,Text, SafeAreaView, ScrollView,Image,TextInput,TouchableOpacity,FlatList,ActivityIndicator,StyleSheet} from 'react-native'
+import React, { useState, useEffect } from "react";
+import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
+import { useIsFocused } from "@react-navigation/native";
+import { images } from "../styles/global";
 import { client } from "../../App";
-import { gql, useQuery, useMutation } from "@apollo/client";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import SingleChallenge from "./SingleChallenge"
-import MultiPlayerChallenges from './MultiPlayerChallenges'
-const GET_CHALLENGES = gql`
-  query GetChallenges{
-    userChallenges{
-      id
-      type
-      endDate
-      startDate
-      completed
-    }
-  }
-`
+import moment from 'moment'
+import { gql, useQuery } from "@apollo/client";
+import { FETCH_ALL_CHALLENGES } from "../queries/multiChallenges";
 
-export default function Challenges({props}) {
-    const [allChallenges, setAllChallenges] = useState(null);
+export default function Challenges(props) {
+ const [challenges, setChallenges] = useState([]);
+  const isFocused = useIsFocused();
 
-    useEffect(() => {
-        const data = client.readQuery({
-            query: GET_CHALLENGES,
-        });
-        setAllChallenges(data.userChallenges);
-        console.log(data.userChallenges)
+  useEffect(() => {
+    const { allMultiPlayerChallenges } = client.readQuery({
+      query: FETCH_ALL_CHALLENGES,
     });
 
-    if (!allChallenges) {
-        return (
-            <View>
-                <ActivityIndicator size="large" color="#00A86B" />
-            </View>
-        );
-    }
+    setChallenges(allMultiPlayerChallenges.multiPlayerChallenges);
+    return () => {
+      console.log("unmounting multi user challenges");
+    };
+  }, [isFocused, challenges]);
 
+  if (!challenges.length) {
     return (
-        <SafeAreaView>
-            <View style={style.challengesHeader}>
-                <Text style={style.challengesHeaderText}>Challenges</Text>
-            </View>
-            <MultiPlayerChallenges />
-            <View style={style.container}>
-                <View style={style.challenges}>
-                    <FlatList
-                        data={allChallenges}
-                        keyExtractor={(item) => item.id}
-                        renderItem={({ item }) => (
-                        <View style={style.challengeContainer}>
-                            <SingleChallenge item={item}/>
-                        </View>
-                    )}
-                    />
-                    <TouchableOpacity
-                    onPress={() => props.navigation.navigate("Add Challenge")}
-                    >
-                        <View style={style.addChallenge}>
-                            <MaterialCommunityIcons
-                            name="plus-circle"
-                            color={"#00A86B"}
-                            size={70}
-                            />
-                        </View>
-                    </TouchableOpacity>
-                </View>
-            </View>
-        </SafeAreaView>
+        <>
+          <View style={styles.challengeHeader}>
+            <Text style={styles.challengeHeaderText}>Your Challenges</Text>
+          </View>
+          <View style={styles.challengesContainer}>
+          <View style={styles.noChallengesContainer}>
+              <Text style={styles.noChallenges}>No Challenges Yet!</Text>
+          </View>
+          </View>
+        </>
     );
+  }
+  return (
+    <View style={styles.challengePage}>
+      <View style={styles.challengeHeader}>
+        <Text style={styles.challengeHeaderText}>Your Challenges</Text>
+      </View>
+      {
+      challenges.map((challenge) => {
+        let date = moment(challenge.endDate).format("MM-DD-YYYY");
+        const contenders = challenge.users;
+        return (
+          <View style={styles.container} key={challenge.id}>
+            <View>
+              <View style={styles.levelOne}>
+                <View style={styles.badgeImageContainer}>
+                  <Image
+                    source={images.badges[challenge.badgeImage]}
+                    style={styles.profilePic}
+                  />
+                </View>
+                <View>
+                  <Text style={styles.name}> {challenge.name}</Text>
+                </View>
+                <TouchableOpacity style={styles.view}>
+                  {/* <Text style={{ color: "white" }}>View Status</Text> */}
+                   <Text style={{ color: "white" }}>{date}</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+            <Text style={{ marginRight: "auto", marginLeft: "auto" }}>Vs.</Text>
+            <View style={styles.levelThree}>
+              {contenders.map((user) => {
+                return (
+                  <View style={styles.badge} key={user.id}>
+                    <Image
+                      style={styles.badgeImage}
+                      source={images.avatar[user.profileImage]}
+                    />
+                  </View>
+                );
+              })}
+            </View>
+          </View>
+        );
+      })}
+    </View>
+  );
 }
 
+const shadow = {
+  shadowOffset: {
+    width: 2,
+    height: 4,
+  },
+  shadowOpacity: 0.15,
+  shadowRadius: 10,
+};
+
 const center = {
-    marginRight: "auto",
+  marginLeft: "auto",
+  marginRight: "auto",
+};
+
+const styles = StyleSheet.create({
+  noChallengesContainer: {
+    height: 50,
+    width: "100%",
+    display: "flex",
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "space-around",
+  },
+  noChallenges: {
+    fontSize: 18,
+    color: "black",
+  },
+  challengesContainer: {
+    alignSelf: "center",
+    backgroundColor: "white",
+    width: "90%",
+    marginTop: 5,
+    marginBottom: 5,
+    borderRadius: 8,
+    alignItems: "center",
+    justifyContent: "space-evenly",
+    flexDirection: "row",
+    ...shadow,
+  },
+  challengeHeader: {
+    height: 50,
+    width: "90%",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#00A86B",
+    borderTopLeftRadius: 8,
+    borderTopRightRadius: 8,
+    alignSelf: "center",
+    marginBottom: 5,
+    marginTop: 20
+  },
+  challengeHeaderText: {
+    fontSize: 22,
+    color: "white",
+  },
+  noChallenges: {
+    height: 80,
+    width: "90%",
+    alignSelf: "center",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "white",
+    borderRadius: 8,
+    marginBottom: 10,
+    ...shadow,
+  },
+  noChallengeText: {
+    fontSize: 18,
+    color: "black",
+  },
+  page: {
+    width: "100%",
+    alignItems: "center",
+    backgroundColor: "black",
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: "500",
+    ...center,
+    marginBottom: 20,
+    marginTop: 10,
+  },
+  container: {
+    height: 180,
+    width: "90%",
+    backgroundColor: "white",
+    borderRadius: 10,
+    marginBottom: 20,
+    paddingLeft: "3%",
+    paddingRight: "3%",
+    paddingTop: "3%",
+    paddingBottom: "3%",
+    ...shadow,
+    ...center,
+  },
+  levelOne: {
+    height: 70,
+    width: "100%",
+    // backgroundColor: 'lightgrey',
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  badgeImageContainer: {
+    height: 65,
+    width: 65,
+    backgroundColor: "black",
+    borderRadius: 100,
+    justifyContent: "center",
+    alignItems: "center",
+    marginRight: 10,
+  },
+
+  profilePic: {
+    height: 60,
+    width: 60,
+    borderRadius: 20,
+  },
+  name: {
+    fontSize: 16,
+    fontWeight: "500",
+    marginBottom: 5,
+  },
+  userName: {
+    fontSize: 12,
+    fontWeight: "300",
+  },
+  levelTwo: {
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  view: {
+    height: 30,
+    width: 100,
+    backgroundColor: "#00A86B",
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 10,
     marginLeft: "auto",
-  };
-
-  const shadow = {
-    shadowOffset: {
-      width: 2,
-      height: 2,
-    },
-    shadowOpacity: 0.2,
-    shadowRadius: 5,
-  };
-
-const style = StyleSheet.create({
-    container: {
-        flex: 1,
-        flexDirection: 'row',
-        alignItems: 'center',
-        // justifyContent: 'flex-start',
-    },
-
-    challengesHeader: {
-        height: 50,
-        width: "100%",
-        display: "flex",
-        alignItems: "center",
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "space-around",
-        backgroundColor: "#00A86B",
-    },
-
-    challengesHeaderText: {
-        fontSize: 22,
-        color: 'white',
-        // color: 'black',
-    },
-
-    challenges: {
-        width: '95%',
-        ...center,
-    },
-
-    challengeContainer: {
-        flex: 1,
-        flexDirection: 'column',
-    },
-
-    challengeType: {
-        fontSize: 18,
-        color: '#00A86B',
-    },
-
-    addChallenge: {
-        display: 'flex',
-        alignItems: 'center',
-    },
-
-    categoryName: {
-        fontSize: 20,
-    },
-
-    goalText: {
-        fontSize: 20,
-    },
+    marginRight: 10,
+    marginBottom: 5,
+  },
+  levelThree: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-evenly",
+  },
+  badge: {
+    height: 60,
+    width: 100,
+    alignItems: "center",
+  },
+  badgeImage: {
+    height: 50,
+    width: 50,
+    backgroundColor: "lightgrey",
+    borderRadius: 10,
+  },
+  badgeName: {
+    marginTop: 5,
+    fontSize: 9,
+    fontWeight: "500",
+  },
 });

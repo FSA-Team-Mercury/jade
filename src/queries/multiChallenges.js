@@ -36,8 +36,6 @@ export const FETCH_ALL_CHALLENGES = gql`
       winCondition
       completed
       name
-      endDate
-      badgeImage
       users {
         id
         username
@@ -60,8 +58,6 @@ export const FETCH_CURENT_CHALLENGES = gql`
       id
       winCondition
       completed
-      endDate
-      badgeImage
       users {
         id
         username
