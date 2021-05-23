@@ -14,8 +14,11 @@ import { accountStyles } from "../styles/account_screen";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { GET_USER } from "../queries/user";
 import { images, globalStyles } from "../styles/global";
+import { useIsFocused } from '@react-navigation/native';
+
 
 export default function Account(props) {
+  const isFocused = useIsFocused();
   const [user, setUser] = useState(null);
 
   useEffect(() => {
@@ -23,7 +26,7 @@ export default function Account(props) {
       query: GET_USER,
     });
     setUser(data.user);
-  }, []);
+  }, [isFocused, user]);
 
   const handleLogout = async () => {
     await AsyncStorage.removeItem("TOKEN");
@@ -49,16 +52,28 @@ export default function Account(props) {
         />
       </View>
 
-      <Text style={accountStyles.userName}>{user ? user.username : ""}</Text>
+      <Text style={accountStyles.userName}>{user ? user.username : ''}</Text>
       <View style={accountStyles.sectionContainer}>
         <TouchableOpacity
-          onPress={() => props.navigation.navigate("All Accounts")}
+          onPress={() => props.navigation.navigate('All Accounts')}
         >
           <View style={accountStyles.sectionCard}>
             <Text>Accounts</Text>
             <MaterialCommunityIcons
-              name="chevron-right"
-              color={"#00A86B"}
+              name='chevron-right'
+              color={'#00A86B'}
+              size={30}
+            />
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => props.navigation.navigate('Change Avatar', user)}
+        >
+          <View style={accountStyles.sectionCard}>
+            <Text>Change Avatar</Text>
+            <MaterialCommunityIcons
+              name='chevron-right'
+              color={'#00A86B'}
               size={30}
             />
           </View>
