@@ -11,13 +11,13 @@ import {
   StyleSheet,
 } from "react-native";
 
-import MutualFriends from "./MutualFriends";
 import ExploreFriends from "./ExploreFriends";
 import { client } from "../../App";
 import { gql, useQuery } from "@apollo/client";
 
 import FriendRequests from "./FriendRequests";
 import Badges from "./Badges";
+import ChallengesPage from './ChallengesPage'
 
 export default function ExplorePage(props) {
   const [selected, setSelected] = useState("FRIENDS"); //"FRIENDS");
@@ -25,7 +25,7 @@ export default function ExplorePage(props) {
   const display = {
     PENDING_FRIENDS: <FriendRequests {...props} />,
     FRIENDS: <ExploreFriends {...props} />,
-    CHALLENGES: <Badges {...props} />,
+    CHALLENGES: <ChallengesPage {...props} />,
   };
 
   function handlePress(pageName) {

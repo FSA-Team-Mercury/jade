@@ -13,7 +13,7 @@ import { gql } from "@apollo/client";
 import Challenges from "./Challenges";
 import { images } from "../styles/global";
 import { useIsFocused } from "@react-navigation/native";
-import MultiPlayerChallenges from "./MultiPlayerChallenges";
+// import Challenges from "./Challenges";
 
 const GET_BADGES = gql`
   query GetBadges {
@@ -56,7 +56,7 @@ export default function Badges(props) {
           </View>
         ) : (
           <FlatList
-            columnWrapperStyle={style.listStyle}
+            // columnWrapperStyle={style.listStyle}
             numColumns={allBadges.length}
             data={allBadges}
             keyExtractor={(item) => item.id}
@@ -72,7 +72,7 @@ export default function Badges(props) {
           />
         )}
       </View>
-      <Challenges {...props} />
+      {/* <Challenges {...props} /> */}
     </SafeAreaView>
   );
 }

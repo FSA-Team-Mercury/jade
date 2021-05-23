@@ -1,8 +1,7 @@
 /* eslint-disable react/display-name */
 import React from "react";
 import BudgetStack from "./budgetStack";
-import FriendsStack from "./friendsStack";
-import Friends from "../screens/Friends";
+import ExplorPageStack from "./ExplorPageStack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import AccountStack from "./accountStack";
@@ -48,8 +47,8 @@ export default function TabNav() {
       />
 
       <Tab.Screen
-        name="Friends"
-        component={FriendsStack}
+        name="ExplorePage"
+        component={ExplorPageStack}
         options={{
           headerStyle: {height: 100},
           tabBarLabel: "Friends",

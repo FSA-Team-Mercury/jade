@@ -4,12 +4,13 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 const moment = require("moment");
 moment().format();
 
-export default function SingleChallenge({item}) {
+export default function SingleChallenge({challenge}) {
 
   let today = moment(new Date()).format("MM-DD-YYYY");
 
-  console.log('item-->', item)
-  console.log('today-->', today)
+  return <View><Text>Single challenge</Text></View>
+  // console.log('item-->', item)
+  // console.log('today-->', today)
 
   return (
     <View>
@@ -22,12 +23,12 @@ export default function SingleChallenge({item}) {
             {item.type}
           </Text>
 
-        {today < item.endDate ? 
+        {today < item.endDate ?
             <Text
                 style={styles.details}
                 numberOfLines={2}
             > Status: Ongoing
-            </Text> : 
+            </Text> :
             <Text
                 style={styles.details}
                 numberOfLines={2}
@@ -35,12 +36,12 @@ export default function SingleChallenge({item}) {
             </Text>
         }
 
-        {item.completed ? 
+        {item.completed ?
             <Text
                 style={styles.details}
                 numberOfLines={2}
             > Challenge Won!
-            </Text> : 
+            </Text> :
             <Text
                 style={styles.details}
                 numberOfLines={2}
