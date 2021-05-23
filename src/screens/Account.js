@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from "react";
-// import Constants from "expo-constants";
-// import * as Notifications from "expo-notifications";
 import {
   View,
   Text,
@@ -9,25 +7,27 @@ import {
   ActivityIndicator,
   Image,
 } from "react-native";
-import { client } from "../../App";
+import { useApolloClient } from "@apollo/client";
 import { accountStyles } from "../styles/account_screen";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { GET_USER } from "../queries/user";
 import { images, globalStyles } from "../styles/global";
+import { useIsFocused } from "@react-navigation/native";
 
 export default function Account(props) {
+  const isFocused = useIsFocused();
   const [user, setUser] = useState(null);
-
+  const client = useApolloClient();
   useEffect(() => {
     const data = client.readQuery({
       query: GET_USER,
     });
-    setUser(data.user);
-  }, []);
+    setUser(data && data.user);
+  }, [isFocused, user]);
 
   const handleLogout = async () => {
+    await client.clearStore();
     await AsyncStorage.removeItem("TOKEN");
-    await client.cache.reset();
     props.navigation.reset({
       index: 0,
       routes: [{ name: "Login" }],
@@ -56,6 +56,18 @@ export default function Account(props) {
         >
           <View style={accountStyles.sectionCard}>
             <Text>Accounts</Text>
+            <MaterialCommunityIcons
+              name="chevron-right"
+              color={"#00A86B"}
+              size={30}
+            />
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => props.navigation.navigate("Change Avatar", user)}
+        >
+          <View style={accountStyles.sectionCard}>
+            <Text>Change Avatar</Text>
             <MaterialCommunityIcons
               name="chevron-right"
               color={"#00A86B"}

@@ -7,13 +7,12 @@ import {
   FlatList,
   ActivityIndicator,
   StyleSheet,
+  TouchableOpacity
 } from "react-native";
-import { client } from "../../App";
+import { useApolloClient } from "@apollo/client";
 import { gql } from "@apollo/client";
-import Challenges from "./Challenges";
 import { images } from "../styles/global";
 import { useIsFocused } from "@react-navigation/native";
-// import Challenges from "./Challenges";
 
 const GET_BADGES = gql`
   query GetBadges {
@@ -21,12 +20,14 @@ const GET_BADGES = gql`
       id
       type
       badgeImage
+      challengeId
     }
   }
 `;
 
-export default function Badges(props) {
+export default function Badges({navigation}) {
   const [allBadges, setAllBadges] = useState(null);
+  const client = useApolloClient();
   const isFocused = useIsFocused();
 
   useEffect(() => {
@@ -56,23 +57,34 @@ export default function Badges(props) {
           </View>
         ) : (
           <FlatList
-            // columnWrapperStyle={style.listStyle}
+            columnWrapperStyle={style.listStyle}
             numColumns={allBadges.length}
             data={allBadges}
             keyExtractor={(item) => item.id}
             renderItem={({ item }) => (
-              <View style={style.singleBadge}>
+
+              <TouchableOpacity style={style.singleBadge}
+              onPress={()=>{
+                console.log('challenge item-->', item)
+                if (!item.challengeId){
+                  return
+                }
+
+                navigation.navigate("Single Challenge",{
+                  challengeId: item.challengeId,
+                })
+              }}
+              >
                 <Image
                   style={style.badgeImage}
                   source={images.badges[item.badgeImage]}
                 />
                 <Text style={style.badgeType}>{item.type}</Text>
-              </View>
+              </TouchableOpacity>
             )}
           />
         )}
       </View>
-      {/* <Challenges {...props} /> */}
     </SafeAreaView>
   );
 }
@@ -106,8 +118,8 @@ const style = StyleSheet.create({
   listStyle: {
     flexWrap: "wrap",
     justifyContent: "space-evenly",
-    marginTop: 10,
-    marginBottom: 10,
+    marginTop: 15,
+    marginBottom: 15,
   },
   singleBadge: {
     justifyContent: "center",
@@ -149,8 +161,8 @@ const style = StyleSheet.create({
     color: "white",
   },
   badgeImage: {
-    width: 50,
-    height: 50,
+    width: 40,
+    height: 40,
   },
   categoryName: {
     fontSize: 20,

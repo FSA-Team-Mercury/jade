@@ -7,13 +7,14 @@ import {
   StyleSheet,
   Image as Img,
 } from "react-native";
-import { client } from "../../App";
+import { useApolloClient } from "@apollo/client";
+
 import SingleAccount from "./SingleAccount";
 import { ACCOUNTS_AND_INSTITUTIONS } from "../queries/plaid";
 
 export default function AllAccounts() {
   const [account, setAccount] = useState(null);
-
+  const client = useApolloClient();
   useEffect(() => {
     const acc = client.readQuery({
       query: ACCOUNTS_AND_INSTITUTIONS,

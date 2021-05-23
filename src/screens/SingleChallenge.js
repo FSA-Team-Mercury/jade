@@ -38,7 +38,6 @@ export default function SingleChallenge({route}) {
       variables:{
         challengeId: route.params.challengeId
       }}).then((res)=>{
-        console.log('res--->',res.data.updateChallenge)
         setChallenge(res.data.updateChallenge)
       }).catch((err)=>{
         console.log('error-->',err)
@@ -61,43 +60,43 @@ export default function SingleChallenge({route}) {
        return `Spending the least in the group and spending less than $${challenge.winAmount/100}`
     }
   }
-  const userRanks = calculateWinner(challenge.users,challenge.winAmount, challenge.winCondition)
+  const leaderBoard = calculateWinner(challenge.users,challenge.winAmount, challenge.winCondition)
 
   const challengeId = route.params.challengeId
-  console.log('endDate--->', challenge.endDate)
-  console.log('winCondition--->', challenge)
   return (
     <View style={styles.page}>
-      <View style={styles.countdown}>
-        <Text>Badge Image</Text>
+      <View style={styles.badgeContainer}>
+        <Text>Winning Badge</Text>
         <Image style={styles.profileImage} source={images.badges[challenge.badgeImage]}/>
       </View>
-      <View style={styles.countdown}>
-        <Text>Wind By:</Text>
-        <Text>{getWinCondtion()}</Text>
+      <View style={styles.challengeDesc}>
+        <Text style={styles.challengeText}>Challenge: {challenge.winCondition === "GREATER_THAN" ? 'Biggest Spender': "Smallest Spender"}</Text>
+        <Text>Minimum: ${challenge.winAmount / 100}</Text>
       </View>
-      <View style={styles.countdown}>
-        <Text>Time to complete: {route.params.endDate}</Text>
+      <View style={styles.challengeDesc}>
+        <Text style={styles.challengeText}>{challenge.completed ? 'Challenge Ended:' : "Challenge Ends On:"} </Text>
+        <Text>{moment(new Date(challenge.endDate)).format('ll')}</Text>
       </View>
 
-      <View style={styles.header}>
-        <Text style={styles.orderTitle}>Ranks</Text>
+      <View style={styles.leaderBoard}>
+        {/* condition is for when the win amount is not reached but end date is passed */}
+        <Text style={styles.orderTitle}>Leader Board {challenge.completed && !challenge.winner ? ": No Winner" : ''}</Text>
       </View>
 
 
       {
-        challenge.users.map((user, index)=>{
-          console.log('USER!!-->', user)
-          console.log(challenge.winner, user.id)
+        leaderBoard.map((user, index)=>{
+          console.log(user.id, challenge.Winner)
           return (
             <View style={user.id === challenge.winner ? styles.winner : styles.singleUser}>
               <Image style={styles.profileImage} source={images.avatar[user.profileImage]}/>
               <View style={styles.imageName}>
                 <Text style={styles.name}>{user.username}</Text>
-                <Text style={styles.name}>Total Spent: {user.user_challenge.currentAmout}</Text>
+                <Text style={styles.name}>Total Spent: ${user.user_challenge.currentAmout}</Text>
               </View>
-
-              <Text></Text>
+              <View style={styles.userPlace}>
+                <Text style={styles.placeNumber}>{index + 1}</Text>
+              </View>
             </View>
           )
         })
@@ -132,14 +131,40 @@ const styles = StyleSheet.create({
     alignItems: 'center',
 
   },
- countdown:{
-   height: 100,
+  badgeContainer:{
+    height: 100,
    width: '90%',
-   backgroundColor: 'white',
-   marginTop: 10,
+   marginTop:20,
+  //  backgroundColor: 'white',
+   marginTop: 20,
    ...shadow,
    alignItems: 'center',
    justifyContent: 'center'
+  },
+ challengeDesc:{
+   height: 100,
+   width:'90%',
+   backgroundColor: 'white',
+   marginTop: 10,
+   alignItems: 'center',
+   justifyContent: 'space-evenly',
+   ...shadow
+ },
+ challengeText:{
+   fontSize: 20,
+   color: "#00A86B",
+   fontWeight: '600',
+   marginTop: 5
+ },
+
+ leaderBoard:{
+   backgroundColor:"#00A86B",
+   height: 70,
+   width: '90%',
+   ...shadow,
+   marginTop: 30,
+   justifyContent: 'center',
+   alignItems: 'center'
  },
  header:{
    height: 70,
@@ -158,7 +183,7 @@ const styles = StyleSheet.create({
    height: 100,
    width: '90%',
    marginTop: 10,
-   backgroundColor: 'lightgreen',
+   backgroundColor: '#E0FFE8',
    ...shadow,
    padding: 15,
    borderRadius: 10,
@@ -176,9 +201,7 @@ const styles = StyleSheet.create({
  },
  imageName:{
   flex: 1,
-  // flexDirection: 'row',
   justifyContent: 'center',
-  // backgroundColor: 'yellow'
  },
  name:{
    fontSize: 16,
@@ -190,9 +213,23 @@ const styles = StyleSheet.create({
    borderRadius: 100,
    height: 70,
    width: 70,
-   backgroundColor: 'lightgrey',
    ...shadow,
    marginTop: 'auto',
    marginBottom: 'auto',
+ },
+ userPlace:{
+   height: 35,
+   width: 35,
+   borderRadius: 100,
+   justifyContent:'center',
+   alignItems:'center',
+   backgroundColor: 'lightgrey',
+   marginTop: 'auto',
+   marginBottom:'auto',
+   marginLeft: 10
+ },
+ placeNumber:{
+   fontSize: 14,
+
  }
 });

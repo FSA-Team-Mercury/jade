@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -7,70 +7,55 @@ import {
   ActivityIndicator,
   StyleSheet,
 } from "react-native";
-import { gql, useQuery, useMutation } from "@apollo/client";
+import { useQuery, useMutation } from "@apollo/client";
 import { images } from "../styles/global";
-const SEARCH_USERS = gql`
-  query SearchUsers($search: String) {
-    searchUsers(search: $search) {
-      result {
-        username
-        id
-        profileImage
-        relationship
-      }
-    }
-  }
-`;
-
-const REQUEST_FRIENDSHIP = gql`
-  mutation AddFriend($friendId: ID) {
-    addFriend(friendId: $friendId) {
-      friendId
-      username
-    }
-  }
-`;
+import { REQUEST_FRIENDSHIP, SEARCH_USERS } from "../queries/friends";
 
 export default function SearchUsers({ route }) {
   // friendship type: FRIENDS, PENDING, NOT_FRIENDS
-  const [results, setResults] = useState(false);
   const [oldSearch, setOldSearch] = useState("");
   const [requestFriendship] = useMutation(REQUEST_FRIENDSHIP);
   let search = route.params.search.toLowerCase();
-  console.log(search);
+
   const { data, loading } = useQuery(SEARCH_USERS, {
     variables: {
       search,
     },
   });
+
   if (loading) {
-    <View>
+    <View style={styles.loader}>
       <ActivityIndicator size="large" color="#00A86B" />
     </View>;
   }
-  const result = data ? data.searchUsers.result : [];
+  useEffect(() => {
+    return () => {
+      console.log("unmounting search component");
+    };
+  }, []);
+
   if (oldSearch !== search) {
     setOldSearch(search);
   }
 
-  async function addFriend(friendId, relationship) {
-    if (relationship !== "NOT_FRIENDS") {
-      alert("you are friends with this user");
-      return;
-    }
-    requestFriendship({
+  async function addFriend(friendId) {
+    await requestFriendship({
       variables: {
         friendId,
       },
+      refetchQueries: [{ query: SEARCH_USERS, variables: { search } }],
+      awaitRefetchQueries: true,
     });
   }
-
+  const searchResults = data ? data.searchUsers.result : [];
   return (
-    <View>
-      {!result.length ? (
-        <Text>No Reuslts</Text>
+    <View style={styles.container}>
+      {!searchResults.length ? (
+        <View style={styles.noResults}>
+          <Text>No Reuslts</Text>
+        </View>
       ) : (
-        result.map((user) => {
+        searchResults.map((user) => {
           return (
             <View style={styles.user} key={user.id}>
               <View style={styles.badgeImageContainer}>
@@ -83,10 +68,30 @@ export default function SearchUsers({ route }) {
                 <Text style={styles.userName}>{user.username}</Text>
               </View>
               <TouchableOpacity
-                style={styles.unfollow}
+                disabled={
+                  user.relationship === "FRIENDS" ||
+                  user.relationship === "PENDING"
+                    ? true
+                    : false
+                }
+                style={{
+                  ...styles.unfollow,
+                  backgroundColor:
+                    user.relationship === "FRIENDS"
+                      ? "lightgrey"
+                      : user.relationship === "PENDING"
+                      ? "dodgerblue"
+                      : "green",
+                }}
                 onPress={() => addFriend(user.id, user.relationship)}
               >
-                <Text style={{ color: "white" }}>Friend</Text>
+                <Text style={{ color: "white", fontWeight: "bold" }}>
+                  {user.relationship === "FRIENDS"
+                    ? "Connected"
+                    : user.relationship === "PENDING"
+                    ? "Pending..."
+                    : "Add Friend"}
+                </Text>
               </TouchableOpacity>
             </View>
           );
@@ -106,6 +111,13 @@ const shadow = {
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  loader: {
+    flex: 1,
+    justifyContent: "center",
+  },
   user: {
     height: 100,
     width: "95%",
@@ -119,10 +131,14 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     ...shadow,
   },
+  noResults: {
+    alignSelf: "center",
+    top: "50%",
+  },
   badgeImageContainer: {
     height: 65,
     width: 65,
-    backgroundColor: "black",
+    backgroundColor: "lightgrey",
     borderRadius: 100,
     justifyContent: "center",
     alignItems: "center",
@@ -150,7 +166,6 @@ const styles = StyleSheet.create({
   unfollow: {
     height: 30,
     width: 100,
-    // backgroundColor: '#00A86B',
     backgroundColor: "green",
     justifyContent: "center",
     alignItems: "center",

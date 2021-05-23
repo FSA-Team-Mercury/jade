@@ -9,15 +9,15 @@ import {
 
 import { useIsFocused } from "@react-navigation/native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import { client } from "../../App";
 import Challenges from "./Challenges";
 import Badges from "./Badges";
-import { gql, useQuery } from "@apollo/client";
+import { gql, useQuery, useApolloClient } from "@apollo/client";
 import { FETCH_ALL_CHALLENGES } from "../queries/multiChallenges";
 
 export default function ChallengesPage(props) {
   const [challenges, setChallenges] = useState([]);
   const isFocused = useIsFocused();
+  const client = useApolloClient();
 
   useEffect(() => {
     const { allMultiPlayerChallenges } = client.readQuery({
@@ -32,15 +32,15 @@ export default function ChallengesPage(props) {
 
   return (
     <SafeAreaView>
-      <Badges />
+      <Badges {...props}/>
       <Challenges {...props} challenges={challenges} />
       <View style={style.container}>
         <View style={style.challenges}>
           <TouchableOpacity
             onPress={() =>
-              props.navigation.navigate("Add Challenge",{
+              props.navigation.navigate("Add Challenge", {
                 challenges,
-                setChallenges
+                setChallenges,
               })
             }
           >

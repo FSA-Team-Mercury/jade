@@ -3,12 +3,12 @@ const createBudgetBars = (data) => {
 
   const goalAmount = data.map((budget, idx) => {
     axisPoints.push(idx + 1);
-    return { x: budget.category, y: budget.goalAmount };
+    return { x: budget.category, y: budget.goalAmount / 100 };
   });
   const currentAmount = data.map((budget) => {
     return {
       x: budget.category,
-      y: budget.currentAmount,
+      y: budget.currentAmount / 100,
     };
   });
 

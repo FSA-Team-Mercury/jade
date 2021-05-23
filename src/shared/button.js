@@ -5,8 +5,7 @@ export default function FlatButton({ text, onPress }) {
   return (
     <TouchableOpacity onPress={onPress}>
       <View style={styles.button}>
-        <Text style={styles.buttonText}>{text}</Text>
-        {/* <ActivityIndicator animating={isLoading} /> */}
+        <Text style={styles.buttonText}>{text} </Text>
       </View>
     </TouchableOpacity>
   );
@@ -23,7 +22,8 @@ const styles = StyleSheet.create({
     color: "white",
     fontWeight: "bold",
     textTransform: "uppercase",
-    fontSize: 16,
+    fontSize: 18,
     textAlign: "center",
+    alignSelf: "center",
   },
 });

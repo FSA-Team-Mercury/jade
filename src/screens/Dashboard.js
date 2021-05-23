@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { VictoryPie, VictoryTheme } from "victory-native";
-import { client } from "../../App";
+import { useApolloClient } from "@apollo/client";
 import SingleTransaction from "./SingleTransaction";
 import { TRANSACTIONS } from "../queries/plaid";
 
@@ -37,6 +37,7 @@ const getGraphData = (data) => {
 };
 
 export default function Dashboard() {
+  const client = useApolloClient();
   const navigation = useNavigation();
   function seeAllTransaction() {
     navigation.navigate("All Transactions", {

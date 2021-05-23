@@ -4,7 +4,6 @@ export const CREATE_MULTI_PLAYER_CHALLENGE = gql`
   mutation CreateMultiplayerChallenge(
     $friendId: ID
     $name: String
-    $startDate: String
     $endDate: String
     $winCondition: String
     $winAmount: Int
@@ -14,7 +13,6 @@ export const CREATE_MULTI_PLAYER_CHALLENGE = gql`
     createMultiplayerChallenge(
       friendId: $friendId
       name: $name
-      startDate: $startDate
       endDate: $endDate
       winCondition: $winCondition
       winAmount: $winAmount
@@ -28,6 +26,7 @@ export const CREATE_MULTI_PLAYER_CHALLENGE = gql`
       completed
       name
       badgeImage
+      endDate
       users {
         id
         username
@@ -78,6 +77,7 @@ export const FETCH_ALL_CHALLENGES = gql`
       completed
       name
       badgeImage
+      endDate
       users {
         id
         username
@@ -101,6 +101,7 @@ export const FETCH_CURENT_CHALLENGES = gql`
       winCondition
       completed
       badgeImage
+      endDate
       users {
         id
         username

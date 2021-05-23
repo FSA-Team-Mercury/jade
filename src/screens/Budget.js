@@ -10,7 +10,7 @@ import {
   ScrollView,
   FlatList,
 } from "react-native";
-import { client } from "../../App";
+import { useApolloClient } from "@apollo/client";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 import BudgetChart from "./BudgetChart";
@@ -25,8 +25,7 @@ const CURRENT_MONTH = TODAY.toLocaleString("default", { month: "long" });
 export default function Budget(props) {
   const isFocused = useIsFocused();
   const [allBudgets, setAllBudgets] = useState(null);
-  // const [transactions, setTransactions] = useState(null);
-  // const [graphData, setGraphData] = useState(null);
+  const client = useApolloClient();
 
   useEffect(() => {
     const { budgets } = client.readQuery({
@@ -38,7 +37,7 @@ export default function Budget(props) {
 
   if (!allBudgets) {
     return (
-      <View>
+      <View style={style.loader}>
         <ActivityIndicator size="large" color="#00A86B" />
       </View>
     );
@@ -142,6 +141,10 @@ const style = StyleSheet.create({
     alignItems: "center",
     justifyContent: "flex-start",
     marginTop: 20,
+  },
+  loader: {
+    flex: 1,
+    justifyContent: "center",
   },
   budgets: {
     width: "95%",

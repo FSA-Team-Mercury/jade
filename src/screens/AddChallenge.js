@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
-  SafeAreaView,
   ScrollView,
   Image,
   TextInput,
@@ -25,17 +24,15 @@ const reviewSchema = yup.object({
   category: yup.string().required()
 });
 
-import { gql, useMutation,useQuery } from "@apollo/client";
+import { gql, useMutation, useQuery } from "@apollo/client";
 import {
   CREATE_MULTI_PLAYER_CHALLENGE,
   FETCH_ALL_CHALLENGES,
   FETCH_CURENT_CHALLENGES,
   LEAVE_CHALLENGE,
 } from "../queries/multiChallenges";
-import {
-  GET_USER_DATA
-} from '../queries/user'
-import { client } from "../../App";
+import { GET_USER_DATA } from "../queries/user";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 const FETCH_FRIENDS = gql`
   query FetchFriends {
@@ -60,14 +57,14 @@ const badgeArray = [
 let thisBadge = badgeArray[Math.floor(Math.random() * 8)];
 let thisBadgeImage = images.badges[thisBadge];
 
-export default function AddChallenge({navigation, route}) {
+export default function AddChallenge({ navigation, route }) {
   const [createChallenge] = useMutation(CREATE_MULTI_PLAYER_CHALLENGE);
   const [friendId, setFriendId] = useState(0);
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [viewDate, setViewDate] = useState("NONE");
-  const [oldChallenges, setOldChallenges] = useState([])
-  const [friends, setFriends] = useState([])
+  const [oldChallenges, setOldChallenges] = useState([]);
+  const [friends, setFriends] = useState([]);
 
   const { data, loading, error } = useQuery(FETCH_FRIENDS);
   if (loading) {
@@ -78,9 +75,9 @@ export default function AddChallenge({navigation, route}) {
     );
   }
 
-  useEffect(()=>{
-    setFriends(data.friends || [])
-  })
+  useEffect(() => {
+    setFriends(data.friends || []);
+  });
 
   function tobbleDataPicker(dateType) {
     if (dateType === viewDate) {
@@ -91,7 +88,6 @@ export default function AddChallenge({navigation, route}) {
   }
 
   let friendsObj = {0:'Solo'}
-
   const myFriends = friends.map(friend => {
     friendsObj[friend.id] = friend.username
     return (
@@ -115,8 +111,6 @@ export default function AddChallenge({navigation, route}) {
           validationSchema={reviewSchema}
           onSubmit={async (values,{ setSubmitting, setFieldError }) => {
             try {
-              console.log('endData--->',endDate)
-              console.log('endData status--->',new Date() > endDate)
               if (new Date() > endDate){
                 setFieldError("endDate", 'Date must be valid');
                 setSubmitting(false);
@@ -127,7 +121,7 @@ export default function AddChallenge({navigation, route}) {
               createChallenge({
                 variables: {
                   name: values.name,
-                  startDate: values.startDate,
+                  // startDate: values.startDate,
                   winCondition: values.winCondition,
                   endDate: values.endDate,
                   completed: false,
@@ -136,22 +130,22 @@ export default function AddChallenge({navigation, route}) {
                   friendId: friendId,
                   badgeImage: thisBadge,
                 },
-              update: (cache, { data:{createMultiplayerChallenge} }) =>{
-              const newChallenge = createMultiplayerChallenge.multiPlayerChallenges
-              const conbined = newChallenge.concat(route.params.challenges)
-              const res = cache.readQuery({ query: GET_USER_DATA });
-              route.params.setChallenges(conbined)
-              cache.writeQuery({
-                query:GET_USER_DATA,
-                data:{
-                  allMultiPlayerChallenges:{
-                    ...res.allMultiPlayerChallenges,
-                    multiPlayerChallenges: conbined
-                  }
-                }
-              })
-
-              },
+                update: (cache, { data: { createMultiplayerChallenge } }) => {
+                  const newChallenge =
+                    createMultiplayerChallenge.multiPlayerChallenges;
+                  const conbined = newChallenge.concat(route.params.challenges);
+                  const res = cache.readQuery({ query: GET_USER_DATA });
+                  route.params.setChallenges(conbined);
+                  cache.writeQuery({
+                    query: GET_USER_DATA,
+                    data: {
+                      allMultiPlayerChallenges: {
+                        ...res.allMultiPlayerChallenges,
+                        multiPlayerChallenges: conbined,
+                      },
+                    },
+                  });
+                },
               });
               navigation.goBack();
             } catch (error) {
@@ -162,18 +156,18 @@ export default function AddChallenge({navigation, route}) {
             }
           }}
         >
-          {formikProps => (
+          {(formikProps) => (
             <>
               <TextInput
-                placeholder=" Name of Challenge"
+                placeholder="Name of this Challenge"
                 onChangeText={formikProps.handleChange("name")}
                 onBlur={formikProps.handleBlur("name")}
                 value={formikProps.values.name}
                 style={styles.challengeName}
               />
-              <Text style={styles.warning}>{formikProps.errors.name}</Text>
+              <Text style={styles.warning}>{formikProps.errors.name ? "Name is a required field": ''}</Text>
               <TextInput
-                placeholder=" What is the winning amout"
+                placeholder="What is the winning amout?"
                 onChangeText={formikProps.handleChange("winAmount")}
                 onBlur={formikProps.handleBlur("winAmount")}
                 value={formikProps.values.winAmount}
@@ -181,38 +175,21 @@ export default function AddChallenge({navigation, route}) {
               />
 
               {/* ERROR WIN AMOUT */}
-              <Text style={styles.warning}>{formikProps.errors.winAmount}</Text>
-
-              <View style={styles.datePickerContainer}>
-                <TouchableOpacity
-                  style={styles.datePickerBtn}
-                  onPress={() => tobbleDataPicker("START_DATE")}
-                >
-                  <Text style={styles.dateTitle}>Pick Start Date</Text>
-                  <Text style={styles.dateTitle}>
-                    {moment(startDate).format("MM DD YYYY")}
-                  </Text>
-                </TouchableOpacity>
-                <View
-                  style={
-                    viewDate === "START_DATE"
-                      ? styles.viewDate
-                      : styles.hideDate
-                  }
-                >
-                  <DatePicker date={startDate} setDate={setStartDate} />
-                </View>
-              </View>
+              <Text style={styles.warning}>{formikProps.errors.winAmount ? "Amount is a required field": ''}</Text>
 
               <View style={styles.datePickerContainer}>
                 <TouchableOpacity
                   style={styles.datePickerBtn}
                   onPress={() => tobbleDataPicker("END_DATE")}
                 >
-                  <Text style={styles.dateTitle}>Pick End Date</Text>
                   <Text style={styles.dateTitle}>
-                    {moment(endDate).format("MM/DD/YYYY")}
+                    End Date: <Text style={styles.fieldHint}>{moment(endDate).format('ll')}</Text>
                   </Text>
+                  <MaterialCommunityIcons
+                    name="chevron-down"
+                    color={"#00A86B"}
+                    size={30}
+                  />
                 </TouchableOpacity>
                 <View
                   style={
@@ -222,17 +199,21 @@ export default function AddChallenge({navigation, route}) {
                   <DatePicker date={startDate} setDate={setEndDate} />
                 </View>
               </View>
-              <Text style={styles.hint}>
-              {formikProps.errors.endDate}
-              </Text>
 
-              <View style={styles.friendsContainer}>
+              <Text style={styles.warning}>{formikProps.errors.endDate}</Text>
+
+              <View style={styles.dataPicker}>
                 <TouchableOpacity
-                  style={styles.chooseFriend}
+                  style={styles.friendBtn}
                   onPress={() => tobbleDataPicker("CHOOSE_FRIEND")}
                 >
-                  <Text style={styles.dateTitle}>Choose A friend:</Text>
-                  <Text style={styles.friendName}>{friendsObj[friendId]}</Text>
+                  <Text style={styles.dateTitle}>Choose A friend: <Text style={styles.friendName}>{friendsObj[friendId]}</Text></Text>
+
+                  <MaterialCommunityIcons
+                    name="chevron-down"
+                    color={"#00A86B"}
+                    size={30}
+                  />
                 </TouchableOpacity>
                 <Picker
                   autoCapitalize="none"
@@ -250,15 +231,24 @@ export default function AddChallenge({navigation, route}) {
                 </Picker>
               </View>
 
-              <View style={styles.friendsContainer}>
+              {/* KEEP SPACEING EVEN */}
+              <Text style={styles.hint}></Text>
+
+              <View style={styles.dataPicker}>
                 <TouchableOpacity
                   style={styles.friendBtn}
                   onPress={() => tobbleDataPicker("CATEGORY")}
                 >
                   <Text style={styles.dateTitle}>
-                    What categories are you competing in
+                    Competition Category: {' '}
+                    <Text style={styles.fieldHint}>{formikProps.values.category}</Text>
                   </Text>
-                  <Text style={styles.fieldHint}>{formikProps.values.category}</Text>
+
+                  <MaterialCommunityIcons
+                    name="chevron-down"
+                    color={"#00A86B"}
+                    size={30}
+                  />
                 </TouchableOpacity>
                 <View
                   style={
@@ -274,24 +264,34 @@ export default function AddChallenge({navigation, route}) {
                     selectedValue={formikProps.values.category}
                   >
                     <Picker.Item label="Travel" value="Travel" />
-                    <Picker.Item label="Payment" value="Payment" />
-                    <Picker.Item label="Transfer" value="Transfer" />
-                    <Picker.Item label="Other" value="Other" />
+                    <Picker.Item label='Food and Drink' value='Food and Drink' />
+                    <Picker.Item label='Shops' value='Shops' />
+                    <Picker.Item label='Entertainment' value='Entertainment' />
+                    <Picker.Item label='Recreation' value='Recreation' />
+                    <Picker.Item label='Payment' value='Payment' />
+                    {/* <Picker.Item label='Other' value='Other' /> */}
                   </Picker>
                 </View>
+                {/* ERRORS CATEGORY */}
               </View>
-              {/* ERRORS CATEGORY */}
               <Text style={styles.warning}>{formikProps.errors.category}</Text>
 
-              <View style={styles.friendsContainer}>
+
+              <View style={styles.dataPicker}>
                 <TouchableOpacity
                   style={styles.friendBtn}
                   onPress={() => tobbleDataPicker("WIN_CONDITON")}
                 >
                   <Text style={styles.dateTitle}>
-                    How Will You win this Challenge
+                    Winning Condition: {' '}
+                    <Text style={styles.fieldHint}>{formikProps.values.winCondition === "LESS_THAN" ? "Lowest spender" : "Biggest spenders"}</Text>
                   </Text>
-                  <Text style={styles.fieldHint}>{formikProps.values.winCondition === "LESS_THAN" ? "Lowest spender in category" : "Most spenders in category"}</Text>
+
+                  <MaterialCommunityIcons
+                    name="chevron-down"
+                    color={"#00A86B"}
+                    size={30}
+                  />
                 </TouchableOpacity>
                 <View
                   style={
@@ -321,7 +321,7 @@ export default function AddChallenge({navigation, route}) {
               {/* ERRORS winCondition */}
               <Text style={styles.warning}>{formikProps.errors.winCondition}</Text>
 
-              <View style={(styles.badgeImageContainer, { marginTop: 30 })}>
+              <View style={(styles.badgeImageContainer)}>
                 <Image style={styles.badgeImage} source={thisBadgeImage} />
                 <Text style={styles.dateTitle}>Earn this badge!</Text>
               </View>
@@ -329,8 +329,11 @@ export default function AddChallenge({navigation, route}) {
                 style={styles.addChallenge}
                 onPress={formikProps.handleSubmit}
               >
-
-                <Text>Add Challenge</Text>
+                <Text
+                  style={{ color: "white", fontSize: 18, fontWeight: "bold" }}
+                >
+                  Submit
+                </Text>
               </TouchableOpacity>
             </>
           )}
@@ -339,11 +342,6 @@ export default function AddChallenge({navigation, route}) {
     </ScrollView>
   );
 }
-
-const center = {
-  marginLeft: "auto",
-  marginRight: "auto",
-};
 
 const shadow = (height, width) => {
   return {
@@ -365,40 +363,44 @@ const styles = StyleSheet.create({
   },
   badgeImageContainer: {
     flex: 1,
-    flexDirection: "column",
+    marginTop:40,
+    alignItems: "center",
+    justifyContent: "center",
+    // backgroundColor:'lightgrey'
   },
   badgeImage: {
-    height: 150,
-    width: 150,
+    height: 80,
+    width: 80,
     marginBottom: 30,
   },
   challengeName: {
     marginTop: 20,
     height: 50,
     width: "90%",
-    borderColor: "black",
+    borderColor: "lightgrey",
     borderRadius: 10,
     borderWidth: 1,
+    paddingLeft: 10,
   },
   hideDate: {
     display: "none",
   },
   datePickerContainer: {
     width: "90%",
-    // ...center,
     justifyContent: "center",
     alignItems: "center",
+    marginTop: 20,
   },
   datePickerBtn: {
-    height: 80,
+    height: 60,
     width: "100%",
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-evenly",
-    marginTop: 20,
+    justifyContent: "space-between",
     backgroundColor: "white",
-    // borderRadius: 10
     ...shadow(),
+    borderRadius: 8,
+    paddingHorizontal: 5,
   },
   viewDate: {
     display: "flex",
@@ -419,7 +421,6 @@ const styles = StyleSheet.create({
   },
   winCondition: {
     width: "100%",
-    // flexDirection: 'row',
     height: 80,
     alignItems: "center",
     justifyContent: "space-evenly",
@@ -431,12 +432,10 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#ddd",
     fontSize: 18,
-    // borderRadius: 6,
-    // marginTop: 20,
     width: "90%",
     backgroundColor: "white",
   },
-  friendsContainer: {
+  dataPicker: {
     width: "100%",
     alignItems: "center",
     marginTop: 20,
@@ -454,16 +453,17 @@ const styles = StyleSheet.create({
   },
   friendBtn: {
     width: "90%",
-    height: 80,
+    height: 60,
+    flexDirection: "row",
     backgroundColor: "white",
     alignItems: "center",
-    justifyContent: "center",
-    //  borderRadius: 10
+    justifyContent: "space-between",
+    borderRadius: 8,
   },
   addChallenge: {
     height: 50,
     width: 150,
-    marginTop: 50,
+    marginTop: 30,
     borderRadius: 5,
     backgroundColor: "#00A86B",
     ...shadow(),
@@ -474,11 +474,19 @@ const styles = StyleSheet.create({
   warning:{
     color: 'crimson',
     marginTop: 5,
-    fontSize: 16
+    fontSize: 16,
+  },
+  noWarning: {
+    display: 'none'
   },
   fieldHint:{
     color: 'green',
     fontSize: 16,
     marginTop: 5
-  }
+  },
+  addButton: {
+    color: "white",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
 });

@@ -1,12 +1,12 @@
-import React from 'react';
-import { View, SafeAreaView, ScrollView, StyleSheet } from 'react-native';
-import BulletPoint from './BulletPoint';
-import { CURRENT_DAY, NUM_DAYS_MONTH } from './MonthlySpentCalc';
+import React from "react";
+import { View, SafeAreaView, ScrollView, StyleSheet } from "react-native";
+import BulletPoint from "./BulletPoint";
+import { CURRENT_DAY, NUM_DAYS_MONTH } from "./MonthlySpentCalc";
 
-export default ({ item, currentAmount }) => {
-
-
-  const DAILY_BUDGET = parseInt(item.goalAmount / 100 / NUM_DAYS_MONTH).toFixed(2);
+export default function BudgetRecap({ item, currentAmount }) {
+  const DAILY_BUDGET = parseInt(item.goalAmount / 100 / NUM_DAYS_MONTH).toFixed(
+    2
+  );
 
   const DAILY_AVERAGE_SPEND = parseInt(
     currentAmount / 100 / CURRENT_DAY
@@ -26,35 +26,39 @@ export default ({ item, currentAmount }) => {
     <SafeAreaView>
       <ScrollView style={styles.container}>
         <View>
-          <BulletPoint textItem={'Goal'} itemAmount={parseInt(item.goalAmount / 100).toFixed(2)} />
+          <BulletPoint
+            style={{ width: 10 }}
+            textItem={"Goal"}
+            itemAmount={parseInt(item.goalAmount / 100).toFixed(2)}
+          />
           <View style={styles.borderBottom}></View>
           <BulletPoint
-            textItem={'Amount spent so far'}
+            textItem={"Amount spent so far"}
             itemAmount={CURRENT_SPEND}
           />
           <View style={styles.borderBottom}></View>
-          <BulletPoint textItem={'Daily Budget'} itemAmount={DAILY_BUDGET} />
+          <BulletPoint textItem={"Daily Budget"} itemAmount={DAILY_BUDGET} />
           <View style={styles.borderBottom}></View>
           <BulletPoint
-            textItem={'Daily Average Spend'}
+            textItem={"Daily Average Spend"}
             itemAmount={DAILY_AVERAGE_SPEND}
           />
           <View style={styles.borderBottom}></View>
           <BulletPoint
-            textItem={'Projected Monthly Spending'}
+            textItem={"Projected Monthly Spending"}
             itemAmount={PROJECTED_MONTHLY_SPEND}
           />
           <View style={styles.borderBottom}></View>
           <BulletPoint
-            textItem={'Projected Monthly Savings'}
+            textItem={"Projected Monthly Savings"}
             itemAmount={PROJECTED_MONTHLY_SAVINGS}
-            colorText={PROJECTED_MONTHLY_SAVINGS <= 0 ? 'red' : 'green'}
+            colorText={PROJECTED_MONTHLY_SAVINGS <= 0 ? "red" : "green"}
           />
         </View>
       </ScrollView>
     </SafeAreaView>
   );
-};
+}
 
 const shadow = {
   shadowOffset: {
@@ -65,8 +69,8 @@ const shadow = {
   shadowRadius: 5,
 };
 const center = {
-  marginRight: 'auto',
-  marginLeft: 'auto',
+  marginRight: "auto",
+  marginLeft: "auto",
 };
 
 const styles = StyleSheet.create({
@@ -74,12 +78,12 @@ const styles = StyleSheet.create({
     height: 450,
     marginHorizontal: 11,
     ...shadow,
-    backgroundColor: 'white'
+    backgroundColor: "white",
   },
   borderBottom: {
     height: 2,
-    width: '90%',
-    backgroundColor: 'lightgrey',
+    width: "90%",
+    backgroundColor: "lightgrey",
     ...center,
   },
 });
