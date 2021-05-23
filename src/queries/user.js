@@ -71,20 +71,22 @@ export const GET_USER_DATA = gql`
       }
     }
     allMultiPlayerChallenges {
-    id
-    multiPlayerChallenges {
-      badgeImage
       id
-      winCondition
-      completed
-      name
-      users {
+      multiPlayerChallenges {
+        badgeImage
         id
-        username
-        profileImage
-        user_challenge {
-          currentAmout
-          leftChallenge
+        winCondition
+        completed
+        name
+        users {
+          id
+          username
+          profileImage
+          user_challenge {
+            currentAmout
+            leftChallenge
+          }
+        }
       }
     }
     pendingFriends {
@@ -92,8 +94,6 @@ export const GET_USER_DATA = gql`
       username
       profileImage
     }
-  }
-  }
   }
 `;
 

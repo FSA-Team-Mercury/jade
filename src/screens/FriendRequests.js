@@ -5,9 +5,11 @@ import {
   Text,
   ActivityIndicator,
   TouchableOpacity,
+  Image,
 } from "react-native";
-import { client } from "../../App";
-import { useMutation } from "@apollo/client";
+import { useIsFocused } from "@react-navigation/native";
+import { images } from "../styles/global";
+import { useMutation, useApolloClient } from "@apollo/client";
 import {
   FETCH_PENDING_FRIENDS,
   ACCEPT_FRIEND_REQ,
@@ -16,14 +18,16 @@ import {
 
 export default function FriendRequests() {
   const [acceptFriend] = useMutation(ACCEPT_FRIEND_REQ);
-  const [pendingFriends, setPendingFriends] = useState([]);
+  const [pendingFriends, setPendingFriends] = useState(null);
+  const isFocused = useIsFocused();
+  const client = useApolloClient();
 
   useEffect(() => {
     const { pendingFriends } = client.readQuery({
       query: FETCH_PENDING_FRIENDS,
     });
     setPendingFriends(pendingFriends);
-  }, []);
+  }, [isFocused]);
 
   if (!pendingFriends) {
     return (
@@ -38,16 +42,24 @@ export default function FriendRequests() {
       variables: {
         friendId,
       },
-      update: (cache, { data: { addBudget } }) => {
-        const data = cache.readQuery({ query: FETCH_FRIENDS });
-        cache.writeQuery({
-          query: FETCH_FRIENDS,
-          data: {
-            budgets: [...data.budgets, addBudget],
+      refetchQueries: [{ query: FETCH_FRIENDS }],
+      update(cache) {
+        cache.modify({
+          fields: {
+            pendingFriends(pendingList, { readField }) {
+              return pendingList.filter(
+                (friendRef) => friendId !== readField("id", friendRef)
+              );
+            },
           },
         });
       },
     });
+    setPendingFriends(
+      pendingFriends.filter((user) => {
+        return friendId !== user.id;
+      })
+    );
   }
 
   return (
@@ -59,11 +71,15 @@ export default function FriendRequests() {
           return (
             <View style={styles.userContainer} key={user.id}>
               <View style={styles.levelOne}>
-                <View style={styles.badgeImage}></View>
+                <View style={styles.userAvatar}>
+                  <Image
+                    source={images.avatar[user.profileImage]}
+                    style={styles.userImage}
+                  />
+                </View>
                 <Text style={styles.username}>{user.username}</Text>
               </View>
               <View style={styles.levelTwo}>
-                {/* <Text style={styles.dateRequested}>{user.createdAt}</Text> */}
                 <TouchableOpacity
                   onPress={() => {
                     return acceptReq(user.id);
@@ -122,11 +138,17 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
   },
-  badgeImage: {
-    height: 70,
-    width: 70,
-    backgroundColor: "black",
+  userAvatar: {
+    height: 60,
+    width: 60,
+    backgroundColor: "lightgrey",
     borderRadius: 100,
+  },
+  userImage: {
+    width: 40,
+    height: 40,
+    flex: 1,
+    marginLeft: 10,
   },
   username: {
     marginLeft: 20,
@@ -142,5 +164,6 @@ const styles = StyleSheet.create({
   dateRequested: {
     fontSize: 15,
     fontWeight: "500",
+    color: "#00A86B",
   },
 });

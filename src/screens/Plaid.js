@@ -3,15 +3,14 @@ import { PLAID_TOKEN_URL } from "@env";
 import { View, Text, StyleSheet, ActivityIndicator } from "react-native";
 import { PlaidLink } from "react-native-plaid-link-sdk";
 import axios from "axios";
-import { client } from "../../App";
-import { useMutation } from "@apollo/client";
+import { useMutation, useApolloClient } from "@apollo/client";
 import { USER_PLAID_AUTH } from "../queries/user";
 import { FETCH_TOKEN } from "../queries/plaid.js";
 
 export default function Plaid(props) {
   const [token, setToken] = useState(null);
   const [getPlaid] = useMutation(FETCH_TOKEN);
-
+  const client = useApolloClient();
   const getToken = async () => {
     try {
       const { user } = await client.readQuery({
@@ -46,30 +45,29 @@ export default function Plaid(props) {
       tokenConfig={{
         token: token,
       }}
-      onSuccess={(success) => {
-        getPlaid({
-          variables: {
-            public_token: success.publicToken,
-          },
-        })
-          .then((res) => {
-            props.navigation.reset({
-              index: 0,
-              routes: [{ name: "Nav" }],
-            });
-          })
-          .catch((err) => {
-            console.log(err);
+      onSuccess={async (success) => {
+        try {
+          await getPlaid({
+            variables: {
+              public_token: success.publicToken,
+            },
           });
+          props.navigation.reset({
+            index: 0,
+            routes: [{ name: "Nav" }],
+          });
+        } catch (err) {
+          throw new Error("Error Connectinig to Plaid", err);
+        }
       }}
       onExit={(exit) => {
         console.log(exit);
       }}
     >
       <View style={styles.container}>
-        <Text>It seems you have not added an account yet</Text>
+        <Text>Let&apos;s Add your bank account information!</Text>
         <View style={styles.button}>
-          <Text>Add Account</Text>
+          <Text style={styles.buttonText}>Add Account</Text>
         </View>
       </View>
     </PlaidLink>
@@ -78,18 +76,22 @@ export default function Plaid(props) {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: "50%",
-    marginLeft: "15%",
+    marginTop: "70%",
+    marginHorizontal: "15%",
   },
   button: {
-    width: 120,
-    height: 30,
+    width: 130,
+    height: 40,
     alignItems: "center",
     justifyContent: "center",
     marginTop: 20,
-    marginLeft: 90,
+    marginLeft: 80,
     backgroundColor: "#00A86B",
     borderRadius: 8,
+  },
+  buttonText: {
+    color: "white",
+    fontSize: 16,
   },
   loader: {
     flex: 1,

@@ -42,3 +42,27 @@ export const ACCEPT_FRIEND_REQ = gql`
     }
   }
 `;
+
+// ***** Searching for friends ***** //
+
+export const SEARCH_USERS = gql`
+  query SearchUsers($search: String) {
+    searchUsers(search: $search) {
+      result {
+        username
+        id
+        profileImage
+        relationship
+      }
+    }
+  }
+`;
+
+export const REQUEST_FRIENDSHIP = gql`
+  mutation AddFriend($friendId: ID) {
+    addFriend(friendId: $friendId) {
+      friendId
+      username
+    }
+  }
+`;

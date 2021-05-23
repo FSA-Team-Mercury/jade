@@ -8,7 +8,8 @@ import {
   VictoryTheme,
   VictoryGroup,
   VictoryLegend,
-  VictoryZoomContainer,
+  VictoryTooltip,
+  VictoryVoronoiContainer,
 } from "victory-native";
 import createBudgetBars from "../calculations/budgetChart";
 
@@ -16,7 +17,6 @@ export default function BudgetChart({ budgets }) {
   const isFocused = useIsFocused();
   const [chartData, setChartData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [zoomDomain, setZoomDomain] = useState(null);
 
   useEffect(() => {
     const budgetBars = createBudgetBars(budgets);
@@ -25,7 +25,6 @@ export default function BudgetChart({ budgets }) {
   }, [isFocused, budgets]);
 
   if (loading) {
-    console.log("loading");
     return (
       <View style={{ flex: 1, alignItems: "center", paddingTop: 160 }}>
         <ActivityIndicator size="large" color="#00A86B" />
@@ -34,7 +33,11 @@ export default function BudgetChart({ budgets }) {
   }
 
   return (
-    <VictoryChart domainPadding={40} theme={VictoryTheme.material}>
+    <VictoryChart
+      domainPadding={40}
+      theme={VictoryTheme.material}
+      containerComponent={<VictoryVoronoiContainer />}
+    >
       <VictoryLegend
         x={230}
         y={30}
@@ -57,11 +60,13 @@ export default function BudgetChart({ budgets }) {
           },
         }}
       />
-      <VictoryAxis dependentAxis tickFormat={(x) => `$${x / 100}`} />
+      <VictoryAxis dependentAxis tickFormat={(x) => `$${x}`} />
       <VictoryGroup offset={12} colorScale={["#00A86B", "tomato"]}>
         <VictoryBar
           padding={{ left: 20, right: 80 }}
           cornerRadius={6}
+          labelComponent={<VictoryTooltip pointerLength={20} />}
+          labels={({ datum }) => Math.round(datum.y)}
           data={chartData.goalAmount}
           animate={{
             onLoad: {
@@ -70,6 +75,8 @@ export default function BudgetChart({ budgets }) {
           }}
         />
         <VictoryBar
+          labelComponent={<VictoryTooltip constrainToVisibleArea />}
+          labels={({ datum }) => Math.round(datum.y)}
           padding={{ left: 20, right: 60 }}
           cornerRadius={6}
           data={chartData.currentAmount}

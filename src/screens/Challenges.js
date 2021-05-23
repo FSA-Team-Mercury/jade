@@ -2,23 +2,23 @@ import React, { useState, useEffect } from "react";
 import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
 import { useIsFocused } from "@react-navigation/native";
 import { images } from "../styles/global";
-import { client } from "../../App";
-import moment from 'moment'
-import { gql, useQuery } from "@apollo/client";
+import moment from "moment";
+import { gql, useQuery, useApolloClient } from "@apollo/client";
 import { FETCH_ALL_CHALLENGES } from "../queries/multiChallenges";
 
-export default function Challenges({challenges}) {
+export default function Challenges({ challenges }) {
+  const client = useApolloClient();
   const isFocused = useIsFocused();
   if (!challenges.length) {
     return (
-        <>
-          <View style={styles.challengeHeader}>
-            <Text style={styles.challengeHeaderText}>Your Challenges</Text>
-          </View>
-          <View style={styles.noChallenges}>
+      <>
+        <View style={styles.challengeHeader}>
+          <Text style={styles.challengeHeaderText}>Your Challenges</Text>
+        </View>
+        <View style={styles.noChallenges}>
           <Text style={styles.noChallengesTitle}>No Challenges Yet!</Text>
-          </View>
-        </>
+        </View>
+      </>
     );
   }
   return (
@@ -26,48 +26,49 @@ export default function Challenges({challenges}) {
       <View style={styles.challengeHeader}>
         <Text style={styles.challengeHeaderText}>Your Challenges</Text>
       </View>
-      {
-      challenges.map((challenge) => {
+      {challenges.map((challenge) => {
         let date = moment(challenge.endDate).format("MM-DD-YYYY");
         const contenders = challenge.users;
         return (
           <TouchableOpacity
-          onPress={()=>{
-            console.log('pressed CHallenge-->',challenge.id)
-          }}
+            onPress={() => {
+              console.log("pressed CHallenge-->", challenge.id);
+            }}
           >
-          <View style={styles.container} key={challenge.id}>
-            <View>
-              <View style={styles.levelOne}>
-                <View style={styles.badgeImageContainer}>
-                  <Image
-                    source={images.badges[challenge.badgeImage]}
-                    style={styles.profilePic}
-                  />
-                </View>
-                <View>
-                  <Text style={styles.name}> {challenge.name}</Text>
-                </View>
-                <TouchableOpacity style={styles.view}>
-                  {/* <Text style={{ color: "white" }}>View Status</Text> */}
-                   <Text style={{ color: "white" }}>{date}</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-            <Text style={{ marginRight: "auto", marginLeft: "auto" }}>Vs.</Text>
-            <View style={styles.levelThree}>
-              {contenders.map((user) => {
-                return (
-                  <View style={styles.badge} key={user.id}>
+            <View style={styles.container} key={challenge.id}>
+              <View>
+                <View style={styles.levelOne}>
+                  <View style={styles.badgeImageContainer}>
                     <Image
-                      style={styles.badgeImage}
-                      source={images.avatar[user.profileImage]}
+                      source={images.badges[challenge.badgeImage]}
+                      style={styles.profilePic}
                     />
                   </View>
-                );
-              })}
+                  <View>
+                    <Text style={styles.name}> {challenge.name}</Text>
+                  </View>
+                  <TouchableOpacity style={styles.view}>
+                    {/* <Text style={{ color: "white" }}>View Status</Text> */}
+                    <Text style={{ color: "white" }}>{date}</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+              <Text style={{ marginRight: "auto", marginLeft: "auto" }}>
+                Vs.
+              </Text>
+              <View style={styles.levelThree}>
+                {contenders.map((user) => {
+                  return (
+                    <View style={styles.badge} key={user.id}>
+                      <Image
+                        style={styles.badgeImage}
+                        source={images.avatar[user.profileImage]}
+                      />
+                    </View>
+                  );
+                })}
+              </View>
             </View>
-          </View>
           </TouchableOpacity>
         );
       })}
@@ -121,7 +122,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     marginBottom: 5,
     marginTop: 20,
-    marginBottom: 10
+    marginBottom: 10,
   },
   challengeHeaderText: {
     fontSize: 22,
@@ -138,9 +139,8 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     ...shadow,
   },
-  noChallengesTitle:{
-    fontSize: 18
-
+  noChallengesTitle: {
+    fontSize: 18,
   },
   noChallengeText: {
     fontSize: 18,

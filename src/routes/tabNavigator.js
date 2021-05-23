@@ -5,7 +5,7 @@ import ExplorPageStack from "./ExplorPageStack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import AccountStack from "./accountStack";
-import DashboardStack from "./dashBoardStack"
+import DashboardStack from "./dashBoardStack";
 
 const Tab = createBottomTabNavigator();
 
@@ -21,7 +21,7 @@ export default function TabNav() {
         name="Dashboard"
         component={DashboardStack}
         options={{
-          tabBarLabel: "Home",
+          tabBarLabel: "Dashboard",
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons
               name="view-dashboard"
@@ -50,8 +50,8 @@ export default function TabNav() {
         name="ExplorePage"
         component={ExplorPageStack}
         options={{
-          headerStyle: {height: 100},
-          tabBarLabel: "Friends",
+          headerStyle: { height: 100 },
+          tabBarLabel: "Explore",
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons
               name="account-group"

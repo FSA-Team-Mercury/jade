@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -7,21 +7,14 @@ import {
   Image,
   TextInput,
   TouchableOpacity,
-  ActivityIndicator,
   StyleSheet,
 } from "react-native";
-
 import ExploreFriends from "./ExploreFriends";
-import { client } from "../../App";
-import { gql, useQuery } from "@apollo/client";
-
 import FriendRequests from "./FriendRequests";
-import Badges from "./Badges";
-import ChallengesPage from './ChallengesPage'
+import ChallengesPage from "./ChallengesPage";
 
 export default function ExplorePage(props) {
-  const [selected, setSelected] = useState("FRIENDS"); //"FRIENDS");
-
+  const [selected, setSelected] = useState("FRIENDS");
   const display = {
     PENDING_FRIENDS: <FriendRequests {...props} />,
     FRIENDS: <ExploreFriends {...props} />,
@@ -47,15 +40,16 @@ export default function ExplorePage(props) {
             style={styles.searchIcon}
           />
           <TextInput
+            autoCapitalize="none"
             style={styles.searchField}
-            placeholder="Search..."
+            placeholder="Find friends..."
             onSubmitEditing={(event) => {
               let search = event.nativeEvent.text;
               return searchUsers(search);
             }}
           />
         </View>
-        <Text style={styles.pageTitle}>Explore Jade</Text>
+        {/* <Text style={styles.pageTitle}>Friends & Challenges</Text> */}
         <View style={styles.selectView}>
           <TouchableOpacity
             style={
@@ -91,7 +85,7 @@ export default function ExplorePage(props) {
                   : styles.nonSelectedText
               }
             >
-              Friend Request
+              Friend Requests
             </Text>
           </TouchableOpacity>
 

@@ -8,8 +8,7 @@ import {
   StyleSheet,
 } from "react-native";
 import { useIsFocused } from "@react-navigation/native";
-import { client } from "../../App";
-import { useMutation } from "@apollo/client";
+import { useMutation, useApolloClient } from "@apollo/client";
 import { images } from "../styles/global";
 import { FETCH_FRIENDS, UNFOLLOW_USER } from "../queries/friends";
 
@@ -17,6 +16,7 @@ export default function ExploreFriends() {
   const [friends, setFriends] = useState(null);
   const [unfollower] = useMutation(UNFOLLOW_USER);
   const isFocused = useIsFocused();
+  const client = useApolloClient();
 
   useEffect(() => {
     const { friends } = client.readQuery({
@@ -93,7 +93,6 @@ export default function ExploreFriends() {
                   <Text>No Badges Yet</Text>
                 ) : (
                   user.badges.slice(0, 5).map((badge) => {
-                    console.log(badge);
                     return (
                       <View style={friend.badge} key={badge.id}>
                         <Image
@@ -178,7 +177,6 @@ const friend = StyleSheet.create({
   unfollow: {
     height: 30,
     width: 100,
-    // backgroundColor: '#00A86B',
     backgroundColor: "crimson",
     justifyContent: "center",
     alignItems: "center",
@@ -189,8 +187,6 @@ const friend = StyleSheet.create({
   },
   levelThree: {
     flex: 1,
-    // width:'90%',
-    // backgroundColor: 'black',
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-evenly",
@@ -198,12 +194,11 @@ const friend = StyleSheet.create({
   badge: {
     height: 60,
     width: 100,
-    // backgroundColor: 'lightgrey',
     alignItems: "center",
   },
   badgeImage: {
-    height: 50,
-    width: 50,
+    height: 40,
+    width: 40,
     backgroundColor: "lightgrey",
     borderRadius: 10,
   },

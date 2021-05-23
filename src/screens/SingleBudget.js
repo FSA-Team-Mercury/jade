@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -6,17 +6,16 @@ import {
   TextInput,
   TouchableWithoutFeedback,
   Keyboard,
-} from 'react-native';
-import * as yup from 'yup';
-import { Formik } from 'formik';
-import DeleteButton from '../shared/delete';
-import SaveButton from '../shared/save';
-import { gql, useMutation } from '@apollo/client';
-import { Snackbar } from 'react-native-paper';
-import { client } from '../../App';
-import { UPDATE_AMOUNT, DELETE_BUDGET } from '../queries/budget';
-import BudgetRecap from './BudgetRecap';
-import { useIsFocused } from '@react-navigation/native';
+} from "react-native";
+import * as yup from "yup";
+import { Formik } from "formik";
+import DeleteButton from "../shared/delete";
+import SaveButton from "../shared/save";
+import { gql, useMutation, useApolloClient } from "@apollo/client";
+import { Snackbar } from "react-native-paper";
+import { UPDATE_AMOUNT, DELETE_BUDGET } from "../queries/budget";
+import BudgetRecap from "./BudgetRecap";
+import { useIsFocused } from "@react-navigation/native";
 
 const budgetSchema = yup.object({
   amount: yup.number().required(),
@@ -27,11 +26,10 @@ export default function SingleBudget({ navigation, route }) {
   const [updateAmount] = useMutation(UPDATE_AMOUNT);
   const [deleteBudget] = useMutation(DELETE_BUDGET);
   const isFocused = useIsFocused();
-
+  const client = useApolloClient();
   useEffect(() => {}, [isFocused, budget]);
 
   const BUDGET_CURRENT_AMOUNT = route.params.currentAmount;
-
 
   const handleRemoveItem = async (budgetId) => {
     try {
@@ -42,7 +40,7 @@ export default function SingleBudget({ navigation, route }) {
             fields: {
               budgets(existingBudgets, { readField }) {
                 return existingBudgets.filter(
-                  (budgetRef) => budgetId !== readField('id', budgetRef)
+                  (budgetRef) => budgetId !== readField("id", budgetRef)
                 );
               },
             },
@@ -64,7 +62,7 @@ export default function SingleBudget({ navigation, route }) {
           <View style={styles.header}></View>
           <Formik
             initialValues={{
-              amount: (route.params.goalAmount / 100).toString() || '0',
+              amount: (route.params.goalAmount / 100).toString() || "0",
             }}
             validationSchema={budgetSchema}
             onSubmit={async (values) => {
@@ -85,7 +83,7 @@ export default function SingleBudget({ navigation, route }) {
                     }
                   `,
                   data: {
-                    __typename: 'Budget',
+                    __typename: "Budget",
                     goalAmount: +budgetData.updateBudget.goalAmount,
                   },
                 });
@@ -101,14 +99,14 @@ export default function SingleBudget({ navigation, route }) {
             {(formikProps) => (
               <View style={styles.formikView}>
                 <TextInput
-                  name='amount'
-                  keyboardType='numeric'
+                  name="amount"
+                  keyboardType="numeric"
                   precision={2}
                   style={styles.input}
-                  placeholder='Budget Amount'
-                  onChangeText={formikProps.handleChange('amount')}
+                  placeholder="Budget Amount"
+                  onChangeText={formikProps.handleChange("amount")}
                   value={formikProps.values.amount}
-                  onBlur={formikProps.handleBlur('amount')}
+                  onBlur={formikProps.handleBlur("amount")}
                 />
                 <View style={styles.errorContainer}>
                   <Text style={styles.errorText}>
@@ -118,12 +116,12 @@ export default function SingleBudget({ navigation, route }) {
 
                 <View style={styles.buttons}>
                   <DeleteButton
-                    text='Delete'
+                    text="Delete"
                     onPress={() => handleRemoveItem(route.params.id)}
                   />
                   <SaveButton
                     onPress={formikProps.handleSubmit}
-                    text='Save Changes'
+                    text="Save Changes"
                   />
                 </View>
                 <Snackbar
@@ -148,15 +146,15 @@ export default function SingleBudget({ navigation, route }) {
 }
 
 const center = {
-  marginRight: 'auto',
-  marginLeft: 'auto',
+  marginRight: "auto",
+  marginLeft: "auto",
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'flex-end',
+    alignItems: "center",
+    justifyContent: "flex-end",
     marginBottom: -70,
   },
   test: {
@@ -170,55 +168,54 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   formikView: {
-    width: '100%',
-    height: '90%',
-    // backgroundColor: 'blue',
+    width: "100%",
+    height: "90%",
   },
   errorContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     marginTop: 20,
   },
   errorText: {
-    color: 'red',
+    color: "red",
     fontSize: 14,
-    fontWeight: 'bold'
+    fontWeight: "bold",
   },
   input: {
     borderWidth: 1,
-    borderColor: '#ddd',
+    borderColor: "#ddd",
     padding: 10,
     fontSize: 18,
     borderRadius: 6,
     width: 300,
-    alignSelf: 'center',
-    backgroundColor: 'white',
-    textAlign: 'center',
+    alignSelf: "center",
+    backgroundColor: "white",
+    textAlign: "center",
   },
   buttons: {
-    flexDirection: 'row',
-    width: '100%',
+    flexDirection: "row",
+    width: "100%",
     marginTop: 20,
-    justifyContent: 'space-between',
+    justifyContent: "space-between",
   },
   snack: {
-    backgroundColor: 'green',
-    alignSelf: 'flex-start',
+    backgroundColor: "green",
+    alignSelf: "flex-start",
     marginTop: 300,
   },
   recapHeader: {
-    color: 'white',
+    color: "white",
     fontSize: 20,
   },
   borderBottom: {
     height: 52,
-    width: '95%',
-    backgroundColor: '#00A86B',
+    width: "95%",
+    backgroundColor: "#00A86B",
     ...center,
     marginTop: 70,
-    borderTopLeftRadius: 25,
-    borderTopRightRadius: 25,
-    justifyContent: 'center',
-    alignItems: 'center',
+    borderTopLeftRadius: 8,
+    borderTopRightRadius: 8,
+    justifyContent: "center",
+    alignItems: "center",
   },
 });

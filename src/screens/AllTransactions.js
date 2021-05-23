@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-// import moment from 'moment';
-// moment().format();
 import {
   View,
   StyleSheet,

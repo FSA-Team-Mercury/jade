@@ -8,41 +8,13 @@ import {
   ScrollView,
   FlatList,
 } from "react-native";
-import { client } from "../../App";
-import { gql } from "@apollo/client";
+
+import { useApolloClient } from "@apollo/client";
 import { useIsFocused } from "@react-navigation/native";
 import BudgetCard from "./BudgetCard";
+import { GET_BUDGETS } from "../queries/budget";
+import { FETCH_BUDGET_PLAID } from "../queries/plaid";
 
-const FETCH_PLAID = gql`
-  query FetchPlaid {
-    plaid {
-      total_transactions
-      accounts {
-        name
-        type
-      }
-      transactions {
-        account_id
-        amount
-        date
-        category
-        pending
-        merchant_name
-      }
-    }
-  }
-`;
-
-export const GET_BUDGETS = gql`
-  query Budgets {
-    budgets {
-      id
-      category
-      goalAmount
-      currentAmount
-    }
-  }
-`;
 const init = {
   Travel: 0,
   "Food and Drink": 0,
@@ -74,19 +46,17 @@ export default () => {
   const [allBudgets, setAllBudgets] = useState(null);
   const [transactions, setTransactions] = useState(null);
   const [graphData, setGraphData] = useState({});
-
+  const client = useApolloClient();
   //fetching Plaid Data
   useEffect(() => {
     const account = client.readQuery({
-      query: FETCH_PLAID,
+      query: FETCH_BUDGET_PLAID,
     });
 
     let transactions = account.plaid.transactions;
     setTransactions(transactions || [{}]);
-    console.log("SAVINGS ---> ", transactions);
     const data = getGraphData(transactions);
     setGraphData(data);
-    console.log("GRAPH DATA ---->", data);
   }, []);
 
   // fetching budgets to measure savings

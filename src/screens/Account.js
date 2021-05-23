@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from "react";
-// import Constants from "expo-constants";
-// import * as Notifications from "expo-notifications";
 import {
   View,
   Text,
@@ -9,7 +7,7 @@ import {
   ActivityIndicator,
   Image,
 } from "react-native";
-import { client } from "../../App";
+import { useApolloClient } from "@apollo/client";
 import { accountStyles } from "../styles/account_screen";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { GET_USER } from "../queries/user";
@@ -17,7 +15,7 @@ import { images, globalStyles } from "../styles/global";
 
 export default function Account(props) {
   const [user, setUser] = useState(null);
-
+  const client = useApolloClient();
   useEffect(() => {
     const data = client.readQuery({
       query: GET_USER,
@@ -27,7 +25,7 @@ export default function Account(props) {
 
   const handleLogout = async () => {
     await AsyncStorage.removeItem("TOKEN");
-    await client.cache.reset();
+    await client.clearStore();
     props.navigation.reset({
       index: 0,
       routes: [{ name: "Login" }],
