@@ -32,7 +32,7 @@ export default function ChallengesPage(props) {
 
   return (
     <SafeAreaView>
-      <Badges />
+      <Badges {...props}/>
       <Challenges {...props} challenges={challenges} />
       <View style={style.container}>
         <View style={style.challenges}>

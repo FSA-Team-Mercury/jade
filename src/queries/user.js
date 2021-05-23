@@ -52,13 +52,7 @@ export const GET_USER_DATA = gql`
       id
       type
       badgeImage
-    }
-    userChallenges {
-      id
-      type
-      endDate
-      startDate
-      completed
+      challengeId
     }
     friends {
       id
@@ -78,6 +72,7 @@ export const GET_USER_DATA = gql`
         winCondition
         completed
         name
+        endDate
         users {
           id
           username
@@ -118,3 +113,11 @@ export const UPDATE_PROFILE_PIC = gql`
     }
   }
 `;
+
+// userChallenges {
+  //   id
+  //   type
+  //   endDate
+  //   startDate
+  //   completed
+  // }

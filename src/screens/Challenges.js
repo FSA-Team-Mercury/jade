@@ -6,7 +6,7 @@ import moment from "moment";
 import { gql, useQuery, useApolloClient } from "@apollo/client";
 import { FETCH_ALL_CHALLENGES } from "../queries/multiChallenges";
 
-export default function Challenges({ challenges }) {
+export default function Challenges({navigation, challenges}) {
   const client = useApolloClient();
   const isFocused = useIsFocused();
   if (!challenges.length) {
@@ -26,14 +26,18 @@ export default function Challenges({ challenges }) {
       <View style={styles.challengeHeader}>
         <Text style={styles.challengeHeaderText}>Your Challenges</Text>
       </View>
-      {challenges.map((challenge) => {
-        let date = moment(challenge.endDate).format("MM-DD-YYYY");
+      {
+      challenges.map((challenge) => {
+        let date = moment(new Date(challenge.endDate)).format('ll')
         const contenders = challenge.users;
         return (
           <TouchableOpacity
-            onPress={() => {
-              console.log("pressed CHallenge-->", challenge.id);
-            }}
+          onPress={()=>{
+            navigation.navigate("Single Challenge",{
+              challengeId: challenge.id,
+              endDate: date
+            })
+          }}
           >
             <View style={styles.container} key={challenge.id}>
               <View>
@@ -48,7 +52,6 @@ export default function Challenges({ challenges }) {
                     <Text style={styles.name}> {challenge.name}</Text>
                   </View>
                   <TouchableOpacity style={styles.view}>
-                    {/* <Text style={{ color: "white" }}>View Status</Text> */}
                     <Text style={{ color: "white" }}>{date}</Text>
                   </TouchableOpacity>
                 </View>
