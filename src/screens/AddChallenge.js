@@ -22,6 +22,7 @@ const reviewSchema = yup.object({
   winCondition: yup.string().required(),
   startDate: yup.string().required(),
   winAmount: yup.number().required(),
+  category: yup.string().required()
 });
 
 import { gql, useMutation,useQuery } from "@apollo/client";
@@ -89,7 +90,10 @@ export default function AddChallenge({navigation, route}) {
     }
   }
 
+  let friendsObj = {0:'Solo'}
+
   const myFriends = friends.map(friend => {
+    friendsObj[friend.id] = friend.username
     return (
       <Picker.Item label={friend.username} value={friend.id} key={friend.id} />
     );
@@ -105,12 +109,19 @@ export default function AddChallenge({navigation, route}) {
             name: "",
             winCondition: "LESS_THAN",
             winAmount: "",
-            category: "",
+            category: "Travel",
             badgeImage: "rainbow",
           }}
           validationSchema={reviewSchema}
-          onSubmit={async values => {
+          onSubmit={async (values,{ setSubmitting, setFieldError }) => {
             try {
+              console.log('endData--->',endDate)
+              console.log('endData status--->',new Date() > endDate)
+              if (new Date() > endDate){
+                setFieldError("endDate", 'Date must be valid');
+                setSubmitting(false);
+                throw new Error('Date must be valid')
+              }
               values.startDate = startDate.toString();
               values.endDate = endDate.toString();
               createChallenge({
@@ -145,6 +156,9 @@ export default function AddChallenge({navigation, route}) {
               navigation.goBack();
             } catch (error) {
               console.log("error submiting challenge", error);
+              // setFieldError("loginError", err.message);
+              setSubmitting(false);
+              console.log(error);
             }
           }}
         >
@@ -157,6 +171,7 @@ export default function AddChallenge({navigation, route}) {
                 value={formikProps.values.name}
                 style={styles.challengeName}
               />
+              <Text style={styles.warning}>{formikProps.errors.name}</Text>
               <TextInput
                 placeholder=" What is the winning amout"
                 onChangeText={formikProps.handleChange("winAmount")}
@@ -164,6 +179,10 @@ export default function AddChallenge({navigation, route}) {
                 value={formikProps.values.winAmount}
                 style={styles.challengeName}
               />
+
+              {/* ERROR WIN AMOUT */}
+              <Text style={styles.warning}>{formikProps.errors.winAmount}</Text>
+
               <View style={styles.datePickerContainer}>
                 <TouchableOpacity
                   style={styles.datePickerBtn}
@@ -203,13 +222,17 @@ export default function AddChallenge({navigation, route}) {
                   <DatePicker date={startDate} setDate={setEndDate} />
                 </View>
               </View>
+              <Text style={styles.hint}>
+              {formikProps.errors.endDate}
+              </Text>
 
               <View style={styles.friendsContainer}>
                 <TouchableOpacity
-                  style={styles.friendBtn}
+                  style={styles.chooseFriend}
                   onPress={() => tobbleDataPicker("CHOOSE_FRIEND")}
                 >
-                  <Text style={styles.dateTitle}>Choose A friend</Text>
+                  <Text style={styles.dateTitle}>Choose A friend:</Text>
+                  <Text style={styles.friendName}>{friendsObj[friendId]}</Text>
                 </TouchableOpacity>
                 <Picker
                   autoCapitalize="none"
@@ -235,6 +258,7 @@ export default function AddChallenge({navigation, route}) {
                   <Text style={styles.dateTitle}>
                     What categories are you competing in
                   </Text>
+                  <Text style={styles.fieldHint}>{formikProps.values.category}</Text>
                 </TouchableOpacity>
                 <View
                   style={
@@ -256,6 +280,8 @@ export default function AddChallenge({navigation, route}) {
                   </Picker>
                 </View>
               </View>
+              {/* ERRORS CATEGORY */}
+              <Text style={styles.warning}>{formikProps.errors.category}</Text>
 
               <View style={styles.friendsContainer}>
                 <TouchableOpacity
@@ -265,6 +291,7 @@ export default function AddChallenge({navigation, route}) {
                   <Text style={styles.dateTitle}>
                     How Will You win this Challenge
                   </Text>
+                  <Text style={styles.fieldHint}>{formikProps.values.winCondition === "LESS_THAN" ? "Lowest spender in category" : "Most spenders in category"}</Text>
                 </TouchableOpacity>
                 <View
                   style={
@@ -280,16 +307,19 @@ export default function AddChallenge({navigation, route}) {
                     selectedValue={formikProps.values.winCondition}
                   >
                     <Picker.Item
-                      label="Having the highest spending"
+                      label="Highest spender in category"
                       value="GREATER_THAN"
                     />
                     <Picker.Item
-                      label="Having the lowest spending"
+                      label="Lowest spender in category"
                       value="LESS_THAN"
                     />
                   </Picker>
                 </View>
               </View>
+
+              {/* ERRORS winCondition */}
+              <Text style={styles.warning}>{formikProps.errors.winCondition}</Text>
 
               <View style={(styles.badgeImageContainer, { marginTop: 30 })}>
                 <Image style={styles.badgeImage} source={thisBadgeImage} />
@@ -299,6 +329,7 @@ export default function AddChallenge({navigation, route}) {
                 style={styles.addChallenge}
                 onPress={formikProps.handleSubmit}
               >
+
                 <Text>Add Challenge</Text>
               </TouchableOpacity>
             </>
@@ -375,6 +406,12 @@ const styles = StyleSheet.create({
     ...shadow(5, 0),
     width: "100%",
   },
+  friendName:{
+     fontSize: 18,
+    fontWeight: "500",
+    marginLeft: 10,
+    color: 'green'
+  },
   dateTitle: {
     fontSize: 18,
     fontWeight: "500",
@@ -406,6 +443,15 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     ...shadow(2, 0),
   },
+  chooseFriend:{
+    width: "90%",
+    height: 80,
+    backgroundColor: "white",
+    alignItems: "center",
+    justifyContent: "space-around",
+    flexDirection: 'row'
+    //  borderRadius: 10
+  },
   friendBtn: {
     width: "90%",
     height: 80,
@@ -423,6 +469,16 @@ const styles = StyleSheet.create({
     ...shadow(),
     justifyContent: "center",
     alignItems: "center",
-    marginBottom: 20,
+    marginBottom: 50,
   },
+  warning:{
+    color: 'crimson',
+    marginTop: 5,
+    fontSize: 16
+  },
+  fieldHint:{
+    color: 'green',
+    fontSize: 16,
+    marginTop: 5
+  }
 });

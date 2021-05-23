@@ -7,7 +7,7 @@ import moment from 'moment'
 import { gql, useQuery } from "@apollo/client";
 import { FETCH_ALL_CHALLENGES } from "../queries/multiChallenges";
 
-export default function Challenges({challenges}) {
+export default function Challenges({navigation, challenges}) {
   const isFocused = useIsFocused();
   if (!challenges.length) {
     return (
@@ -28,12 +28,16 @@ export default function Challenges({challenges}) {
       </View>
       {
       challenges.map((challenge) => {
+
         let date = moment(challenge.endDate).format("MM-DD-YYYY");
         const contenders = challenge.users;
         return (
           <TouchableOpacity
           onPress={()=>{
-            console.log('pressed CHallenge-->',challenge.id)
+            navigation.navigate("Single Challenge",{
+              challengeId: challenge.id,
+              endDate: date
+            })
           }}
           >
           <View style={styles.container} key={challenge.id}>
