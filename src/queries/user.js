@@ -109,3 +109,12 @@ export const USER_PLAID_AUTH = gql`
     }
   }
 `;
+
+export const UPDATE_PROFILE_PIC = gql`
+  mutation UpdateProfilePic($profileImage: String, $id: ID) {
+    updateProfilePic(profileImage: $profileImage, id: $id) {
+      id
+      profileImage
+    }
+  }
+`;
