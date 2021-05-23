@@ -8,9 +8,9 @@ import {
   ActivityIndicator,
   StyleSheet,
 } from "react-native";
-import { client } from "../../App";
+import { useApolloClient } from "@apollo/client";
 import { gql } from "@apollo/client";
-import Challenges from "./Challenges";
+//import Challenges from "./Challenges";
 import { images } from "../styles/global";
 import { useIsFocused } from "@react-navigation/native";
 // import Challenges from "./Challenges";
@@ -27,6 +27,7 @@ const GET_BADGES = gql`
 
 export default function Badges(props) {
   const [allBadges, setAllBadges] = useState(null);
+  const client = useApolloClient();
   const isFocused = useIsFocused();
 
   useEffect(() => {
@@ -56,7 +57,7 @@ export default function Badges(props) {
           </View>
         ) : (
           <FlatList
-            // columnWrapperStyle={style.listStyle}
+            columnWrapperStyle={style.listStyle}
             numColumns={allBadges.length}
             data={allBadges}
             keyExtractor={(item) => item.id}
@@ -72,7 +73,6 @@ export default function Badges(props) {
           />
         )}
       </View>
-      {/* <Challenges {...props} /> */}
     </SafeAreaView>
   );
 }
@@ -106,8 +106,8 @@ const style = StyleSheet.create({
   listStyle: {
     flexWrap: "wrap",
     justifyContent: "space-evenly",
-    marginTop: 10,
-    marginBottom: 10,
+    marginTop: 15,
+    marginBottom: 15,
   },
   singleBadge: {
     justifyContent: "center",
@@ -149,8 +149,8 @@ const style = StyleSheet.create({
     color: "white",
   },
   badgeImage: {
-    width: 50,
-    height: 50,
+    width: 40,
+    height: 40,
   },
   categoryName: {
     fontSize: 20,

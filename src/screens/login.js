@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
   TextInput,
   AsyncStorage,
+  ActivityIndicator,
   TouchableOpacity,
   TouchableWithoutFeedback,
   Keyboard,
@@ -21,6 +22,7 @@ const reviewSchema = yup.object({
 });
 
 export default function Login(props) {
+  const [isLoading, setIsLoading] = useState(false);
   const [login] = useMutation(LOGIN);
   const goToSignup = () => {
     props.navigation.reset({
@@ -49,6 +51,7 @@ export default function Login(props) {
               });
               await AsyncStorage.clear();
               await AsyncStorage.setItem("TOKEN", data.logIn.token);
+              setIsLoading(true);
               props.navigation.reset({
                 index: 0,
                 routes: [{ name: "Home" }],
@@ -86,7 +89,21 @@ export default function Login(props) {
               <Text style={signinStyles.errorText}>
                 {formikProps.touched.password && formikProps.errors.password}
               </Text>
-              <FlatButton text="Sign In" onPress={formikProps.handleSubmit} />
+              <FlatButton
+                text={
+                  isLoading ? (
+                    <ActivityIndicator
+                      animating={isLoading}
+                      color="white"
+                      size="small"
+                    />
+                  ) : (
+                    "Sign In"
+                  )
+                }
+                onPress={formikProps.handleSubmit}
+                isLoading={isLoading}
+              />
               <Text style={signinStyles.errorText}>
                 {formikProps.errors.loginError}
               </Text>

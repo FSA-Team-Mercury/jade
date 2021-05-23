@@ -52,5 +52,6 @@ export const images = {
     marsh: require("../../assets/badges/marsh.png"),
     soul: require("../../assets/badges/soul.png"),
     volcano: require("../../assets/badges/volcano.png"),
+    iceberg: require("../../assets/badges/iceberg.png"),
   },
 };

@@ -71,24 +71,29 @@ export const GET_USER_DATA = gql`
       }
     }
     allMultiPlayerChallenges {
-    id
-    multiPlayerChallenges {
-      badgeImage
       id
-      winCondition
-      completed
-      name
-      users {
+      multiPlayerChallenges {
+        badgeImage
         id
-        username
-        profileImage
-        user_challenge {
-          currentAmout
-          leftChallenge
+        winCondition
+        completed
+        name
+        users {
+          id
+          username
+          profileImage
+          user_challenge {
+            currentAmout
+            leftChallenge
+          }
+        }
       }
     }
-  }
-  }
+    pendingFriends {
+      id
+      username
+      profileImage
+    }
   }
 `;
 
@@ -101,6 +106,15 @@ export const USER_PLAID_AUTH = gql`
         auth_token
         type
       }
+    }
+  }
+`;
+
+export const UPDATE_PROFILE_PIC = gql`
+  mutation UpdateProfilePic($profileImage: String, $id: ID) {
+    updateProfilePic(profileImage: $profileImage, id: $id) {
+      id
+      profileImage
     }
   }
 `;

@@ -18,11 +18,12 @@ export default function Home(props) {
     console.log(error);
   }
 
-  if (data.user.accounts.length) {
+  if (data && data.user.accounts.length) {
     props.navigation.reset({
       index: 0,
       routes: [{ name: "Nav" }],
     });
+    return <View></View>;
   }
   //Goes to Plaid if user has no account
   return <Plaid {...props} />;

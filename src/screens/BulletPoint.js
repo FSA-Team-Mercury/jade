@@ -1,8 +1,7 @@
- import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React from "react";
+import { View, Text, StyleSheet } from "react-native";
 
-
-export default ({ textItem, itemAmount, colorText }) => {
+export default function BulletPoint({ textItem, itemAmount, colorText }) {
   return (
     <View style={styles.container}>
       <View style={styles.dot}>
@@ -10,56 +9,52 @@ export default ({ textItem, itemAmount, colorText }) => {
       </View>
 
       <View style={styles.category}>
-        <Text style={styles.analysis}>{textItem}</Text>
+        <Text style={styles.analysis}>{textItem} </Text>
         <Text style={(styles.amount, { color: colorText })}>${itemAmount}</Text>
       </View>
     </View>
   );
-};
+}
 
 //STYLES
 
 const styles = StyleSheet.create({
   container: {
-    height: 90,
-    width: '100%',
-    display: 'flex',
-    flexDirection: 'row',
+    height: 70,
+    width: "100%",
+    flexDirection: "row",
     flex: 1,
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
-  //#E0FFE8
-  // #00A86B
   category: {
-    height: '70%',
-    width: '85%',
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    height: "70%",
+    width: "85%",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     padding: 10,
+    paddingTop: 22,
   },
   dot: {
-    height: 30,
-    width: 30,
-    borderRadius: 100,
-    backgroundColor: '#00A86B',
-    marginLeft: 20,
-    marginRight: 10,
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  dot2: {
     height: 20,
     width: 20,
     borderRadius: 100,
-    backgroundColor: '#E0FFE8',
+    backgroundColor: "#00A86B",
+    marginLeft: 20,
+    marginRight: 10,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  dot2: {
+    height: 10,
+    width: 10,
+    borderRadius: 100,
+    backgroundColor: "#E0FFE8",
     marginLeft: 10,
     marginRight: 10,
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   analysis: {
     fontSize: 17,
@@ -70,5 +65,3 @@ const styles = StyleSheet.create({
     height: 30,
   },
 });
-
-
