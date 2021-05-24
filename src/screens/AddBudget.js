@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { useMutation } from '@apollo/client';
-import { Formik } from 'formik';
+import React, { useState } from "react";
+import { useMutation } from "@apollo/client";
+import { Formik } from "formik";
 import {
   View,
   Text,
@@ -9,15 +9,14 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   //depracated, but works better than the alternative
-} from 'react-native';
-import * as yup from 'yup';
-import { Picker } from '@react-native-picker/picker';
-import { GET_USER_DATA } from '../queries/user';
-import { Snackbar } from 'react-native-paper';
-import { ADD_BUDGET } from '../queries/budget';
-import { globalStyles } from '../styles/global';
-import SubmitButton from '../shared/submit';
-import { removeClientSetsFromDocument } from '@apollo/client/utilities';
+} from "react-native";
+import * as yup from "yup";
+import { Picker } from "@react-native-picker/picker";
+import { GET_USER_DATA } from "../queries/user";
+import { Snackbar } from "react-native-paper";
+import { ADD_BUDGET } from "../queries/budget";
+import { globalStyles } from "../styles/global";
+import SubmitButton from "../shared/submit";
 const reviewSchema = yup.object({
   amount: yup.number().required(),
 });
@@ -31,7 +30,7 @@ export default function AddBudget({ navigation }) {
     <TouchableWithoutFeedback onPress={Keyboard.dismiss()}>
       <View style={styles.container}>
         <Formik
-          initialValues={{ category: 'Food and Drink', amount: '' }}
+          initialValues={{ category: "Food and Drink", amount: "" }}
           validationSchema={reviewSchema}
           onSubmit={(values, { setSubmitting, setFieldError }) => {
             addBudget({
@@ -54,7 +53,7 @@ export default function AddBudget({ navigation }) {
                 setVisible(true);
               })
               .catch((err) => {
-                setFieldError('amount', err.message);
+                setFieldError("amount", err.message);
                 setSubmitting(false);
               });
           }}
@@ -62,34 +61,34 @@ export default function AddBudget({ navigation }) {
           {(formikProps) => (
             <View style={styles.formContainer}>
               <Picker
-                autoCapitalize='none'
-                name='category'
+                autoCapitalize="none"
+                name="category"
                 style={styles.picker}
-                onValueChange={formikProps.handleChange('category')}
+                onValueChange={formikProps.handleChange("category")}
                 selectedValue={formikProps.values.category}
               >
-                <Picker.Item label='Food and Drink' value='Food and Drink' />
-                <Picker.Item label='Shops' value='Shops' />
-                <Picker.Item label='Entertainment' value='Entertainment' />
-                <Picker.Item label='Recreation' value='Recreation' />
-                <Picker.Item label='Payment' value='Payment' />
-                <Picker.Item label='Travel' value='Travel' />
-                <Picker.Item label='Other' value='Other' />
+                <Picker.Item label="Food and Drink" value="Food and Drink" />
+                <Picker.Item label="Shops" value="Shops" />
+                <Picker.Item label="Entertainment" value="Entertainment" />
+                <Picker.Item label="Recreation" value="Recreation" />
+                <Picker.Item label="Payment" value="Payment" />
+                <Picker.Item label="Travel" value="Travel" />
+                <Picker.Item label="Other" value="Other" />
               </Picker>
               <View style={styles.dollarAmount}>
                 <Text style={styles.dollarSign}>$</Text>
                 <TextInput
-                  keyboardType='numeric'
-                  name='amount'
-                  unit='$'
-                  delimiter=','
-                  separator='.'
+                  keyboardType="numeric"
+                  name="amount"
+                  unit="$"
+                  delimiter=","
+                  separator="."
                   precision={2}
                   style={styles.input}
-                  placeholder='Budget Amount'
-                  onChangeText={formikProps.handleChange('amount')}
+                  placeholder="Budget Amount"
+                  onChangeText={formikProps.handleChange("amount")}
                   value={formikProps.values.amount}
-                  onBlur={formikProps.handleBlur('amount')}
+                  onBlur={formikProps.handleBlur("amount")}
                 />
               </View>
 
@@ -99,7 +98,7 @@ export default function AddBudget({ navigation }) {
               <View style={styles.submitButton}>
                 <SubmitButton
                   onPress={formikProps.handleSubmit}
-                  text='Submit'
+                  text="Submit"
                 />
               </View>
 
@@ -121,9 +120,9 @@ export default function AddBudget({ navigation }) {
 
 const styles = StyleSheet.create({
   dollarAmount: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
     marginLeft: 7,
   },
   dollarSign: {
@@ -131,47 +130,47 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     marginTop: 40,
   },
   formContainer: {
     flex: 1,
-    justifyContent: 'flex-start',
-    alignItems: 'center',
+    justifyContent: "flex-start",
+    alignItems: "center",
   },
   input: {
     borderWidth: 1,
-    borderColor: '#ddd',
+    borderColor: "#ddd",
     padding: 10,
     fontSize: 18,
     borderRadius: 6,
     margin: 5,
     width: 282,
-    backgroundColor: 'white',
+    backgroundColor: "white",
   },
   picker: {
     borderWidth: 1,
-    borderColor: '#ddd',
+    borderColor: "#ddd",
     padding: 5,
     fontSize: 18,
     borderRadius: 6,
     margin: 5,
     width: 300,
-    backgroundColor: 'white',
+    backgroundColor: "white",
   },
   titleText: {
     fontSize: 30,
-    color: '#333',
+    color: "#333",
     padding: 30,
   },
-  submitButton:{
+  submitButton: {
     marginTop: 20,
   },
   snack: {
-    backgroundColor: 'green',
-    width: '100%',
+    backgroundColor: "green",
+    width: "100%",
     fontSize: 16,
-    alignSelf: 'center',
+    alignSelf: "center",
   },
 });

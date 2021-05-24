@@ -1,14 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
-import { useIsFocused } from "@react-navigation/native";
 import { images } from "../styles/global";
 import moment from "moment";
-import { gql, useQuery, useApolloClient } from "@apollo/client";
-import { FETCH_ALL_CHALLENGES } from "../queries/multiChallenges";
 
-export default function Challenges({navigation, challenges}) {
-  const client = useApolloClient();
-  const isFocused = useIsFocused();
+export default function Challenges({ navigation, challenges }) {
   if (!challenges.length) {
     return (
       <>
@@ -26,18 +21,18 @@ export default function Challenges({navigation, challenges}) {
       <View style={styles.challengeHeader}>
         <Text style={styles.challengeHeaderText}>Your Challenges</Text>
       </View>
-      {
-      challenges.map((challenge) => {
-        let date = moment(new Date(challenge.endDate)).format('ll')
+      {challenges.map((challenge) => {
+        let date = moment(new Date(challenge.endDate)).format("ll");
         const contenders = challenge.users;
         return (
           <TouchableOpacity
-          onPress={()=>{
-            navigation.navigate("Single Challenge",{
-              challengeId: challenge.id,
-              endDate: date
-            })
-          }}
+            key={challenge.id}
+            onPress={() => {
+              navigation.navigate("Single Challenge", {
+                challengeId: challenge.id,
+                endDate: date,
+              });
+            }}
           >
             <View style={styles.container} key={challenge.id}>
               <View>
@@ -131,7 +126,6 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     marginBottom: 5,
     marginTop: 20,
-    marginBottom: 10,
   },
   challengeHeaderText: {
     fontSize: 22,
@@ -183,7 +177,6 @@ const styles = StyleSheet.create({
   levelOne: {
     height: 70,
     width: "100%",
-    // backgroundColor: 'lightgrey',
     flexDirection: "row",
     alignItems: "center",
   },

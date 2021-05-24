@@ -20,7 +20,7 @@ export const accountStyles = StyleSheet.create({
     height: 50,
     marginTop: 25,
     textAlign: "center",
-    borderRadius: 3,
+    borderRadius: 8,
     paddingLeft: 20,
     paddingRight: 20,
   },

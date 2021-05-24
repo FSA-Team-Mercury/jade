@@ -8,6 +8,8 @@ import {
   StyleSheet,
   Button,
   Image,
+  TouchableWithoutFeedback,
+  Keyboard,
 } from "react-native";
 import { signinStyles } from "../styles/signin";
 import { images } from "../styles/global";
@@ -35,164 +37,170 @@ export default function Signup(props) {
   };
 
   return (
-    <View style={signinStyles.container}>
-      <Image
-        source={require("../../assets/jade_transparent.png")}
-        style={signinStyles.logo}
-      />
-      <Formik
-        initialValues={{ username: "", password: "" }}
-        validationSchema={signupSchema}
-        onSubmit={async (text, { setSubmitting, setFieldError }) => {
-          //logic to handle signup
-          console.log(img);
-
-          try {
-            if (!img) {
-              setFieldError("signupFail", "An avatar choice is required");
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <View style={signinStyles.container}>
+        <Image
+          source={require("../../assets/jade_transparent.png")}
+          style={signinStyles.logo}
+        />
+        <Formik
+          initialValues={{ username: "", password: "" }}
+          validationSchema={signupSchema}
+          onSubmit={async (text, { setSubmitting, setFieldError }) => {
+            //logic to handle signup
+            try {
+              if (!img) {
+                setFieldError("signupFail", "An avatar choice is required");
+                setSubmitting(false);
+                throw new Error("An avatar choice is required");
+              }
+              const { data } = await signup({
+                variables: {
+                  username: text.username,
+                  password: text.password,
+                  profileImage: img,
+                },
+              });
+              await AsyncStorage.clear();
+              await AsyncStorage.setItem("TOKEN", data.signUp.token);
+              props.navigation.reset({
+                index: 0,
+                routes: [{ name: "Home" }],
+              });
+            } catch (err) {
+              setFieldError("signupFail", err.message);
               setSubmitting(false);
-              throw new Error("An avatar choice is required");
             }
-            const { data } = await signup({
-              variables: {
-                username: text.username,
-                password: text.password,
-                profileImage: img,
-              },
-            });
-            await AsyncStorage.clear();
-            await AsyncStorage.setItem("TOKEN", data.signUp.token);
-            props.navigation.reset({
-              index: 0,
-              routes: [{ name: "Home" }],
-            });
-          } catch (err) {
-            setFieldError("signupFail", err.message);
-            setSubmitting(false);
-          }
-        }}
-      >
-        {(formikProps) => (
-          <View>
-            <Text style={signinStyles.errorText}>
-              {formikProps.touched.email && formikProps.errors.email}
-            </Text>
-            <TextInput
-              autoCapitalize="none"
-              style={signinStyles.input}
-              placeholder="Username"
-              onChangeText={formikProps.handleChange("username")}
-              value={formikProps.values.username}
-              onBlur={formikProps.handleBlur("username")}
-            />
-            <Text style={signinStyles.errorText}>
-              {formikProps.touched.username && formikProps.errors.username}
-            </Text>
-            <TextInput
-              secureTextEntry
-              autoCapitalize="none"
-              name="password"
-              style={signinStyles.input}
-              placeholder="Password"
-              onChangeText={formikProps.handleChange("password")}
-              value={formikProps.values.password}
-              onBlur={formikProps.handleBlur("password")}
-            />
-            <Text style={signinStyles.errorText}>
-              {formikProps.touched.password && formikProps.errors.password}
-            </Text>
-            <DropDownPicker
-              open={open}
-              setOpen={setOpen}
-              value={img}
-              setValue={setImg}
-              items={[
-                {
-                  label: "Riri",
-                  value: "rihanna",
-                  icon: () => (
-                    <Image
-                      source={images.avatar["rihanna"]}
-                      style={styles.icon}
-                    />
-                  ),
-                },
-                {
-                  label: "Mezut",
-                  value: "ozil",
-                  icon: () => (
-                    <Image source={images.avatar["ozil"]} style={styles.icon} />
-                  ),
-                },
-                {
-                  label: "Moe",
-                  value: "salah",
-                  icon: () => (
-                    <Image
-                      source={images.avatar["salah"]}
-                      style={styles.icon}
-                    />
-                  ),
-                },
-                {
-                  label: "Benito",
-                  value: "bad-bunny",
-                  icon: () => (
-                    <Image
-                      source={images.avatar["bad-bunny"]}
-                      style={styles.icon}
-                    />
-                  ),
-                },
-                {
-                  label: "Robo",
-                  value: "robo",
-                  icon: () => (
-                    <Image source={images.avatar["robo"]} style={styles.icon} />
-                  ),
-                },
-                {
-                  label: "Bey",
-                  value: "beyonce",
-                  icon: () => (
-                    <Image
-                      source={images.avatar["beyonce"]}
-                      style={styles.icon}
-                    />
-                  ),
-                },
-                {
-                  label: "Sophie",
-                  value: "sophia-loren",
-                  icon: () => (
-                    <Image
-                      source={images.avatar["sophia-loren"]}
-                      style={styles.icon}
-                    />
-                  ),
-                },
-              ]}
-              label="Choose your avatar!"
-              placeholder="Choose an avatar..."
-              style={styles.picker}
-              defaultValue="Rihanna"
-              containerStyle={styles.pickerContainer}
-              itemStyle={styles.item}
-              dropDownStyle={styles.item}
-              textStyle={{
-                fontSize: 15,
-                color: "grey",
-              }}
-            />
-            <FlatButton text="Sign up" onPress={formikProps.handleSubmit} />
-            <Text style={signinStyles.errorText}>
-              {formikProps.errors.signupFail}
-            </Text>
-            <Button title="cancel" onPress={handleGoBack} />
-          </View>
-        )}
-      </Formik>
-    </View>
+          }}
+        >
+          {(formikProps) => (
+            <View>
+              <Text style={signinStyles.errorText}>
+                {formikProps.touched.email && formikProps.errors.email}
+              </Text>
+              <TextInput
+                autoCapitalize="none"
+                style={signinStyles.input}
+                placeholder="Username"
+                onChangeText={formikProps.handleChange("username")}
+                value={formikProps.values.username}
+                onBlur={formikProps.handleBlur("username")}
+              />
+              <Text style={signinStyles.errorText}>
+                {formikProps.touched.username && formikProps.errors.username}
+              </Text>
+              <TextInput
+                secureTextEntry
+                autoCapitalize="none"
+                name="password"
+                style={signinStyles.input}
+                placeholder="Password"
+                onChangeText={formikProps.handleChange("password")}
+                value={formikProps.values.password}
+                onBlur={formikProps.handleBlur("password")}
+              />
+              <Text style={signinStyles.errorText}>
+                {formikProps.touched.password && formikProps.errors.password}
+              </Text>
+              <DropDownPicker
+                open={open}
+                setOpen={setOpen}
+                value={img}
+                setValue={setImg}
+                items={[
+                  {
+                    label: "Riri",
+                    value: "rihanna",
+                    icon: () => (
+                      <Image
+                        source={images.avatar["rihanna"]}
+                        style={styles.icon}
+                      />
+                    ),
+                  },
+                  {
+                    label: "Mezut",
+                    value: "ozil",
+                    icon: () => (
+                      <Image
+                        source={images.avatar["ozil"]}
+                        style={styles.icon}
+                      />
+                    ),
+                  },
+                  {
+                    label: "Moe",
+                    value: "salah",
+                    icon: () => (
+                      <Image
+                        source={images.avatar["salah"]}
+                        style={styles.icon}
+                      />
+                    ),
+                  },
+                  {
+                    label: "Benito",
+                    value: "bad-bunny",
+                    icon: () => (
+                      <Image
+                        source={images.avatar["bad-bunny"]}
+                        style={styles.icon}
+                      />
+                    ),
+                  },
+                  {
+                    label: "Robo",
+                    value: "robo",
+                    icon: () => (
+                      <Image
+                        source={images.avatar["robo"]}
+                        style={styles.icon}
+                      />
+                    ),
+                  },
+                  {
+                    label: "Bey",
+                    value: "beyonce",
+                    icon: () => (
+                      <Image
+                        source={images.avatar["beyonce"]}
+                        style={styles.icon}
+                      />
+                    ),
+                  },
+                  {
+                    label: "Sophie",
+                    value: "sophia-loren",
+                    icon: () => (
+                      <Image
+                        source={images.avatar["sophia-loren"]}
+                        style={styles.icon}
+                      />
+                    ),
+                  },
+                ]}
+                label="Choose your avatar!"
+                placeholder="Choose an avatar..."
+                style={styles.picker}
+                defaultValue="Rihanna"
+                containerStyle={styles.pickerContainer}
+                itemStyle={styles.item}
+                dropDownStyle={styles.item}
+                textStyle={{
+                  fontSize: 15,
+                  color: "grey",
+                }}
+              />
+              <FlatButton text="Sign up" onPress={formikProps.handleSubmit} />
+              <Text style={signinStyles.errorText}>
+                {formikProps.errors.signupFail}
+              </Text>
+              <Button title="cancel" onPress={handleGoBack} />
+            </View>
+          )}
+        </Formik>
+      </View>
+    </TouchableWithoutFeedback>
   );
 }
 

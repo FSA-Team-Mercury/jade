@@ -217,8 +217,6 @@ PODS:
     - React-cxxreact (= 0.63.4)
     - React-jsi (= 0.63.4)
   - React-jsinspector (0.63.4)
-  - react-native-date-picker (3.3.0):
-    - React-Core
   - react-native-plaid-link-sdk (7.0.5):
     - Plaid (~> 2.1.2)
     - React-Core
@@ -289,6 +287,8 @@ PODS:
   - RNCMaskedView (0.1.11):
     - React
   - RNCPicker (1.16.0):
+    - React-Core
+  - RNDateTimePicker (3.5.0):
     - React-Core
   - RNGestureHandler (1.10.3):
     - React-Core
@@ -381,7 +381,6 @@ DEPENDENCIES:
   - React-jsi (from `../node_modules/react-native/ReactCommon/jsi`)
   - React-jsiexecutor (from `../node_modules/react-native/ReactCommon/jsiexecutor`)
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
-  - react-native-date-picker (from `../node_modules/react-native-date-picker`)
   - react-native-plaid-link-sdk (from `../node_modules/react-native-plaid-link-sdk`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - react-native-webview (from `../node_modules/react-native-webview`)
@@ -397,6 +396,7 @@ DEPENDENCIES:
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - "RNCMaskedView (from `../node_modules/@react-native-community/masked-view`)"
   - "RNCPicker (from `../node_modules/@react-native-picker/picker`)"
+  - "RNDateTimePicker (from `../node_modules/@react-native-community/datetimepicker`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
@@ -475,8 +475,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/jsiexecutor"
   React-jsinspector:
     :path: "../node_modules/react-native/ReactCommon/jsinspector"
-  react-native-date-picker:
-    :path: "../node_modules/react-native-date-picker"
   react-native-plaid-link-sdk:
     :path: "../node_modules/react-native-plaid-link-sdk"
   react-native-safe-area-context:
@@ -507,6 +505,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-community/masked-view"
   RNCPicker:
     :path: "../node_modules/@react-native-picker/picker"
+  RNDateTimePicker:
+    :path: "../node_modules/@react-native-community/datetimepicker"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
   RNReanimated:
@@ -575,7 +575,6 @@ SPEC CHECKSUMS:
   React-jsi: a0418934cf48f25b485631deb27c64dc40fb4c31
   React-jsiexecutor: 93bd528844ad21dc07aab1c67cb10abae6df6949
   React-jsinspector: 58aef7155bc9a9683f5b60b35eccea8722a4f53a
-  react-native-date-picker: 76fc79be2f3cad8ff1b2850fc5601e5f8107979d
   react-native-plaid-link-sdk: 1a6593e2d3d790e8113c29178d883eb883f8c032
   react-native-safe-area-context: e471852c5ed67eea4b10c5d9d43c1cebae3b231d
   react-native-webview: 5483cffa8c9d7e0181587729d4a65eb718c9eba0
@@ -591,6 +590,7 @@ SPEC CHECKSUMS:
   ReactCommon: 73d79c7039f473b76db6ff7c6b159c478acbbb3b
   RNCMaskedView: f127cd9652acfa31b91dcff613e07ba18b774db6
   RNCPicker: 918e98b54a141791e99614b1c320ef2e58300490
+  RNDateTimePicker: f375105b262e0c13746f467c873b75e12f7f4757
   RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
   RNReanimated: 70f662b5232dd5d19ccff581e919a54ea73df51c
   RNScreens: e8e8dd0588b5da0ab57dcca76ab9b2d8987757e0
@@ -611,6 +611,6 @@ SPEC CHECKSUMS:
   UMTaskManagerInterface: 482155764886069beb1bc7fcf6036f12e4ad0751
   Yoga: 4bd86afe9883422a7c4028c00e34790f560923d6
 
-PODFILE CHECKSUM: 542d242a3757876d68f361a467a5b32e04676ec5
+PODFILE CHECKSUM: bf1e7f844b972c9fa3c1c51da52d4960bed5f74e
 
 COCOAPODS: 1.10.1

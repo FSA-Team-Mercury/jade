@@ -32,6 +32,14 @@ export const GET_USER = gql`
     }
   }
 `;
+export const READ_USER = gql`
+  query ReadUser($id: ID!) {
+    user {
+      id
+      username
+    }
+  }
+`;
 export const GET_USER_DATA = gql`
   query GetUserData {
     user {
@@ -115,9 +123,9 @@ export const UPDATE_PROFILE_PIC = gql`
 `;
 
 // userChallenges {
-  //   id
-  //   type
-  //   endDate
-  //   startDate
-  //   completed
-  // }
+//   id
+//   type
+//   endDate
+//   startDate
+//   completed
+// }

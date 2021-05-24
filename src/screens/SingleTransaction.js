@@ -3,7 +3,7 @@ import { View, Text, StyleSheet } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import moment from "moment"
+import moment from "moment";
 
 const categoryIcons = {
   Shops: <FontAwesome name="shopping-cart" size={30} color="#00A86B" />,
@@ -25,7 +25,7 @@ const categoryIcons = {
 
 const SingleTransaction = ({ item }) => {
   const date = item.date;
-  const formatedDate = moment(date).format("MM-DD-YYYY")
+  const formatedDate = moment(date).format("MM-DD-YYYY");
   if (item.category.includes("Payment") || item.category.includes("Transfer")) {
     item = { ...item };
     item.merchant_name = item.category[0];
@@ -43,14 +43,14 @@ const SingleTransaction = ({ item }) => {
         <View style={styles.nameAndCategory}>
           <Text
             style={styles.companyName}
-            ellipsizeMode='tail'
+            ellipsizeMode="tail"
             numberOfLines={2}
           >
-            {item.merchant_name}{' '}
+            {item.merchant_name}{" "}
           </Text>
           <Text
             style={styles.purchaseCategory}
-            ellipsizeMode='tail'
+            ellipsizeMode="tail"
             numberOfLines={2}
           >
             {item.category[0]}
@@ -58,10 +58,10 @@ const SingleTransaction = ({ item }) => {
         </View>
         {/* price and when it was bought on the bottom */}
         <View style={styles.priceAndDate}>
-          <Text style={styles.price} ellipsizeMode='tail' numberOfLines={2}>
-            {`$${item.amount}`}{' '}
+          <Text style={styles.price} ellipsizeMode="tail" numberOfLines={2}>
+            {`$${item.amount}`}{" "}
           </Text>
-          <Text style={styles.date} ellipsizeMode='tail' numberOfLines={2}>
+          <Text style={styles.date} ellipsizeMode="tail" numberOfLines={2}>
             {formatedDate}
           </Text>
         </View>
@@ -79,7 +79,6 @@ const center = {
 const colors = {
   primary: "black",
 };
-
 
 const styles = StyleSheet.create({
   singleTransaction: {
@@ -139,6 +138,7 @@ const styles = StyleSheet.create({
     width: "90%",
     backgroundColor: "lightgrey",
     ...center,
+    marginBottom: 1,
   },
 });
 

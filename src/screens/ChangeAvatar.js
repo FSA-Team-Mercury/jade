@@ -1,14 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, Image, StyleSheet, Button } from 'react-native';
-import DropDownPicker from 'react-native-dropdown-picker';
-import { Formik } from 'formik';
-import { gql, useMutation } from '@apollo/client';
-import FlatButton from '../shared/button';
-import { client } from '../../App';
-import { useIsFocused } from '@react-navigation/native';
-
-import { images } from '../styles/global';
-import { UPDATE_PROFILE_PIC } from '../queries/user';
+import React, { useState, useEffect } from "react";
+import { View, Text, Image, StyleSheet, Button } from "react-native";
+import DropDownPicker from "react-native-dropdown-picker";
+import { Formik } from "formik";
+import { gql, useMutation } from "@apollo/client";
+import FlatButton from "../shared/button";
+import { client } from "../../App";
+import { useIsFocused } from "@react-navigation/native";
+import { images } from "../styles/global";
+import { UPDATE_PROFILE_PIC } from "../queries/user";
 
 export default function ChangeAvatar(props) {
   const { profileImage, username } = props.route.params;
@@ -23,7 +22,7 @@ export default function ChangeAvatar(props) {
     <View style={styles.container}>
       <View style={styles.profilePicContainer}>
         <Image
-          source={images.avatar[profileImage]}
+          source={images.avatar[img]}
           style={{ width: 150, height: 150 }}
         />
       </View>
@@ -52,7 +51,7 @@ export default function ChangeAvatar(props) {
                 }
               `,
               data: {
-                _typename: 'User',
+                _typename: "User",
                 profileImage: profileImage,
               },
             });
@@ -73,72 +72,72 @@ export default function ChangeAvatar(props) {
               setValue={setImg}
               items={[
                 {
-                  label: 'Riri',
-                  value: 'rihanna',
+                  label: "Riri",
+                  value: "rihanna",
                   icon: () => (
                     <Image
-                      source={images.avatar['rihanna']}
+                      source={images.avatar["rihanna"]}
                       style={styles.icon}
                     />
                   ),
                 },
                 {
-                  label: 'Mezut',
-                  value: 'ozil',
+                  label: "Mezut",
+                  value: "ozil",
                   icon: () => (
-                    <Image source={images.avatar['ozil']} style={styles.icon} />
+                    <Image source={images.avatar["ozil"]} style={styles.icon} />
                   ),
                 },
                 {
-                  label: 'Moe',
-                  value: 'salah',
+                  label: "Moe",
+                  value: "salah",
                   icon: () => (
                     <Image
-                      source={images.avatar['salah']}
+                      source={images.avatar["salah"]}
                       style={styles.icon}
                     />
                   ),
                 },
                 {
-                  label: 'Benito',
-                  value: 'bad-bunny',
+                  label: "Benito",
+                  value: "bad-bunny",
                   icon: () => (
                     <Image
-                      source={images.avatar['bad-bunny']}
+                      source={images.avatar["bad-bunny"]}
                       style={styles.icon}
                     />
                   ),
                 },
                 {
-                  label: 'Robo',
-                  value: 'robo',
+                  label: "Robo",
+                  value: "robo",
                   icon: () => (
-                    <Image source={images.avatar['robo']} style={styles.icon} />
+                    <Image source={images.avatar["robo"]} style={styles.icon} />
                   ),
                 },
                 {
-                  label: 'Bey',
-                  value: 'beyonce',
+                  label: "Bey",
+                  value: "beyonce",
                   icon: () => (
                     <Image
-                      source={images.avatar['beyonce']}
+                      source={images.avatar["beyonce"]}
                       style={styles.icon}
                     />
                   ),
                 },
                 {
-                  label: 'Sophie',
-                  value: 'sophia-loren',
+                  label: "Sophie",
+                  value: "sophia-loren",
                   icon: () => (
                     <Image
-                      source={images.avatar['sophia-loren']}
+                      source={images.avatar["sophia-loren"]}
                       style={styles.icon}
                     />
                   ),
                 },
               ]}
-              label='Choose your avatar!'
-              placeholder='Choose an avatar...'
+              label="Choose your avatar!"
+              placeholder="Choose an avatar..."
               style={styles.picker}
               defaultValue={profileImage} //should be the same as before
               containerStyle={styles.pickerContainer}
@@ -146,15 +145,15 @@ export default function ChangeAvatar(props) {
               dropDownStyle={styles.item}
               textStyle={{
                 fontSize: 15,
-                color: 'grey',
+                color: "grey",
               }}
             />
             <FlatButton
               style={styles.changeButton}
-              text='Change Avatar'
+              text="Change Avatar"
               onPress={formikProps.handleSubmit}
             />
-            <Button title='cancel' onPress={() => props.navigation.goBack()} />
+            <Button title="cancel" onPress={() => props.navigation.goBack()} />
           </View>
         )}
       </Formik>
@@ -167,13 +166,13 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 40,
     paddingTop: 100,
-    alignItems: 'center',
+    alignItems: "center",
   },
   profilePicContainer: {
     height: 160,
     width: 150,
     borderRadius: 100,
-    backgroundColor: 'lightgrey',
+    backgroundColor: "lightgrey",
     marginLeft: 10,
     marginRight: 10,
   },
@@ -187,15 +186,15 @@ const styles = StyleSheet.create({
     height: 40,
   },
   picker: {
-    backgroundColor: 'transparent',
-    borderColor: 'lightgrey',
+    backgroundColor: "transparent",
+    borderColor: "lightgrey",
     marginBottom: 50,
   },
   pickerContainer: {
-    backgroundColor: 'transparent',
-    textAlign: 'center',
+    backgroundColor: "transparent",
+    textAlign: "center",
   },
   item: {
-    backgroundColor: 'transparent',
+    backgroundColor: "transparent",
   },
 });
