@@ -66,3 +66,15 @@ export const REQUEST_FRIENDSHIP = gql`
     }
   }
 `;
+
+// ***** BADGES ***** //
+export const GET_BADGES = gql`
+  query GetBadges {
+    userBadges {
+      id
+      type
+      badgeImage
+      challengeId
+    }
+  }
+`;

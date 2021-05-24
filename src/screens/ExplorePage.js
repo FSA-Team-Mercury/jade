@@ -184,7 +184,6 @@ const styles = StyleSheet.create({
   nonSelectViewBtn: {
     height: 35,
     width: 100,
-    // backgroundColor:'white',
     borderRadius: 20,
     justifyContent: "center",
     alignItems: "center",

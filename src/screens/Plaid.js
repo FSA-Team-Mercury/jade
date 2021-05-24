@@ -16,12 +16,9 @@ export default function Plaid(props) {
       const { user } = await client.readQuery({
         query: USER_PLAID_AUTH,
       });
-      const { data } = await axios.post(
-        "http://localhost:3000/plaid/link/token/create", //PLAID_TOKEN_URL, //,
-        {
-          client_user_id: user.id,
-        }
-      );
+      const { data } = await axios.post(PLAID_TOKEN_URL, {
+        client_user_id: user.id,
+      });
       setToken(data.link_token);
     } catch (err) {
       throw new Error(err);

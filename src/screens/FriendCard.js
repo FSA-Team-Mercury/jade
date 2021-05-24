@@ -9,11 +9,6 @@ export default function Card(props) {
   );
 }
 
-const center = {
-  marginRight: "auto",
-  marginLeft: "auto",
-};
-
 const styles = StyleSheet.create({
   card: {
     borderRadius: 6,

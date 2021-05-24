@@ -152,7 +152,6 @@ const style = StyleSheet.create({
     display: "flex",
     alignItems: "center",
     flexDirection: "row",
-    alignItems: "center",
     justifyContent: "space-around",
     backgroundColor: "#00A86B",
   },

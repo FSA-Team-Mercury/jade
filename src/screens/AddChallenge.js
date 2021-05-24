@@ -21,16 +21,11 @@ const reviewSchema = yup.object({
   winCondition: yup.string().required(),
   startDate: yup.string().required(),
   winAmount: yup.number().required(),
-  category: yup.string().required()
+  category: yup.string().required(),
 });
 
 import { gql, useMutation, useQuery } from "@apollo/client";
-import {
-  CREATE_MULTI_PLAYER_CHALLENGE,
-  FETCH_ALL_CHALLENGES,
-  FETCH_CURENT_CHALLENGES,
-  LEAVE_CHALLENGE,
-} from "../queries/multiChallenges";
+import { CREATE_MULTI_PLAYER_CHALLENGE } from "../queries/multiChallenges";
 import { GET_USER_DATA } from "../queries/user";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
@@ -63,10 +58,9 @@ export default function AddChallenge({ navigation, route }) {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [viewDate, setViewDate] = useState("NONE");
-  const [oldChallenges, setOldChallenges] = useState([]);
   const [friends, setFriends] = useState([]);
 
-  const { data, loading, error } = useQuery(FETCH_FRIENDS);
+  const { data, loading } = useQuery(FETCH_FRIENDS);
   if (loading) {
     return (
       <View>
@@ -87,9 +81,9 @@ export default function AddChallenge({ navigation, route }) {
     }
   }
 
-  let friendsObj = {0:'Solo'}
-  const myFriends = friends.map(friend => {
-    friendsObj[friend.id] = friend.username
+  let friendsObj = { 0: "Solo" };
+  const myFriends = friends.map((friend) => {
+    friendsObj[friend.id] = friend.username;
     return (
       <Picker.Item label={friend.username} value={friend.id} key={friend.id} />
     );
@@ -109,19 +103,18 @@ export default function AddChallenge({ navigation, route }) {
             badgeImage: "rainbow",
           }}
           validationSchema={reviewSchema}
-          onSubmit={async (values,{ setSubmitting, setFieldError }) => {
+          onSubmit={async (values, { setSubmitting, setFieldError }) => {
             try {
-              if (new Date() > endDate){
-                setFieldError("endDate", 'Date must be valid');
+              if (new Date() > endDate) {
+                setFieldError("endDate", "Date must be valid");
                 setSubmitting(false);
-                throw new Error('Date must be valid')
+                throw new Error("Date must be valid");
               }
               values.startDate = startDate.toString();
               values.endDate = endDate.toString();
               createChallenge({
                 variables: {
                   name: values.name,
-                  // startDate: values.startDate,
                   winCondition: values.winCondition,
                   endDate: values.endDate,
                   completed: false,
@@ -150,7 +143,6 @@ export default function AddChallenge({ navigation, route }) {
               navigation.goBack();
             } catch (error) {
               console.log("error submiting challenge", error);
-              // setFieldError("loginError", err.message);
               setSubmitting(false);
               console.log(error);
             }
@@ -165,7 +157,9 @@ export default function AddChallenge({ navigation, route }) {
                 value={formikProps.values.name}
                 style={styles.challengeName}
               />
-              <Text style={styles.warning}>{formikProps.errors.name ? "Name is a required field": ''}</Text>
+              <Text style={styles.warning}>
+                {formikProps.errors.name ? "Name is a required field" : ""}
+              </Text>
               <TextInput
                 placeholder="What is the winning amout?"
                 onChangeText={formikProps.handleChange("winAmount")}
@@ -175,7 +169,11 @@ export default function AddChallenge({ navigation, route }) {
               />
 
               {/* ERROR WIN AMOUT */}
-              <Text style={styles.warning}>{formikProps.errors.winAmount ? "Amount is a required field": ''}</Text>
+              <Text style={styles.warning}>
+                {formikProps.errors.winAmount
+                  ? "Amount is a required field"
+                  : ""}
+              </Text>
 
               <View style={styles.datePickerContainer}>
                 <TouchableOpacity
@@ -183,7 +181,10 @@ export default function AddChallenge({ navigation, route }) {
                   onPress={() => tobbleDataPicker("END_DATE")}
                 >
                   <Text style={styles.dateTitle}>
-                    End Date: <Text style={styles.fieldHint}>{moment(endDate).format('ll')}</Text>
+                    End Date:{" "}
+                    <Text style={styles.fieldHint}>
+                      {moment(endDate).format("ll")}
+                    </Text>
                   </Text>
                   <MaterialCommunityIcons
                     name="chevron-down"
@@ -207,7 +208,12 @@ export default function AddChallenge({ navigation, route }) {
                   style={styles.friendBtn}
                   onPress={() => tobbleDataPicker("CHOOSE_FRIEND")}
                 >
-                  <Text style={styles.dateTitle}>Choose A friend: <Text style={styles.friendName}>{friendsObj[friendId]}</Text></Text>
+                  <Text style={styles.dateTitle}>
+                    Choose A friend:{" "}
+                    <Text style={styles.friendName}>
+                      {friendsObj[friendId]}
+                    </Text>
+                  </Text>
 
                   <MaterialCommunityIcons
                     name="chevron-down"
@@ -240,8 +246,10 @@ export default function AddChallenge({ navigation, route }) {
                   onPress={() => tobbleDataPicker("CATEGORY")}
                 >
                   <Text style={styles.dateTitle}>
-                    Competition Category: {' '}
-                    <Text style={styles.fieldHint}>{formikProps.values.category}</Text>
+                    Competition Category:{" "}
+                    <Text style={styles.fieldHint}>
+                      {formikProps.values.category}
+                    </Text>
                   </Text>
 
                   <MaterialCommunityIcons
@@ -264,11 +272,14 @@ export default function AddChallenge({ navigation, route }) {
                     selectedValue={formikProps.values.category}
                   >
                     <Picker.Item label="Travel" value="Travel" />
-                    <Picker.Item label='Food and Drink' value='Food and Drink' />
-                    <Picker.Item label='Shops' value='Shops' />
-                    <Picker.Item label='Entertainment' value='Entertainment' />
-                    <Picker.Item label='Recreation' value='Recreation' />
-                    <Picker.Item label='Payment' value='Payment' />
+                    <Picker.Item
+                      label="Food and Drink"
+                      value="Food and Drink"
+                    />
+                    <Picker.Item label="Shops" value="Shops" />
+                    <Picker.Item label="Entertainment" value="Entertainment" />
+                    <Picker.Item label="Recreation" value="Recreation" />
+                    <Picker.Item label="Payment" value="Payment" />
                     {/* <Picker.Item label='Other' value='Other' /> */}
                   </Picker>
                 </View>
@@ -276,15 +287,18 @@ export default function AddChallenge({ navigation, route }) {
               </View>
               <Text style={styles.warning}>{formikProps.errors.category}</Text>
 
-
               <View style={styles.dataPicker}>
                 <TouchableOpacity
                   style={styles.friendBtn}
                   onPress={() => tobbleDataPicker("WIN_CONDITON")}
                 >
                   <Text style={styles.dateTitle}>
-                    Winning Condition: {' '}
-                    <Text style={styles.fieldHint}>{formikProps.values.winCondition === "LESS_THAN" ? "Lowest spender" : "Biggest spenders"}</Text>
+                    Winning Condition:{" "}
+                    <Text style={styles.fieldHint}>
+                      {formikProps.values.winCondition === "LESS_THAN"
+                        ? "Lowest spender"
+                        : "Biggest spenders"}
+                    </Text>
                   </Text>
 
                   <MaterialCommunityIcons
@@ -319,9 +333,11 @@ export default function AddChallenge({ navigation, route }) {
               </View>
 
               {/* ERRORS winCondition */}
-              <Text style={styles.warning}>{formikProps.errors.winCondition}</Text>
+              <Text style={styles.warning}>
+                {formikProps.errors.winCondition}
+              </Text>
 
-              <View style={(styles.badgeImageContainer)}>
+              <View style={styles.badgeImageContainer}>
                 <Image style={styles.badgeImage} source={thisBadgeImage} />
                 <Text style={styles.dateTitle}>Earn this badge!</Text>
               </View>
@@ -363,7 +379,7 @@ const styles = StyleSheet.create({
   },
   badgeImageContainer: {
     flex: 1,
-    marginTop:40,
+    marginTop: 40,
     alignItems: "center",
     justifyContent: "center",
     // backgroundColor:'lightgrey'
@@ -408,11 +424,11 @@ const styles = StyleSheet.create({
     ...shadow(5, 0),
     width: "100%",
   },
-  friendName:{
-     fontSize: 18,
+  friendName: {
+    fontSize: 18,
     fontWeight: "500",
     marginLeft: 10,
-    color: 'green'
+    color: "green",
   },
   dateTitle: {
     fontSize: 18,
@@ -442,14 +458,13 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     ...shadow(2, 0),
   },
-  chooseFriend:{
+  chooseFriend: {
     width: "90%",
     height: 80,
     backgroundColor: "white",
     alignItems: "center",
     justifyContent: "space-around",
-    flexDirection: 'row'
-    //  borderRadius: 10
+    flexDirection: "row",
   },
   friendBtn: {
     width: "90%",
@@ -471,18 +486,18 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: 50,
   },
-  warning:{
-    color: 'crimson',
+  warning: {
+    color: "crimson",
     marginTop: 5,
     fontSize: 16,
   },
   noWarning: {
-    display: 'none'
+    display: "none",
   },
-  fieldHint:{
-    color: 'green',
+  fieldHint: {
+    color: "green",
     fontSize: 16,
-    marginTop: 5
+    marginTop: 5,
   },
   addButton: {
     color: "white",

@@ -3,7 +3,6 @@ import { JADE_SERVER } from "@env";
 import { AsyncStorage, AppRegistry, LogBox } from "react-native";
 LogBox.ignoreAllLogs();
 import { NavigationContainer } from "@react-navigation/native";
-
 import { createStackNavigator } from "@react-navigation/stack";
 import {
   ApolloClient,
@@ -11,17 +10,16 @@ import {
   ApolloProvider,
   createHttpLink,
   ApolloLink,
-  gql,
 } from "@apollo/client";
 import Login from "./src/screens/login";
 import Home from "./src/screens/home";
 import TabNav from "./src/routes/tabNavigator";
 import Signup from "./src/screens/signup";
-
+import { READ_USER } from "./src/queries/user";
 const Stack = createStackNavigator();
 
 const httpLink = createHttpLink({
-  uri: "http://localhost:3000/graphql", //JADE_SERVER, //
+  uri: JADE_SERVER,
   credentials: "same-origin",
 });
 
@@ -39,19 +37,11 @@ const authLink = new ApolloLink(async (operation, forward) => {
 });
 
 export const client = new ApolloClient({
-  uri: "http://localhost:3000/graphql", //,JADE_SERVER, //,
+  uri: JADE_SERVER,
   link: authLink.concat(httpLink),
   cache: new InMemoryCache(),
 });
 
-const READ_USER = gql`
-  query ReadUser($id: ID!) {
-    user {
-      id
-      username
-    }
-  }
-`;
 export default function App() {
   const [user, setUser] = useState(false);
   useEffect(() => {

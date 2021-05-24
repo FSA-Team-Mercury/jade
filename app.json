@@ -8,6 +8,7 @@
     "assetBundlePatterns": [
       "**/*"
     ],
-    "description": "Jade finance"
+    "description": "Jade finance",
+    "githubUrl": "https://github.com/FSA-Team-Mercury/jade"
   }
 }

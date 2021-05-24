@@ -1,22 +1,13 @@
 import React, { useEffect, useState } from "react";
-import {
-  View,
-  Text,
-  SafeAreaView,
-  TouchableOpacity,
-  StyleSheet,
-} from "react-native";
-
-import { useIsFocused } from "@react-navigation/native";
+import { View, SafeAreaView, TouchableOpacity, StyleSheet } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import Challenges from "./Challenges";
 import Badges from "./Badges";
-import { gql, useQuery, useApolloClient } from "@apollo/client";
+import { useApolloClient } from "@apollo/client";
 import { FETCH_ALL_CHALLENGES } from "../queries/multiChallenges";
 
 export default function ChallengesPage(props) {
   const [challenges, setChallenges] = useState([]);
-  const isFocused = useIsFocused();
   const client = useApolloClient();
 
   useEffect(() => {
@@ -32,7 +23,7 @@ export default function ChallengesPage(props) {
 
   return (
     <SafeAreaView>
-      <Badges {...props}/>
+      <Badges {...props} />
       <Challenges {...props} challenges={challenges} />
       <View style={style.container}>
         <View style={style.challenges}>
