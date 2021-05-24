@@ -56,9 +56,15 @@ export default function Challenges({navigation, challenges}) {
                   </TouchableOpacity>
                 </View>
               </View>
-              <Text style={{ marginRight: "auto", marginLeft: "auto" }}>
-                Vs.
-              </Text>
+              {contenders.length > 1 ? 
+                <Text style={{ marginRight: "auto", marginLeft: "auto" }}>
+                  Vs.
+                </Text> :
+                <Text style={{ marginRight: "auto", marginLeft: "auto" }}>
+                  Solo Challenge!
+                </Text>
+              }
+
               <View style={styles.levelThree}>
                 {contenders.map((user) => {
                   return (

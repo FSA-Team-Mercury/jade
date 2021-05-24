@@ -17,6 +17,7 @@ import { Snackbar } from 'react-native-paper';
 import { ADD_BUDGET } from '../queries/budget';
 import { globalStyles } from '../styles/global';
 import SubmitButton from '../shared/submit';
+import { removeClientSetsFromDocument } from '@apollo/client/utilities';
 const reviewSchema = yup.object({
   amount: yup.number().required(),
 });
@@ -75,20 +76,23 @@ export default function AddBudget({ navigation }) {
                 <Picker.Item label='Travel' value='Travel' />
                 <Picker.Item label='Other' value='Other' />
               </Picker>
+              <View style={styles.dollarAmount}>
+                <Text style={styles.dollarSign}>$</Text>
+                <TextInput
+                  keyboardType='numeric'
+                  name='amount'
+                  unit='$'
+                  delimiter=','
+                  separator='.'
+                  precision={2}
+                  style={styles.input}
+                  placeholder='Budget Amount'
+                  onChangeText={formikProps.handleChange('amount')}
+                  value={formikProps.values.amount}
+                  onBlur={formikProps.handleBlur('amount')}
+                />
+              </View>
 
-              <TextInput
-                keyboardType='numeric'
-                name='amount'
-                unit='$'
-                delimiter=','
-                separator='.'
-                precision={2}
-                style={styles.input}
-                placeholder='Budget Amount'
-                onChangeText={formikProps.handleChange('amount')}
-                value={formikProps.values.amount}
-                onBlur={formikProps.handleBlur('amount')}
-              />
               <Text style={globalStyles.errorText}>
                 {formikProps.touched.amount && formikProps.errors.amount}
               </Text>
@@ -116,6 +120,15 @@ export default function AddBudget({ navigation }) {
 }
 
 const styles = StyleSheet.create({
+  dollarAmount: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginLeft: 7,
+  },
+  dollarSign: {
+    fontSize: 20,
+  },
   container: {
     flex: 1,
     alignItems: 'center',
@@ -134,7 +147,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     borderRadius: 6,
     margin: 5,
-    width: 300,
+    width: 282,
     backgroundColor: 'white',
   },
   picker: {
