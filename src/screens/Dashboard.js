@@ -16,10 +16,10 @@ import { TRANSACTIONS } from "../queries/plaid";
 
 const getGraphData = (data) => {
   const init = {
+    "Food and Drink": 0,
     Travel: 0,
     Payment: 0,
     Shops: 0,
-    Transfer: 0, // there are both negative and pos
     Other: 0,
   };
 
@@ -74,32 +74,33 @@ export default function Dashboard() {
     <SafeAreaView>
       <ScrollView style={styles.dashBoard}>
         <View style={styles.graphContainer}>
-          <View styles={styles.pieChart}>
-            <VictoryPie
-              data={graphData}
-              innerRadius={80}
-              animate={{
-                duration: 500,
-                onLoad: {
-                  duration: 1000,
-                  before: () => ({ _y: -1500, label: "" }),
-                  after: (datum) => ({ _y: datum._y }),
-                },
-              }}
-              padAngle={({ datum }) => 1}
-              theme={VictoryTheme.material}
-              width={340}
-              style={{
-                labels: {
-                  fill: "black",
-                },
-                parent: {
-                  marginTop: "8%",
-                  marginLeft: "-10%",
-                },
-              }}
-            ></VictoryPie>
-          </View>
+          <VictoryPie
+            data={graphData}
+            innerRadius={75}
+            labelRadius={125}
+            padding={{ top: 60, bottom: 60, left: 60, right: 60 }}
+            animate={{
+              duration: 1000,
+              onLoad: {
+                duration: 1500,
+                before: () => ({ _y: -1500, label: " " }),
+                after: (datum) => ({ _y: datum._y }),
+              },
+            }}
+            padAngle={({ datum }) => 1}
+            theme={VictoryTheme.material}
+            width={350}
+            style={{
+              labels: {
+                fill: "black",
+                fontSize: 11,
+              },
+              parent: {
+                marginTop: "6%",
+                marginLeft: "-10%",
+              },
+            }}
+          ></VictoryPie>
         </View>
         <View style={styles.transactions}>
           <View style={styles.transactionsHeader}>
@@ -172,8 +173,7 @@ const styles = StyleSheet.create({
     ...shadow,
   },
   pieChart: {
-    height: 500,
-    width: "100%",
+    height: 600,
   },
   transactions: {
     width: "95%",

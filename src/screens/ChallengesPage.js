@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { View, SafeAreaView, TouchableOpacity, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  SafeAreaView,
+  TouchableOpacity,
+  StyleSheet,
+} from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import Challenges from "./Challenges";
 import Badges from "./Badges";
@@ -39,7 +45,7 @@ export default function ChallengesPage(props) {
               <MaterialCommunityIcons
                 name="plus-circle"
                 color={"#00A86B"}
-                size={70}
+                size={60}
               />
             </View>
           </TouchableOpacity>
@@ -86,17 +92,10 @@ const style = StyleSheet.create({
     marginBottom: 10,
     marginTop: 10,
   },
-
-  challengesHeaderText: {
-    fontSize: 22,
-    color: "white",
-  },
-
   challenges: {
     width: "95%",
     ...center,
   },
-
   challengeContainer: {
     flex: 1,
     flexDirection: "column",
@@ -108,7 +107,6 @@ const style = StyleSheet.create({
   },
 
   addChallenge: {
-    display: "flex",
     alignItems: "center",
   },
 

@@ -30,7 +30,6 @@ const calculateWinner = (users, targetAmount, winCondition) => {
 export default function SingleChallenge({ route }) {
   const [updateChallenge] = useMutation(UPDATE_CHALLENGE);
   const [challenge, setChallenge] = useState(false);
-
   useEffect(() => {
     updateChallenge({
       variables: {
@@ -47,7 +46,7 @@ export default function SingleChallenge({ route }) {
 
   if (!challenge) {
     return (
-      <View>
+      <View style={styles.loader}>
         <ActivityIndicator size="large" color="#00A86B" />
       </View>
     );
@@ -107,7 +106,7 @@ export default function SingleChallenge({ route }) {
             <View style={styles.imageName}>
               <Text style={styles.name}>{user.username}</Text>
               <Text style={styles.name}>
-                Total Spent: ${user.user_challenge.currentAmout}
+                Total Spent: ${user.user_challenge.currentAmout / 100}
               </Text>
             </View>
             <View style={styles.userPlace}>
@@ -135,6 +134,11 @@ const styles = StyleSheet.create({
     width: "100%",
     alignItems: "center",
   },
+  loader: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
   badgeContainer: {
     height: 100,
     width: "90%",
@@ -144,13 +148,14 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   challengeDesc: {
-    height: 100,
+    height: 70,
     width: "90%",
     backgroundColor: "white",
     marginTop: 10,
     alignItems: "center",
     justifyContent: "space-evenly",
     ...shadow,
+    borderRadius: 8,
   },
   challengeText: {
     fontSize: 20,
@@ -161,12 +166,14 @@ const styles = StyleSheet.create({
 
   leaderBoard: {
     backgroundColor: "#00A86B",
-    height: 70,
+    height: 60,
     width: "90%",
     ...shadow,
     marginTop: 30,
     justifyContent: "center",
     alignItems: "center",
+    borderTopLeftRadius: 8,
+    borderTopRightRadius: 8,
   },
   header: {
     height: 70,
@@ -179,13 +186,14 @@ const styles = StyleSheet.create({
   },
   orderTitle: {
     fontSize: 20,
-    fontWeight: "500",
+    fontWeight: "bold",
+    color: "white",
   },
   winner: {
     height: 100,
     width: "90%",
     marginTop: 10,
-    backgroundColor: "#E0FFE8",
+    backgroundColor: "white",
     ...shadow,
     padding: 15,
     borderRadius: 10,

@@ -95,22 +95,19 @@ export default function Budget(props) {
             />
             {/* ADD BUDGET BUTTON */}
             <TouchableOpacity
-              style={style.addButtonContainer}
               onPress={() => props.navigation.navigate("Add Budget")}
             >
-              <View>
-                {allBudgets.length >= 6 ? (
-                  <View></View>
-                ) : (
-                  <View style={style.addBudget}>
-                    <MaterialCommunityIcons
-                      name="plus-circle"
-                      color={"#00A86B"}
-                      size={60}
-                    />
-                  </View>
-                )}
-              </View>
+              {allBudgets.length >= 6 ? (
+                <View></View>
+              ) : (
+                <View style={style.addBudget}>
+                  <MaterialCommunityIcons
+                    name="plus-circle"
+                    color={"#00A86B"}
+                    size={60}
+                  />
+                </View>
+              )}
             </TouchableOpacity>
           </View>
         </View>
@@ -187,15 +184,8 @@ const style = StyleSheet.create({
   },
 
   addBudget: {
-    display: "flex",
-    alignItems: "center",
-  },
-  addBudgetText: {
-    fontSize: 20,
-  },
-  addButtonContainer: {
-    marginHorizontal: 160,
-    borderRadius: 100,
+    flex: 1,
+    alignSelf: "center",
   },
   chartContainer: {
     height: 320,

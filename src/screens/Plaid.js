@@ -39,6 +39,7 @@ export default function Plaid(props) {
 
   return (
     <PlaidLink
+      env="sandbox"
       tokenConfig={{
         token: token,
       }}

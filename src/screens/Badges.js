@@ -12,7 +12,7 @@ import {
 import { useApolloClient } from "@apollo/client";
 import { images } from "../styles/global";
 import { useIsFocused } from "@react-navigation/native";
-import { GET_BADGES } from "../queries/friends";
+import { GET_BADGES } from "../queries/badge";
 
 export default function Badges({ navigation }) {
   const [allBadges, setAllBadges] = useState(null);

@@ -16,6 +16,7 @@ import FlatButton from "../shared/button";
 import { Formik } from "formik";
 import * as yup from "yup";
 import { LOGIN } from "../queries/user";
+
 const reviewSchema = yup.object({
   username: yup.string().required().min(4),
   password: yup.string().required().min(5),
@@ -30,6 +31,7 @@ export default function Login(props) {
       routes: [{ name: "Signup" }],
     });
   };
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={signinStyles.container}>
@@ -38,11 +40,12 @@ export default function Login(props) {
           style={signinStyles.logo}
         />
         <Formik
-          initialValues={{ username: "cody", password: "12345" }}
+          initialValues={{ username: "", password: "" }}
           validationSchema={reviewSchema}
           onSubmit={async (text, { setSubmitting, setFieldError }) => {
             //logic to handle login
             try {
+              setIsLoading(true);
               const { data } = await login({
                 variables: {
                   username: text.username,
@@ -51,7 +54,7 @@ export default function Login(props) {
               });
               await AsyncStorage.clear();
               await AsyncStorage.setItem("TOKEN", data.logIn.token);
-              setIsLoading(true);
+
               props.navigation.reset({
                 index: 0,
                 routes: [{ name: "Home" }],

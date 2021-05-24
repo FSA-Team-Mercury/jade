@@ -22,7 +22,7 @@ export default function ChangeAvatar(props) {
     <View style={styles.container}>
       <View style={styles.profilePicContainer}>
         <Image
-          source={images.avatar[profileImage]}
+          source={images.avatar[img]}
           style={{ width: 150, height: 150 }}
         />
       </View>

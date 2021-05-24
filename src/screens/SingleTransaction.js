@@ -138,6 +138,7 @@ const styles = StyleSheet.create({
     width: "90%",
     backgroundColor: "lightgrey",
     ...center,
+    marginBottom: 1,
   },
 });
 

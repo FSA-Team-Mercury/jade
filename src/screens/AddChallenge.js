@@ -10,34 +10,24 @@ import {
   StyleSheet,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
+import DateTimePicker from "@react-native-community/datetimepicker";
 import moment from "moment";
 import { Formik } from "formik";
 import * as yup from "yup";
-import DatePicker from "./DatePicker";
 import { images } from "../styles/global";
 
 const reviewSchema = yup.object({
   name: yup.string().required(),
   winCondition: yup.string().required(),
-  startDate: yup.string().required(),
   winAmount: yup.number().required(),
   category: yup.string().required(),
 });
 
-import { gql, useMutation, useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import { CREATE_MULTI_PLAYER_CHALLENGE } from "../queries/multiChallenges";
 import { GET_USER_DATA } from "../queries/user";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-
-const FETCH_FRIENDS = gql`
-  query FetchFriends {
-    friends {
-      id
-      username
-      profileImage
-    }
-  }
-`;
+import { FETCH_FRIENDS } from "../queries/friends";
 
 const badgeArray = [
   "rainbow",
@@ -48,18 +38,16 @@ const badgeArray = [
   "marsh",
   "volcano",
   "boulder",
+  "dogecoin",
 ];
-let thisBadge = badgeArray[Math.floor(Math.random() * 8)];
-let thisBadgeImage = images.badges[thisBadge];
 
 export default function AddChallenge({ navigation, route }) {
   const [createChallenge] = useMutation(CREATE_MULTI_PLAYER_CHALLENGE);
   const [friendId, setFriendId] = useState(0);
-  const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [viewDate, setViewDate] = useState("NONE");
   const [friends, setFriends] = useState([]);
-
+  const [thisBadgeImage, setThisBadgeImage] = useState([]);
   const { data, loading } = useQuery(FETCH_FRIENDS);
   if (loading) {
     return (
@@ -69,9 +57,12 @@ export default function AddChallenge({ navigation, route }) {
     );
   }
 
+  let thisBadge = badgeArray[Math.floor(Math.random() * 8.1)];
+
   useEffect(() => {
     setFriends(data.friends || []);
-  });
+    setThisBadgeImage(images.badges[thisBadge]);
+  }, []);
 
   function tobbleDataPicker(dateType) {
     if (dateType === viewDate) {
@@ -94,8 +85,6 @@ export default function AddChallenge({ navigation, route }) {
       <View style={styles.screen}>
         <Formik
           initialValues={{
-            startDate: new Date(),
-            endDate: new Date(),
             name: "",
             winCondition: "LESS_THAN",
             winAmount: "",
@@ -110,13 +99,11 @@ export default function AddChallenge({ navigation, route }) {
                 setSubmitting(false);
                 throw new Error("Date must be valid");
               }
-              values.startDate = startDate.toString();
-              values.endDate = endDate.toString();
               createChallenge({
                 variables: {
                   name: values.name,
                   winCondition: values.winCondition,
-                  endDate: values.endDate,
+                  endDate: endDate.toDateString(),
                   completed: false,
                   winAmount: Number(values.winAmount) * 100,
                   category: values.category,
@@ -161,6 +148,7 @@ export default function AddChallenge({ navigation, route }) {
                 {formikProps.errors.name ? "Name is a required field" : ""}
               </Text>
               <TextInput
+                keyboardType="numeric"
                 placeholder="What is the winning amout?"
                 onChangeText={formikProps.handleChange("winAmount")}
                 onBlur={formikProps.handleBlur("winAmount")}
@@ -197,7 +185,16 @@ export default function AddChallenge({ navigation, route }) {
                     viewDate === "END_DATE" ? styles.viewDate : styles.hideDate
                   }
                 >
-                  <DatePicker date={startDate} setDate={setEndDate} />
+                  <DateTimePicker
+                    testID="dateTimePicker"
+                    value={endDate}
+                    mode="date"
+                    is24Hour={true}
+                    display="spinner"
+                    onChange={(evt, selectedDate) => {
+                      setEndDate(selectedDate);
+                    }}
+                  />
                 </View>
               </View>
 
@@ -382,7 +379,6 @@ const styles = StyleSheet.create({
     marginTop: 40,
     alignItems: "center",
     justifyContent: "center",
-    // backgroundColor:'lightgrey'
   },
   badgeImage: {
     height: 80,
@@ -419,10 +415,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 5,
   },
   viewDate: {
-    display: "flex",
     backgroundColor: "white",
     ...shadow(5, 0),
     width: "100%",
+    alignSelf: "center",
   },
   friendName: {
     fontSize: 18,
