@@ -33,16 +33,17 @@ import {
 } from "../queries/multiChallenges";
 import { GET_USER_DATA } from "../queries/user";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import { FETCH_FRIENDS } from "../queries/friends";
 
-const FETCH_FRIENDS = gql`
-  query FetchFriends {
-    friends {
-      id
-      username
-      profileImage
-    }
-  }
-`;
+// const FETCH_FRIENDS = gql`
+//   query FetchFriends {
+//     friends {
+//       id
+//       username
+//       profileImage
+//     }
+//   }
+// `;
 
 const badgeArray = [
   "rainbow",
@@ -53,9 +54,8 @@ const badgeArray = [
   "marsh",
   "volcano",
   "boulder",
+  "dogecoin",
 ];
-let thisBadge = badgeArray[Math.floor(Math.random() * 8)];
-let thisBadgeImage = images.badges[thisBadge];
 
 export default function AddChallenge({ navigation, route }) {
   const [createChallenge] = useMutation(CREATE_MULTI_PLAYER_CHALLENGE);
@@ -65,6 +65,7 @@ export default function AddChallenge({ navigation, route }) {
   const [viewDate, setViewDate] = useState("NONE");
   const [oldChallenges, setOldChallenges] = useState([]);
   const [friends, setFriends] = useState([]);
+  const [thisBadgeImage, setThisBadgeImage] = useState([]);
 
   const { data, loading, error } = useQuery(FETCH_FRIENDS);
   if (loading) {
@@ -75,9 +76,12 @@ export default function AddChallenge({ navigation, route }) {
     );
   }
 
+  let thisBadge = badgeArray[Math.floor(Math.random() * 8.1)];
+ 
   useEffect(() => {
     setFriends(data.friends || []);
-  });
+    setThisBadgeImage(images.badges[thisBadge]);
+  }, []);
 
   function tobbleDataPicker(dateType) {
     if (dateType === viewDate) {

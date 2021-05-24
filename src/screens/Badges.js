@@ -13,17 +13,7 @@ import { useApolloClient } from "@apollo/client";
 import { gql } from "@apollo/client";
 import { images } from "../styles/global";
 import { useIsFocused } from "@react-navigation/native";
-
-const GET_BADGES = gql`
-  query GetBadges {
-    userBadges {
-      id
-      type
-      badgeImage
-      challengeId
-    }
-  }
-`;
+import { GET_BADGES } from "../queries/badge";
 
 export default function Badges({navigation}) {
   const [allBadges, setAllBadges] = useState(null);
