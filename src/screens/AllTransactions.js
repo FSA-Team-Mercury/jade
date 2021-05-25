@@ -54,6 +54,7 @@ export default function Dashboard({ route }) {
           <TextInput
             style={styles.searchField}
             placeholder="Search..."
+            placeholderTextColor="lightgrey"
             onChangeText={onChangeText}
             value={search}
             onChange={handleChange}

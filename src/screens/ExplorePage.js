@@ -43,13 +43,13 @@ export default function ExplorePage(props) {
             autoCapitalize="none"
             style={styles.searchField}
             placeholder="Find friends..."
+            placeholderTextColor="lightgrey"
             onSubmitEditing={(event) => {
               let search = event.nativeEvent.text;
               return searchUsers(search);
             }}
           />
         </View>
-        {/* <Text style={styles.pageTitle}>Friends & Challenges</Text> */}
         <View style={styles.selectView}>
           <TouchableOpacity
             style={
