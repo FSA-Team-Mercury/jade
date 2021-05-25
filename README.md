@@ -1,4 +1,4 @@
-# Jade - Financial App <img src="../jade/assets/icon.png" alt="drawing" width="35" height="35" align="left"/> <img src="../jade/assets/icon.png" alt="drawing" width="35" height="35" align="center"/> <a href="https://www.youtube.com/watch?v=TmKh7lAwnBI" style="">Video Demo Placeholder</a>
+# Jade - Financial App <img src="https://github.com/FSA-Team-Mercury/jade/blob/main/assets/icon.png?raw=true" alt="drawing" width="35" height="35" align="left"/> <img src="https://github.com/FSA-Team-Mercury/jade/blob/main/assets/icon.png?raw=true" width="35" height="35" align="center"/> <a href="https://www.youtube.com/watch?v=TmKh7lAwnBI" style="">Video Demo Placeholder</a>
 
 
 ## Table of Contents
