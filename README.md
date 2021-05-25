@@ -37,13 +37,42 @@ Currently features a social media component that helps motivate users to stay on
 
 ## Getting Started with Jade
 ---
-Scan the QR code below to view **_Jade_** on your iOS device  through [ExpoGo](https://apps.apple.com/us/app/expo-go/id982107779).
 
+### Prerequisites
+* Expo
+````
+npm install --global expo-cli
+````
+* Download [Xcode](https://apps.apple.com/us/app/xcode/id497799835?mt=12) from the App store
+* _Optional_ Download [Expo Go](https://apps.apple.com/us/app/expo-go/id982107779) from the App store to use your iOS device
+
+### Installation
+1. Clone the repo
+````
+git clone https://github.com/FSA-Team-Mercury/jade.git
+````
+2. Install NPM packages
+````
+npm install
+````
+3. cd into ios folder and Pod install
+````
+cd ios
+pod install
+````
+4. Run and build the app
+````
+expo start
+````
+5. _Optional_ Scan the QR Code in the Terminal or Browser to open *_Jade_* on your iOS device through [Expo Go](https://apps.apple.com/us/app/expo-go/id982107779)
+
+
+### Logging In
 1. The app opens up showing a splash screen with the logo. You are then be taken to a login screen. 🔐
 
-2. Login as new user with the following credentials.<br>
- 🔑 Username: user_good <br>
- 🔑 Password: pass_good <br> As a new user you are taken to the Plaid API to connect to your sandbox bank account. Don't forget to choose an avatar!
+2. Login with the following credentials.<br>
+ 🔑 Username: cody <br>
+ 🔑 Password: 12345 <br>
 
 3. Once logged in, you will be able to view all your recent transactions from the start of the 📅 calendar year  to date on your dashboard. Transactions will be further illustrated on a doughnut chart for a clear view of your spending.
 
