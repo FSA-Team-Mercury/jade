@@ -183,7 +183,7 @@ const styles = StyleSheet.create({
   badgeImageContainer: {
     height: 65,
     width: 65,
-    backgroundColor: "black",
+    backgroundColor: "lightgrey",
     borderRadius: 100,
     justifyContent: "center",
     alignItems: "center",

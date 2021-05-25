@@ -48,6 +48,7 @@ export default function AddChallenge({ navigation, route }) {
   const [viewDate, setViewDate] = useState("NONE");
   const [friends, setFriends] = useState([]);
   const [thisBadgeImage, setThisBadgeImage] = useState([]);
+  const [badgeToWin, setBadgeToWin] = useState([]);
   const { data, loading } = useQuery(FETCH_FRIENDS);
   if (loading) {
     return (
@@ -62,6 +63,7 @@ export default function AddChallenge({ navigation, route }) {
   useEffect(() => {
     setFriends(data.friends || []);
     setThisBadgeImage(images.badges[thisBadge]);
+    setBadgeToWin(thisBadge);
   }, []);
 
   function tobbleDataPicker(dateType) {
@@ -108,7 +110,7 @@ export default function AddChallenge({ navigation, route }) {
                   winAmount: Number(values.winAmount) * 100,
                   category: values.category,
                   friendId: friendId,
-                  badgeImage: thisBadge,
+                  badgeImage: badgeToWin,
                 },
                 update: (cache, { data: { createMultiplayerChallenge } }) => {
                   const newChallenge =
