@@ -1,4 +1,5 @@
-# Jade - Financial App <img src="https://github.com/FSA-Team-Mercury/jade/blob/main/assets/icon.png?raw=true" alt="drawing" width="35" height="35" align="left"/> <img src="https://github.com/FSA-Team-Mercury/jade/blob/main/assets/icon.png?raw=true" width="35" height="35" align="center"/> <a href="https://www.youtube.com/watch?v=TmKh7lAwnBI" style="">Video Demo Placeholder</a>
+
+# Jade - Financial App <img src="https://github.com/FSA-Team-Mercury/jade/blob/ds/update-README.md/assets/jade-icon-transparent.png?raw=true" alt="drawing" width="35" height="35" align="left"/> <img src="https://github.com/FSA-Team-Mercury/jade/blob/ds/update-README.md/assets/jade-icon-transparent.png?raw=true" width="35" height="35" align="center"/> <a href="https://www.youtube.com/watch?v=M4-Rp0c6zBU&list=PLx0iOsdUOUmnPA9l9RyeENObqv4SJi-_S&index=4&ab_channel=FullstackAcademy" style="">Video Demo</a>
 
 
 ## Table of Contents
@@ -19,6 +20,8 @@
 ## Features
 ---
 Currently features a social media component that helps motivate users to stay on track of their goals. A user can create solo challenges or compete with fellow users to win awesome badges and bragging rights for 'big saver' or 'smart shopper' just name a few.
+
+<img src="https://github.com/FSA-Team-Mercury/jade/blob/ds/update-README.md/assets/marketing_pic.png?raw=true" alt="drawing" width="550" height="350" align="center"/>
 
 ## Tech Stack
 ---
