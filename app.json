@@ -1,13 +1,23 @@
 {
-  "name": "jade",
-  "displayName": "jade",
+  "name": "Jade",
+  "displayName": "Jade",
   "expo": {
     "name": "Jade",
-    "slug": "jade",
+    "slug": "Jade",
+    "privacy": "public",
+    "icon": "./assets/icons/jade-icon.png",
+    "splash": {
+      "image": "./assets/jadesplash.png",
+      "backgroundColor": "#FFFFFF"
+    },
     "version": "1.0.0",
     "assetBundlePatterns": [
       "**/*"
     ],
+    "ios": {
+      "bundleIdentifier": "com.mercury.jade",
+      "buildNumber": "1.0.0"
+    },
     "description": "Jade finance",
     "githubUrl": "https://github.com/FSA-Team-Mercury/jade"
   }
