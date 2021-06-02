@@ -15,7 +15,9 @@ import Login from "./src/screens/login";
 import Home from "./src/screens/home";
 import TabNav from "./src/routes/tabNavigator";
 import Signup from "./src/screens/signup";
+import Plaid from "./src/screens/Plaid";
 import { READ_USER } from "./src/queries/user";
+
 const Stack = createStackNavigator();
 
 const httpLink = createHttpLink({
@@ -66,6 +68,9 @@ export default function App() {
           </Stack.Screen>
           <Stack.Screen name="Signup">
             {(props) => <Signup {...props} />}
+          </Stack.Screen>
+          <Stack.Screen name="Plaid">
+            {(props) => <Plaid {...props} />}
           </Stack.Screen>
           <Stack.Screen name="Nav">
             {(props) => <TabNav {...props} client={client} />}

@@ -82,6 +82,7 @@ export default function Signup(props) {
                 autoCapitalize="none"
                 style={signinStyles.input}
                 placeholder="Username"
+                placeholderTextColor="lightgrey"
                 onChangeText={formikProps.handleChange("username")}
                 value={formikProps.values.username}
                 onBlur={formikProps.handleBlur("username")}
@@ -95,6 +96,7 @@ export default function Signup(props) {
                 name="password"
                 style={signinStyles.input}
                 placeholder="Password"
+                placeholderTextColor="lightgrey"
                 onChangeText={formikProps.handleChange("password")}
                 value={formikProps.values.password}
                 onBlur={formikProps.handleBlur("password")}
@@ -188,7 +190,7 @@ export default function Signup(props) {
                 dropDownStyle={styles.item}
                 textStyle={{
                   fontSize: 15,
-                  color: "grey",
+                  color: "lightgrey",
                 }}
               />
               <FlatButton text="Sign up" onPress={formikProps.handleSubmit} />

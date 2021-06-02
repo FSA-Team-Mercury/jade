@@ -34,6 +34,23 @@ export const FETCH_PLAID = gql`
   }
 `;
 
+export const TRANSACTIONS = gql`
+  query Transactions {
+    plaid {
+      total_transactions
+      transactions {
+        transaction_id
+        account_id
+        amount
+        date
+        category
+        pending
+        merchant_name
+      }
+    }
+  }
+`;
+
 export const ACCOUNTS_AND_INSTITUTIONS = gql`
   query AccountsAndInstitutions {
     plaid {
@@ -50,23 +67,6 @@ export const ACCOUNTS_AND_INSTITUTIONS = gql`
         name
         url
         primary_color
-      }
-    }
-  }
-`;
-
-export const TRANSACTIONS = gql`
-  query Transactions {
-    plaid {
-      total_transactions
-      transactions {
-        transaction_id
-        account_id
-        amount
-        date
-        category
-        pending
-        merchant_name
       }
     }
   }

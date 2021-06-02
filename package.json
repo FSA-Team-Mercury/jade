@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "@apollo/client": "^3.3.16",
+    "@burstware/expo-plaid-link": "^1.0.4",
     "@react-native-community/datetimepicker": "^3.5.0",
     "@react-native-community/masked-view": "^0.1.11",
     "@react-native-picker/picker": "^1.16.0",

@@ -141,6 +141,7 @@ export default function AddChallenge({ navigation, route }) {
             <>
               <TextInput
                 placeholder="Name of this Challenge"
+                placeholderTextColor="lightgrey"
                 onChangeText={formikProps.handleChange("name")}
                 onBlur={formikProps.handleBlur("name")}
                 value={formikProps.values.name}
@@ -152,6 +153,7 @@ export default function AddChallenge({ navigation, route }) {
               <TextInput
                 keyboardType="numeric"
                 placeholder="What is the winning amout?"
+                placeholderTextColor="lightgrey"
                 onChangeText={formikProps.handleChange("winAmount")}
                 onBlur={formikProps.handleBlur("winAmount")}
                 value={formikProps.values.winAmount}

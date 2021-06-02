@@ -86,6 +86,7 @@ export default function AddBudget({ navigation }) {
                   precision={2}
                   style={styles.input}
                   placeholder="Budget Amount"
+                  placeholderTextColor="lightgrey"
                   onChangeText={formikProps.handleChange("amount")}
                   value={formikProps.values.amount}
                   onBlur={formikProps.handleBlur("amount")}
