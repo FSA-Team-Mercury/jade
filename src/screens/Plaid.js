@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { PLAID_TOKEN_URL } from "@env";
-import { View, Text, StyleSheet, ActivityIndicator } from "react-native";
+import { View, StyleSheet, ActivityIndicator } from "react-native";
 // import { PlaidLink } from "react-native-plaid-link-sdk";
 import axios from "axios";
 import { useMutation, useApolloClient } from "@apollo/client";
@@ -57,7 +57,10 @@ export default function Plaid(props) {
         }
       }}
       onExit={(exit) => {
-        console.log(exit);
+        props.navigation.reset({
+          index: 0,
+          routes: [{ name: "Signup" }],
+        });
       }}
     />
   );

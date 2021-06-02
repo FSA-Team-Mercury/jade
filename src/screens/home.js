@@ -1,8 +1,8 @@
 import React from "react";
 import { View, ActivityIndicator, StyleSheet } from "react-native";
 import { useQuery } from "@apollo/client";
-import Plaid from "./Plaid";
 import { GET_USER_DATA } from "../queries/user";
+import PlaidNav from "./PlaidNav";
 
 export default function Home(props) {
   const { data, loading, error } = useQuery(GET_USER_DATA);
@@ -26,7 +26,7 @@ export default function Home(props) {
     return <View></View>;
   }
   //Goes to Plaid if user has no account
-  return <Plaid {...props} />;
+  return <PlaidNav {...props} />;
 }
 
 const styles = StyleSheet.create({
