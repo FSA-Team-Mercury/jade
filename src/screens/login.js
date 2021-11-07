@@ -60,6 +60,7 @@ export default function Login(props) {
                 routes: [{ name: "Home" }],
               });
             } catch (err) {
+              setIsLoading(false);
               setFieldError("loginError", err.message);
               setSubmitting(false);
               console.log(err);

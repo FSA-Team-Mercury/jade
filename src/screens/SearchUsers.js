@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   StyleSheet,
+  ScrollView,
 } from "react-native";
 import { useQuery, useMutation } from "@apollo/client";
 import { images } from "../styles/global";
@@ -49,7 +50,7 @@ export default function SearchUsers({ route }) {
   }
   const searchResults = data ? data.searchUsers.result : [];
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       {!searchResults.length ? (
         <View style={styles.noResults}>
           <Text>No Reuslts</Text>
@@ -97,7 +98,7 @@ export default function SearchUsers({ route }) {
           );
         })
       )}
-    </View>
+    </ScrollView>
   );
 }
 

@@ -19,6 +19,7 @@ export default function AllAccounts() {
     const acc = client.readQuery({
       query: ACCOUNTS_AND_INSTITUTIONS,
     });
+
     setAccount(acc);
   }, []);
 
